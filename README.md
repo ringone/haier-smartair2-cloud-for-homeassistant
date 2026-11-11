@@ -14,7 +14,11 @@ picked per device for whatever works.
 ## Features
 
 - Native `climate` entities (target temp, HVAC mode, fan speed, on/off)
-- Room-temperature sensor per unit
+- Presets **Potência** (Power/turbo) and **Sono** (Sleep), plus quiet as **Silêncio**
+- Switches for Health, panel light, self-clean, remote lock and electric heat
+- Vertical airflow positions on V3 (not only swing on/off)
+- Room temperature plus outdoor, coil, defrost, compressor frequency and other telemetry
+- Portuguese (Portugal) entity names
 - **Hybrid transport, chosen per device:**
   - **Cloud** — MQTT gateway (`gw-gea-*.haieriot.net`), for encrypted-dongle units
   - **Local** — direct TCP `56800`, for plaintext-dongle units (instant, no internet)
@@ -29,7 +33,7 @@ picked per device for whatever works.
 | Generation | Example | Transport | Status |
 |---|---|---|---|
 | **V2** (`typeIdentifier` ≤ 32 chars) | wall units w/ encrypted dongle | Cloud | **Full** — target, mode, fan, quiet/turbo, swing (up/down), current temp |
-| **V3** (`typeIdentifier` > 32 chars) | older plaintext dongle | Local | **Experimental** — target temp, power, mode, fan speed and quiet confirmed against the remote; no turbo on this generation. Calibrated on a single unit |
+| **V3** (`typeIdentifier` > 32 chars) | older plaintext dongle, e.g. MK-QTWIFI-04(B) on AS35TADHRA-TH | Local | **Calibrated** — target, power, mode, fan, quiet, Power preset, Sleep, Health, panel light, self-clean, remote lock, electric heat, vertical vane, and extended telemetry |
 
 If your V3 unit reports the wrong mode/fan, please open an issue with a status
 frame dump — the byte layout can then be calibrated for more models.
@@ -43,7 +47,7 @@ the speed to auto on its own, so quiet and a fixed speed are mutually exclusive.
 ### HACS (recommended)
 
 1. HACS → three-dot menu → **Custom repositories**
-2. Add `https://github.com/bwitosze/haier-smartair2-cloud-for-homeassistant`, category **Integration**
+2. Add `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant`, category **Integration**
 3. Install **Haier SmartAir2**, then restart Home Assistant
 
 ### Manual
@@ -86,6 +90,7 @@ the 80-byte LAN envelope over TCP `56800`. No app, no root, no vendor SDK binary
 
 ## Changelog
 
+- **0.2.0** — V3 extras calibrated on the MK-QTWIFI-04(B): Power and Sleep presets, Health, panel light, self-clean, remote lock, electric heat, vertical vane positions, and extended sensors (outdoor and coil temperatures, defrost, compressor frequency). European Portuguese translations. This fork keeps the same integration domain, so an existing SmartAir2 config entry continues to work
 - **0.1.4** — faster Home Assistant startup: the local read/keep-alive loops and all
   reconnects run as background tasks, a 10 s timeout on the local TCP connect (an
   offline unit falls back to cloud instead of stalling setup), and the cloud TLS

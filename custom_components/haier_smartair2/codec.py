@@ -6,15 +6,13 @@ same frame envelope but lay out the status/command block differently:
 * V2 (e.g. salon, cloud): status ``6d01`` = 12 big-endian 16-bit words; command
   ``4d5f`` = full 24-byte block (read-modify-write).
 * V3 (e.g. maks, local): status ``6d01`` = byte layout; command ``6001`` = first
-  10 bytes of the status block (read-modify-write).
-
-The codec is transport-agnostic — it only deals with smartair2 frames. Envelope
-handling (cloud EPP base64 / local 80-byte wrapper) lives in the transport layer.
+  10 bytes of the status block (read-modify-write). Extended sensors arrive in
+  ``7d01`` (answer to ``4dfe``), 14 bytes starting at offset 32.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from .const import (
     FAN_AUTO,
@@ -34,14 +32,40 @@ class HaierState:
     """Normalised device state decoded from a status frame."""
 
     power: bool | None = None
-    mode: int | None = None  # MODE_* constant
-    fan: int | None = None  # FAN_* constant
-    quiet: bool | None = None  # super-silent: V2 20200P / V3 byte5 bit4
-    turbo: bool | None = None  # 20200O powerful/boost (V2 only — absent on V3)
-    swing_v: bool | None = None  # 20200I up/down louvre (V2 only)
+    mode: int | None = None
+    fan: int | None = None
+    quiet: bool | None = None
+    turbo: bool | None = None
+    sleep: bool | None = None
+    health: bool | None = None
+    display: bool | None = None
+    self_clean: bool | None = None
+    lock_remote: bool | None = None
+    electric_heat: bool | None = None
+    swing_v: bool | None = None
+    swing_pos: int | None = None
     target_temp: float | None = None
     current_temp: float | None = None
-    raw_block: bytes = b""  # the status data block, for read-modify-write
+    outdoor_temp: float | None = None
+    humidity: float | None = None
+    error_code: int | None = None
+    operation_source: str | None = None
+    filter_change: bool | None = None
+    power_w: float | None = None
+    indoor_coil_temp: float | None = None
+    outdoor_out_temp: float | None = None
+    outdoor_coil_temp: float | None = None
+    outdoor_in_temp: float | None = None
+    defrost_temp: float | None = None
+    compressor_hz: float | None = None
+    compressor_current: float | None = None
+    expansion_valve: float | None = None
+    outdoor_fan: bool | None = None
+    defrost_on: bool | None = None
+    compressor_on: bool | None = None
+    indoor_fan_on: bool | None = None
+    four_way_valve: bool | None = None
+    raw_block: bytes = b""
 
     def merged(self, **changes: object) -> "HaierState":
         data = {**self.__dict__, **changes}
@@ -67,52 +91,45 @@ def extract_block(frame: bytes) -> tuple[int, bytes]:
     flags = frame[3]
     ftype = frame[9]
     crc = 2 if flags & 0x40 else 0
-    # data starts after subcmd (2 bytes at [10:12]); ends before checksum(+crc)
     end = 2 + length - crc
     return ftype, frame[12:end]
 
 
-POLL_FRAME = build_frame(0x01, b"\x4d\x01", b"")  # query status -> 6d01
+POLL_FRAME = build_frame(0x01, b"\x4d\x01", b"")
+BIG_POLL_FRAME = build_frame(0x01, b"\x4d\xfe", b"")
+
+_SOURCE = {0: "other", 1: "remote", 2: "panel", 3: "wifi"}
+
+
+def _temp64(raw: int) -> float | None:
+    if raw in (0, 0xFF):
+        return None
+    return float(raw - 64)
 
 
 class Codec:
     """Base codec (subclassed per device generation)."""
 
     poll = POLL_FRAME
-    # extra fan-selector entries beyond auto/low/medium/high (device-specific)
     extra_fan_modes: tuple[str, ...] = ()
-    # whether fan-speed control is reliably calibrated for this device generation
     supports_fan: bool = True
-    # whether louvre (swing) control is calibrated for this device generation
     supports_swing: bool = False
+    supports_presets: bool = False
+    supports_extras: bool = False
 
-    def decode(self, frame: bytes) -> HaierState:  # pragma: no cover - interface
+    def decode(self, frame: bytes) -> HaierState:
         raise NotImplementedError
 
-    def encode_set(self, state: HaierState, **changes) -> bytes:  # pragma: no cover
+    def decode_big(self, frame: bytes) -> dict:
+        return {}
+
+    def encode_set(self, state: HaierState, **changes) -> bytes:
         raise NotImplementedError
 
 
-_QUIET_BIT = 1 << 2  # 20200P (word 10 bit 2)
-_TURBO_BIT = 1 << 1  # 20200O (word 10 bit 1)
-
-# Louvre/swing, straight from Haier's own device profile (docs/device-profiles/,
-# the typeIdentifier file shipped inside the uSDK assets):
-#   [上下]^20200I ... @1&4d22,2#6d01,8,0,1$   up/down    -> word 8 bit 0
-#   [左右]^20200J ... @1&4d23,2#6d01,8,1,1$   left/right -> word 8 bit 1
-# Addressable through the 4d5f group command (see the [组命令] line:
-# `20200I#2&8,0,1`), so no extra subcommand is needed — the block we already
-# build carries it.
-#
-# Only the up/down flag is wired up. The profile is generic for the whole device
-# family and also declares the left/right flag, but this unit has no horizontal
-# louvre — the control existed in HA and did nothing. Bit 1 is still preserved
-# untouched by the read-modify-write below, so nothing is clobbered.
-#
-# CAREFUL: the profile numbers words 1-based, this codec indexes 0-based, so
-# profile word 8 is `w[7]` here. The same shift already applies to mode (profile
-# 6 -> w[5]), fan (7 -> w[6]), flags (9 -> w[8]) and setpoint (12 -> w[11]).
-_SWING_V_BIT = 1 << 0  # 20200I up/down
+_QUIET_BIT = 1 << 2
+_TURBO_BIT = 1 << 1
+_SWING_V_BIT = 1 << 0
 
 
 class CodecV2(Codec):
@@ -143,101 +160,170 @@ class CodecV2(Codec):
         fan = changes.get("fan", state.fan) or 0
         target = changes.get("target_temp", state.target_temp) or 16
         power = changes.get("power", state.power)
-        # preserve swing / misc words from the last status block
         w8 = w10 = w11 = 0
         if len(state.raw_block) >= 24:
             src = state.raw_block
-            w8 = int.from_bytes(src[14:16], "big")   # swing
-            w10 = int.from_bytes(src[18:20], "big")  # fresh-air / turbo / quiet / display bits
+            w8 = int.from_bytes(src[14:16], "big")
+            w10 = int.from_bytes(src[18:20], "big")
             w11 = int.from_bytes(src[20:22], "big")
-        # quiet / turbo live in word 10; flip only their bits, preserve the rest
         if "quiet" in changes and changes["quiet"] is not None:
             w10 = (w10 | _QUIET_BIT) if changes["quiet"] else (w10 & ~_QUIET_BIT)
         if "turbo" in changes and changes["turbo"] is not None:
             w10 = (w10 | _TURBO_BIT) if changes["turbo"] else (w10 & ~_TURBO_BIT)
-        # swing lives in word 8; flip only bit 0, preserve every other bit
         if "swing_v" in changes and changes["swing_v"] is not None:
             w8 = (w8 | _SWING_V_BIT) if changes["swing_v"] else (w8 & ~_SWING_V_BIT)
         flags9 = 0x0001 if (power if power is not None else True) else 0x0000
         blk = bytearray(24)
-        blk[10:12] = int(mode).to_bytes(2, "big")       # w6 mode
-        blk[12:14] = int(fan).to_bytes(2, "big")        # w7 fan
-        blk[14:16] = int(w8 & 0xFFFF).to_bytes(2, "big")  # w8 swing
-        blk[16:18] = int(flags9).to_bytes(2, "big")     # w9 flags (power bit0)
-        blk[18:20] = int(w10 & 0xFFFF).to_bytes(2, "big")  # w10 (quiet/turbo)
+        blk[10:12] = int(mode).to_bytes(2, "big")
+        blk[12:14] = int(fan).to_bytes(2, "big")
+        blk[14:16] = int(w8 & 0xFFFF).to_bytes(2, "big")
+        blk[16:18] = int(flags9).to_bytes(2, "big")
+        blk[18:20] = int(w10 & 0xFFFF).to_bytes(2, "big")
         blk[20:22] = int(w11).to_bytes(2, "big")
-        blk[22:24] = int(round(target) - 16).to_bytes(2, "big")  # w12 setpoint
+        blk[22:24] = int(round(target) - 16).to_bytes(2, "big")
         return build_frame(0x01, b"\x4d\x5f", bytes(blk))
 
 
-# V3 (maks) mode = high nibble of status byte[2] (calibrated 2026-08-05):
-#   0x0=AUTO, 0x2=COOL, 0x4=DRY, 0x8=HEAT, 0xC=FAN.
 _V3_MODE_FROM_NIBBLE = {0x0: MODE_AUTO, 0x2: MODE_COOL, 0x4: MODE_DRY, 0x8: MODE_HEAT, 0xC: MODE_FAN}
 _V3_MODE_TO_NIBBLE = {v: k for k, v in _V3_MODE_FROM_NIBBLE.items()}
-
-# V3 fan speed = LOW nibble of the same status byte[2] (calibrated 2026-08-06 by
-# stepping the physical remote through all four speeds while polling every 3 s).
-# An earlier note put the fan on byte15 and dismissed this nibble as compressor
-# noise; that was wrong — byte1 and byte15 did not move at all across the sequence.
 _V3_FAN_FROM_NIBBLE = {0x1: FAN_HIGH, 0x2: FAN_MID, 0x3: FAN_LOW, 0x5: FAN_AUTO}
 _V3_FAN_TO_NIBBLE = {v: k for k, v in _V3_FAN_FROM_NIBBLE.items()}
 
-# V3 super-silent ("quiet") is a separate flag, not a speed — same split as V2's
-# 20200P. Turning it on makes the unit force the speed nibble back to AUTO by
-# itself, so quiet and an explicit speed are mutually exclusive on the device.
-_V3_QUIET_BIT = 0x10  # status byte[5] bit 4 (bit 0 of the same byte is power)
+_V3_POWER = 0x01
+_V3_HEALTH = 0x02
+_V3_EHEAT = 0x04
+_V3_TURBO = 0x08
+_V3_QUIET = 0x10
+_V3_SLEEP = 0x20
+_V3_LOCK = 0x40
+_V3_DISPLAY = 0x02
+_V3_CLEAN = 0x10
+_V3_SWING_AUTO = 0x0C
+_V3_SWING_CENTER = 0x06
+# 10 control bytes + 22 bytes of sensors/reserved on the MK-QTWIFI-04 extended frame.
+_V3_BIG_OFFSET = 32
+
+
+def _set_bit(block: bytearray, index: int, mask: int, enabled: bool) -> None:
+    if enabled:
+        block[index] |= mask
+    else:
+        block[index] &= ~mask & 0xFF
 
 
 class CodecV3(Codec):
-    """Maks-class device (byte layout, 6001 command). Verified via local TCP.
-
-    Calibrated: setpoint (byte0), power (byte5 bit0), current temp (byte10/2),
-    mode (byte2 high nibble), fan speed (byte2 low nibble), quiet (byte5 bit4).
-    No turbo/boost flag was found on this generation (the remote has no such key).
-    """
+    """Byte-layout dongle (MK-QTWIFI-04). Command 6001, extended data in 7d01."""
 
     extra_fan_modes = ("quiet",)
+    supports_swing = True
+    supports_presets = True
+    supports_extras = True
 
     def decode(self, frame: bytes) -> HaierState:
         _ftype, d = extract_block(frame)
         if len(d) < 10:
             raise ValueError("short V3 status")
-        current = None
-        if len(d) > 10 and d[10] > 10:
-            current = float(d[10]) / 2.0  # dongle reports room temp in 0.5C steps (x2)
+        current = float(d[10]) / 2.0 if len(d) > 10 and d[10] > 10 else None
+        outdoor = _temp64(d[12]) if len(d) > 12 else None
+        humidity = float(d[11]) if len(d) > 11 and 0 < d[11] <= 100 else None
+        nibble = d[1] & 0x0F
+        source = _SOURCE.get(d[15] & 0x03, "other") if len(d) > 15 else None
         return HaierState(
             target_temp=float(d[0] + 16),
             mode=_V3_MODE_FROM_NIBBLE.get((d[2] >> 4) & 0x0F, MODE_AUTO),
             fan=_V3_FAN_FROM_NIBBLE.get(d[2] & 0x0F),
-            quiet=bool(d[5] & _V3_QUIET_BIT),
-            power=bool(d[5] & 0x01),
+            quiet=bool(d[5] & _V3_QUIET),
+            turbo=bool(d[5] & _V3_TURBO),
+            sleep=bool(d[5] & _V3_SLEEP),
+            health=bool(d[5] & _V3_HEALTH),
+            electric_heat=bool(d[5] & _V3_EHEAT),
+            lock_remote=bool(d[5] & _V3_LOCK),
+            display=bool(d[4] & _V3_DISPLAY),
+            self_clean=bool(d[9] & _V3_CLEAN),
+            power=bool(d[5] & _V3_POWER),
+            swing_v=nibble in (_V3_SWING_AUTO, 0x0E),
+            swing_pos=nibble,
             current_temp=current,
+            outdoor_temp=outdoor,
+            humidity=humidity,
+            error_code=int(d[14]) if len(d) > 14 else None,
+            operation_source=source,
+            filter_change=bool(d[8] & 0x01),
             raw_block=bytes(d),
         )
 
+    def decode_big(self, frame: bytes) -> dict:
+        # The 14-byte block sits at the end of the length-counted body. extract_block()
+        # drops two trailing bytes when flags bit 6 is set, which cuts this block off.
+        if len(frame) < 12 or frame[0] != 0xFF or frame[1] != 0xFF:
+            return {}
+        d = frame[12 : 2 + frame[2]]
+        if len(d) < _V3_BIG_OFFSET + 14:
+            return {}
+        bd = d[_V3_BIG_OFFSET : _V3_BIG_OFFSET + 14]
+        current = int.from_bytes(bd[8:10], "big")
+        valve = int.from_bytes(bd[12:14], "big")
+        return {
+            "power_w": float(int.from_bytes(bd[0:2], "big")),
+            "indoor_coil_temp": None if bd[2] == 0 else float(bd[2]) / 2.0 - 20.0,
+            "outdoor_out_temp": _temp64(bd[3]),
+            "outdoor_coil_temp": _temp64(bd[4]),
+            "outdoor_in_temp": _temp64(bd[5]),
+            "defrost_temp": _temp64(bd[6]),
+            "compressor_hz": float(bd[7]) if bd[7] <= 127 else None,
+            "compressor_current": None if current >= 0x1FF else current / 10.0,
+            "expansion_valve": None if valve > 4095 else float(valve),
+        }
+
     def encode_set(self, state: HaierState, **changes) -> bytes:
-        # read-modify-write on the first 10 bytes of the last status block
         block = bytearray(state.raw_block[:10].ljust(10, b"\x00"))
-        if "target_temp" in changes and changes["target_temp"] is not None:
+        if changes.get("target_temp") is not None:
             block[0] = (int(round(changes["target_temp"])) - 16) & 0xFF
-        if "mode" in changes and changes["mode"] is not None:
+        if changes.get("mode") is not None:
             nib = _V3_MODE_TO_NIBBLE.get(changes["mode"])
             if nib is not None:
-                block[2] = (nib << 4) | (block[2] & 0x0F)  # keep the fan nibble
-        if "fan" in changes and changes["fan"] is not None:
+                block[2] = (nib << 4) | (block[2] & 0x0F)
+        if changes.get("fan") is not None:
             nib = _V3_FAN_TO_NIBBLE.get(changes["fan"])
             if nib is not None:
-                block[2] = (block[2] & 0xF0) | nib  # keep the mode nibble
+                block[2] = (block[2] & 0xF0) | nib
+        if changes.get("swing_pos") is not None:
+            block[1] = (block[1] & 0xF0) | (int(changes["swing_pos"]) & 0x0F)
+        elif changes.get("swing_v") is not None:
+            if changes["swing_v"]:
+                block[1] = (block[1] & 0xF0) | _V3_SWING_AUTO
+            else:
+                current = block[1] & 0x0F
+                if current in (_V3_SWING_AUTO, 0x0E):
+                    restore = state.swing_pos
+                    if restore in (None, _V3_SWING_AUTO, 0x0E):
+                        restore = _V3_SWING_CENTER
+                    block[1] = (block[1] & 0xF0) | int(restore)
+        if "display" in changes and changes["display"] is not None:
+            _set_bit(block, 4, _V3_DISPLAY, bool(changes["display"]))
+        if "self_clean" in changes and changes["self_clean"] is not None:
+            _set_bit(block, 9, _V3_CLEAN, bool(changes["self_clean"]))
         if "quiet" in changes and changes["quiet"] is not None:
+            _set_bit(block, 5, _V3_QUIET, bool(changes["quiet"]))
             if changes["quiet"]:
-                block[5] |= _V3_QUIET_BIT
-            else:
-                block[5] &= ~_V3_QUIET_BIT
+                _set_bit(block, 5, _V3_TURBO, False)
+        if "turbo" in changes and changes["turbo"] is not None:
+            _set_bit(block, 5, _V3_TURBO, bool(changes["turbo"]))
+            if changes["turbo"]:
+                _set_bit(block, 5, _V3_QUIET, False)
+                _set_bit(block, 5, _V3_SLEEP, False)
+        if "sleep" in changes and changes["sleep"] is not None:
+            _set_bit(block, 5, _V3_SLEEP, bool(changes["sleep"]))
+            if changes["sleep"]:
+                _set_bit(block, 5, _V3_TURBO, False)
+        if "health" in changes and changes["health"] is not None:
+            _set_bit(block, 5, _V3_HEALTH, bool(changes["health"]))
+        if "electric_heat" in changes and changes["electric_heat"] is not None:
+            _set_bit(block, 5, _V3_EHEAT, bool(changes["electric_heat"]))
+        if "lock_remote" in changes and changes["lock_remote"] is not None:
+            _set_bit(block, 5, _V3_LOCK, bool(changes["lock_remote"]))
         if "power" in changes and changes["power"] is not None:
-            if changes["power"]:
-                block[5] |= 0x01
-            else:
-                block[5] &= ~0x01
+            _set_bit(block, 5, _V3_POWER, bool(changes["power"]))
         return build_frame(0x01, b"\x60\x01", bytes(block))
 
 

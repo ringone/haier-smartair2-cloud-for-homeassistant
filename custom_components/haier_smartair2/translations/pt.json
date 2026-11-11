@@ -1,0 +1,119 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Haier SmartAir2",
+        "description": "Inicie sessão com a conta SmartAir2 (Haier). Pode associar cada aparelho a um IP local para controlo direto (formato: MAC:IP, separados por vírgulas).",
+        "data": {
+          "username": "E-mail",
+          "password": "Palavra-passe",
+          "region": "Região",
+          "local_ips": "Aparelhos locais (MAC:IP, opcional)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "E-mail ou palavra-passe inválidos",
+      "cannot_connect": "Não foi possível ligar à nuvem Haier"
+    },
+    "abort": {
+      "already_configured": "Esta conta já está configurada"
+    }
+  },
+  "selector": {
+    "region": {
+      "options": {
+        "eu": "Europa",
+        "us": "EUA",
+        "sg": "Ásia (Singapura)"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "room_temperature": { "name": "Temperatura da divisão" },
+      "outdoor_temperature": { "name": "Temperatura exterior" },
+      "humidity": { "name": "Humidade" },
+      "indoor_coil_temperature": { "name": "Temperatura da bateria interior" },
+      "outdoor_coil_temperature": { "name": "Temperatura da bateria exterior" },
+      "outdoor_in_temperature": { "name": "Temperatura de admissão exterior" },
+      "outdoor_out_temperature": { "name": "Temperatura de descarga exterior" },
+      "defrost_temperature": { "name": "Temperatura de descongelação" },
+      "compressor_frequency": { "name": "Frequência do compressor" },
+      "compressor_current": { "name": "Corrente do compressor" },
+      "power": { "name": "Potência" },
+      "expansion_valve": { "name": "Válvula de expansão" },
+      "error_code": { "name": "Código de erro" },
+      "operation_source": {
+        "name": "Origem do comando",
+        "state": {
+          "other": "Outro",
+          "remote": "Comando",
+          "panel": "Painel",
+          "wifi": "Wi-Fi"
+        }
+      }
+    },
+    "binary_sensor": {
+      "compressor": { "name": "Compressor" },
+      "indoor_fan": { "name": "Ventoinha interior" },
+      "outdoor_fan": { "name": "Ventoinha exterior" },
+      "defrost": { "name": "Descongelação" },
+      "four_way_valve": { "name": "Válvula de 4 vias" },
+      "filter": { "name": "Filtro a substituir" }
+    },
+    "switch": {
+      "health": { "name": "Saúde" },
+      "display": { "name": "Luz do painel" },
+      "self_clean": { "name": "Limpeza automática" },
+      "lock_remote": { "name": "Travar o comando" },
+      "electric_heat": { "name": "Aquecimento elétrico" }
+    },
+    "select": {
+      "vertical_swing": {
+        "name": "Direção vertical",
+        "state": {
+          "auto": "Oscilar",
+          "health_up": "Fluxo saudável para cima",
+          "max_up": "Posição mais alta",
+          "health_down": "Fluxo saudável para baixo",
+          "up": "Para cima",
+          "center": "Ao centro",
+          "down": "Para baixo",
+          "max_down": "Posição mais baixa"
+        }
+      }
+    },
+    "climate": {
+      "ac": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "quiet": "Silêncio",
+              "turbo": "Turbo"
+            }
+          },
+          "preset_mode": {
+            "state": {
+              "none": "Nenhum",
+              "boost": "Potência",
+              "sleep": "Sono"
+            }
+          }
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opções do Haier SmartAir2",
+        "description": "Altere a região ou associe os aparelhos a um IP local (formato: MAC:IP, separados por vírgulas). Em branco, o controlo fica pela nuvem.",
+        "data": {
+          "region": "Região",
+          "local_ips": "Aparelhos locais (MAC:IP)"
+        }
+      }
+    }
+  }
+}

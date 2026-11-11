@@ -38,7 +38,6 @@ class HaierCoordinator(DataUpdateCoordinator[HaierState]):
         self.devid = devid.upper()
         self.dev_name = name
         self.via_cloud = via_cloud
-        # push updates from the transport (device-initiated status frames)
         transport.add_listener(self._on_push)
 
     def _decode_latest(self) -> HaierState | None:
@@ -46,10 +45,23 @@ class HaierCoordinator(DataUpdateCoordinator[HaierState]):
         if not frame:
             return None
         try:
-            return self.codec.decode(frame)
+            state = self.codec.decode(frame)
         except Exception:  # noqa: BLE001
             _LOGGER.debug("decode failed for %s", self.devid, exc_info=True)
             return None
+        big_frame = None
+        latest_big = getattr(self.transport, "latest_big_frame", None)
+        if latest_big is not None:
+            big_frame = latest_big(self.devid)
+        if big_frame is not None:
+            try:
+                extra = self.codec.decode_big(big_frame)
+            except Exception:  # noqa: BLE001
+                _LOGGER.debug("big-data decode failed for %s", self.devid, exc_info=True)
+                extra = {}
+            if extra:
+                state = state.merged(**extra)
+        return state
 
     def _on_push(self) -> None:
         state = self._decode_latest()
@@ -58,7 +70,6 @@ class HaierCoordinator(DataUpdateCoordinator[HaierState]):
 
     async def _async_update_data(self) -> HaierState:
         await self.transport.async_poll(self.devid)
-        # give the device up to ~2s to answer; the push callback may also fire
         for _ in range(10):
             await asyncio.sleep(0.2)
             state = self._decode_latest()

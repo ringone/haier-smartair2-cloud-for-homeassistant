@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 from homeassistant.components.climate import (
+    PRESET_BOOST,
+    PRESET_NONE,
+    PRESET_SLEEP,
     SWING_OFF,
     SWING_ON,
     ClimateEntity,
@@ -10,7 +13,7 @@ from homeassistant.components.climate import (
     HVACMode,
 )
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -45,9 +48,6 @@ HVAC_TO_MODE = {v: k for k, v in MODE_TO_HVAC.items()}
 FAN_TO_HA = {FAN_AUTO: "auto", FAN_LOW: "low", FAN_MID: "medium", FAN_HIGH: "high"}
 HA_TO_FAN = {v: k for k, v in FAN_TO_HA.items()}
 
-# Vertical louvre only. Haier's device profile also defines a left/right flag
-# (20200J, word 8 bit 1), but this unit has no horizontal louvre to drive with it
-# — exposing it just added a control that never did anything. See codec.py.
 SWING_BOOL = [SWING_OFF, SWING_ON]
 
 
@@ -55,9 +55,7 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: HaierConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
     """Set up climate entities."""
-    async_add_entities(
-        HaierClimate(coord) for coord in entry.runtime_data.coordinators
-    )
+    async_add_entities(HaierClimate(coord) for coord in entry.runtime_data.coordinators)
 
 
 class HaierClimate(CoordinatorEntity[HaierCoordinator], ClimateEntity):
@@ -65,6 +63,7 @@ class HaierClimate(CoordinatorEntity[HaierCoordinator], ClimateEntity):
 
     _attr_has_entity_name = True
     _attr_name = None
+    _attr_translation_key = "ac"
     _attr_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_target_temperature_step = TEMP_STEP
     _attr_min_temp = MIN_TEMP
@@ -90,11 +89,8 @@ class HaierClimate(CoordinatorEntity[HaierCoordinator], ClimateEntity):
             identifiers={(DOMAIN, coordinator.devid)},
             name=coordinator.dev_name,
             manufacturer="Haier",
-            model="SmartAir2 (cloud)" if coordinator.via_cloud else "SmartAir2 (local)",
+            model="SmartAir2 (nuvem)" if coordinator.via_cloud else "SmartAir2 (local)",
         )
-        # fan selector only when the codec reliably supports fan control
-        # (V2: auto/quiet/low/medium/high/turbo; V3: same minus turbo, which this
-        # generation does not expose)
         if coordinator.codec.supports_fan:
             extras = coordinator.codec.extra_fan_modes
             modes = ["auto"]
@@ -105,13 +101,12 @@ class HaierClimate(CoordinatorEntity[HaierCoordinator], ClimateEntity):
                 modes.append("turbo")
             self._attr_fan_modes = modes
             self._attr_supported_features |= ClimateEntityFeature.FAN_MODE
-        # Swing selector only on generations where the louvre bits are known.
-        # V2 (salon) has them straight from Haier's device profile; V3 (maks) was
-        # never calibrated — and that unit's louvre is mechanically damaged, so it
-        # must stay unexposed rather than merely untested.
         if coordinator.codec.supports_swing:
             self._attr_swing_modes = SWING_BOOL
             self._attr_supported_features |= ClimateEntityFeature.SWING_MODE
+        if coordinator.codec.supports_presets:
+            self._attr_preset_modes = [PRESET_NONE, PRESET_BOOST, PRESET_SLEEP]
+            self._attr_supported_features |= ClimateEntityFeature.PRESET_MODE
 
     @property
     def available(self) -> bool:
@@ -141,21 +136,37 @@ class HaierClimate(CoordinatorEntity[HaierCoordinator], ClimateEntity):
             return None
         if st.quiet:
             return "quiet"
-        if st.turbo:
+        if st.turbo and "turbo" in (self._attr_fan_modes or []):
             return "turbo"
         return FAN_TO_HA.get(st.fan)
 
     @property
     def swing_mode(self) -> str | None:
-        """Up/down louvre (20200I)."""
         if self.coordinator.data is None or not self.coordinator.codec.supports_swing:
             return None
         return SWING_ON if self.coordinator.data.swing_v else SWING_OFF
 
+    @property
+    def preset_mode(self) -> str | None:
+        st = self.coordinator.data
+        if st is None or not self.coordinator.codec.supports_presets:
+            return None
+        if st.turbo:
+            return PRESET_BOOST
+        if st.sleep:
+            return PRESET_SLEEP
+        return PRESET_NONE
+
     async def async_set_swing_mode(self, swing_mode: str) -> None:
-        # deliberately no power=True: moving the louvre should not switch a
-        # sleeping unit on, unlike a temperature or mode change
         await self.coordinator.async_apply(swing_v=swing_mode == SWING_ON)
+
+    async def async_set_preset_mode(self, preset_mode: str) -> None:
+        if preset_mode == PRESET_BOOST:
+            await self.coordinator.async_apply(turbo=True, sleep=False, quiet=False, power=True)
+        elif preset_mode == PRESET_SLEEP:
+            await self.coordinator.async_apply(sleep=True, turbo=False, power=True)
+        else:
+            await self.coordinator.async_apply(turbo=False, sleep=False)
 
     async def async_set_temperature(self, **kwargs) -> None:
         temp = kwargs.get(ATTR_TEMPERATURE)
@@ -177,9 +188,7 @@ class HaierClimate(CoordinatorEntity[HaierCoordinator], ClimateEntity):
         else:
             fan = HA_TO_FAN.get(fan_mode)
             if fan is not None:
-                await self.coordinator.async_apply(
-                    fan=fan, quiet=False, turbo=False, power=True
-                )
+                await self.coordinator.async_apply(fan=fan, quiet=False, turbo=False, power=True)
 
     async def async_turn_on(self) -> None:
         await self.coordinator.async_apply(power=True)

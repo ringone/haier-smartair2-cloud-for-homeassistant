@@ -1,4 +1,4 @@
-"""Local transport: direct TCP 56800 for plaintext-dongle devices (e.g. maks).
+"""Local transport: direct TCP 56800 for plaintext-dongle devices.
 
 Wraps smartair2 frames in the 80-byte uSDK LAN envelope (marker 0x2714 out /
 0x2715 in, MAC as ASCII at [40:52], seq at [75], payload length at [79]).
@@ -12,13 +12,16 @@ from collections.abc import Callable
 
 from homeassistant.core import HomeAssistant
 
+from .codec import BIG_POLL_FRAME, POLL_FRAME
 from .const import LOCAL_PORT
 
 _LOGGER = logging.getLogger(__name__)
 
 MARKER_TX = 0x2714
 MARKER_RX = 0x2715
-CONNECT_TIMEOUT = 10  # an offline dongle must not stall HA startup for the OS TCP timeout
+CONNECT_TIMEOUT = 10
+_STATUS_SUB = b"\x6d\x01"
+_BIG_SUB = b"\x7d\x01"
 
 
 def _normalise_mac(mac: str) -> str:
@@ -50,6 +53,7 @@ class HaierLocalClient:
         self._keepalive_task: asyncio.Task | None = None
         self._seq = 0
         self._frame: bytes | None = None
+        self._big_frame: bytes | None = None
         self._listeners: list[Callable[[], None]] = []
         self._stopped = False
         self._lock = asyncio.Lock()
@@ -65,6 +69,9 @@ class HaierLocalClient:
 
     def latest_frame(self, _devid: str | None = None) -> bytes | None:
         return self._frame
+
+    def latest_big_frame(self, _devid: str | None = None) -> bytes | None:
+        return self._big_frame
 
     def is_online(self, _devid: str | None = None) -> bool:
         return self._writer is not None and not self._writer.is_closing()
@@ -91,7 +98,6 @@ class HaierLocalClient:
             self._reader, self._writer = await asyncio.wait_for(
                 asyncio.open_connection(self._ip, LOCAL_PORT), CONNECT_TIMEOUT
             )
-            # background tasks: HA startup must not wait for these never-ending loops
             self._read_task = self._hass.async_create_background_task(
                 self._read_loop(), f"haier_local_read_{self._ip}"
             )
@@ -101,14 +107,12 @@ class HaierLocalClient:
                 )
 
     async def _keepalive_loop(self) -> None:
-        """Poll periodically so the dongle keeps the link open and data stays fresh."""
         try:
             while not self._stopped:
                 await asyncio.sleep(12)
                 try:
                     await self.async_poll("")
                 except Exception:  # noqa: BLE001
-                    # a failed write means the socket died; reader loop will reconnect
                     if self._writer:
                         self._writer.close()
                     break
@@ -124,9 +128,16 @@ class HaierLocalClient:
                 payload = await self._reader.readexactly(plen) if plen else b""
                 if int.from_bytes(header[2:4], "big") != MARKER_RX:
                     continue
-                if len(payload) >= 12 and payload[9] in (0x02, 0x06):
+                if len(payload) < 12 or payload[9] not in (0x02, 0x06):
+                    continue
+                sub = payload[10:12]
+                if sub == _BIG_SUB:
+                    self._big_frame = payload
+                elif sub == _STATUS_SUB:
                     self._frame = payload
-                    self._notify()
+                else:
+                    continue
+                self._notify()
         except (asyncio.IncompleteReadError, ConnectionError, OSError) as err:
             if not self._stopped:
                 _LOGGER.info("Haier local %s lost: %s", self._ip, err)
@@ -137,9 +148,7 @@ class HaierLocalClient:
                 self._hass.loop.call_later(3, self._schedule_reconnect)
 
     def _schedule_reconnect(self) -> None:
-        self._hass.async_create_background_task(
-            self._reconnect(), f"haier_local_reconnect_{self._ip}"
-        )
+        self._hass.async_create_background_task(self._reconnect(), f"haier_local_reconnect_{self._ip}")
 
     async def _reconnect(self) -> None:
         if self._stopped or self.is_online():
@@ -158,9 +167,9 @@ class HaierLocalClient:
         await self._writer.drain()
 
     async def async_poll(self, _devid: str | None = None) -> None:
-        from .codec import POLL_FRAME
-
         await self._write(POLL_FRAME)
+        await asyncio.sleep(0.25)
+        await self._write(BIG_POLL_FRAME)
 
     async def async_send_frame(self, _devid: str, frame: bytes) -> None:
         await self._write(frame)
