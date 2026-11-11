@@ -1,116 +1,106 @@
 # Haier SmartAir2 for Home Assistant
 
-Unofficial Home Assistant integration for **legacy Haier air conditioners** — the
-ones paired with the old **SmartAir2** app (not hOn). It gives you native `climate`
-entities, controlled either through the Haier cloud or directly over your LAN,
-picked per device for whatever works.
+Fork of [bwitosze/haier-smartair2-cloud-for-homeassistant](https://github.com/bwitosze/haier-smartair2-cloud-for-homeassistant) for legacy Haier air conditioners that use the **SmartAir2** app, not hOn.
 
-> **Why this exists:** newer Haier units use the *hOn* app (well supported by
-> [Andre0512/hon](https://github.com/Andre0512/hon)). Older units use *SmartAir2*,
-> which hOn can't talk to. Their Wi-Fi dongles come in two flavours: some speak a
-> plaintext protocol on the LAN, others encrypt it and only the cloud can reach
-> them. This integration handles both.
+It keeps the same integration domain, `haier_smartair2`, so an existing config entry (account, region, and local `MAC:IP` map) continues to work after you switch to this repository.
+
+## Why this fork exists
+
+Upstream 0.1.4 already runs these units through the cloud or over the LAN, and basic climate control works once a plaintext dongle is mapped as `MAC:IP`. It does not expose the rest of what that dongle reports.
+
+This fork was made for a Haier **AS35TADHRA-TH** with the **MK-QTWIFI-04(B)** Wi-Fi dongle. That dongle speaks SmartAir2 V3 on TCP port `56800`. The status frame carries Power, Sleep, Health, the panel light, self-clean, remote lock, electric heat, and the vertical vane. A second frame carries outdoor and coil temperatures, defrost temperature, and compressor frequency. Those values were decoded on this unit and added here, together with European Portuguese names.
+
+It is also a separate repository so an update from the upstream project does not replace these changes. Home Assistant 2026.11 installs and updates this kind of repository from the Marketplace.
+
+## What 0.2.0 adds
+
+- Presets **Power** and **Sleep**. Quiet stays a fan mode, shown as **Silêncio** in Portuguese.
+- Switches for Health, panel light, self-clean, remote lock, and electric heat.
+- Vertical airflow positions on V3, instead of swing on/off only.
+- Sensors for outdoor temperature, coil temperatures, defrost temperature, compressor frequency, and the other values this firmware reports.
+- European Portuguese translations (`translations/pt.json`).
+- Marketplace metadata: category, brand icon, and validation workflows.
+
+V2 behaviour from upstream is unchanged: cloud control, quiet, turbo, and swing on/off.
 
 ## Features
 
-- Native `climate` entities (target temp, HVAC mode, fan speed, on/off)
-- Presets **Potência** (Power/turbo) and **Sono** (Sleep), plus quiet as **Silêncio**
-- Switches for Health, panel light, self-clean, remote lock and electric heat
-- Vertical airflow positions on V3 (not only swing on/off)
-- Room temperature plus outdoor, coil, defrost, compressor frequency and other telemetry
-- Portuguese (Portugal) entity names
+- Native `climate` entities (target temperature, HVAC mode, fan speed, on/off)
 - **Hybrid transport, chosen per device:**
-  - **Cloud** — MQTT gateway (`gw-gea-*.haieriot.net`), for encrypted-dongle units
-  - **Local** — direct TCP `56800`, for plaintext-dongle units (instant, no internet)
-- Fan selector with `auto / low / medium / high`, plus **quiet** (super-silent) on
-  both generations and **turbo** on units that expose it (V2 only so far)
-- Vertical louvre (swing on/off) on V2 units
-- Config UI: e-mail, password, region, and an optional per-device local IP mapping
-- Options flow to change region / local mapping without re-adding
+  - **Cloud** — MQTT gateway (`gw-gea-*.haieriot.net`), for encrypted dongles
+  - **Local** — direct TCP `56800`, for plaintext dongles
+- Fan speeds `auto`, `low`, `medium`, and `high`, plus quiet on both generations and turbo on V2
+- Config flow for the SmartAir2 account, region, and optional local `MAC:IP` pairs
+- Options flow to change the region or the local map without removing the integration
 
 ## Supported devices
 
 | Generation | Example | Transport | Status |
 |---|---|---|---|
-| **V2** (`typeIdentifier` ≤ 32 chars) | wall units w/ encrypted dongle | Cloud | **Full** — target, mode, fan, quiet/turbo, swing (up/down), current temp |
-| **V3** (`typeIdentifier` > 32 chars) | older plaintext dongle, e.g. MK-QTWIFI-04(B) on AS35TADHRA-TH | Local | **Calibrated** — target, power, mode, fan, quiet, Power preset, Sleep, Health, panel light, self-clean, remote lock, electric heat, vertical vane, and extended telemetry |
+| **V2** (`typeIdentifier` of 32 characters or fewer) | wall units with an encrypted dongle | Cloud | Target, mode, fan, quiet, turbo, swing on/off, room temperature |
+| **V3** (`typeIdentifier` longer than 32 characters) | MK-QTWIFI-04(B) on AS35TADHRA-TH | Local | The 0.2.0 functions above, calibrated on that unit |
 
-If your V3 unit reports the wrong mode/fan, please open an issue with a status
-frame dump — the byte layout can then be calibrated for more models.
+Other V3 dongles can use a different byte layout. If mode or fan speed is wrong, open an issue with a status frame.
 
-On V3 the mode and the fan speed share one status byte (high and low nibble of
-`byte[2]`), and quiet is a flag in `byte[5]`. Enabling quiet makes the unit reset
-the speed to auto on its own, so quiet and a fixed speed are mutually exclusive.
+On this V3 layout, mode and fan speed share one byte, and quiet is a separate flag. Turning quiet on makes the unit return the fan speed to auto, so quiet and a fixed speed are not used together.
 
 ## Installation
 
-### HACS (recommended)
+### Marketplace (Home Assistant 2026.11 or newer)
 
-1. HACS → three-dot menu → **Custom repositories**
-2. Add `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant`, category **Integration**
-3. Install **Haier SmartAir2**, then restart Home Assistant
+1. Connect GitHub in the Marketplace, if it is not connected yet.
+2. Go to **Settings → Marketplace → Add from link**.
+3. Enter `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant`.
+4. Install **Haier SmartAir2** release **0.2.0**, then restart Home Assistant.
+
+If this domain is already installed from the upstream repository, remove that repository in the Marketplace first. Do not delete the entry under **Settings → Devices & services**. Deleting that entry removes the account and the local device map.
+
+### HACS (Home Assistant before 2026.11)
+
+1. HACS → three-dot menu → **Custom repositories**.
+2. Add `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant`, category **Integration**.
+3. Install **Haier SmartAir2**, then restart Home Assistant.
 
 ### Manual
 
-Copy `custom_components/haier_smartair2/` into your HA `config/custom_components/`
-directory and restart.
+Copy `custom_components/haier_smartair2/` into `config/custom_components/` and restart.
 
 ## Configuration
 
-Settings → Devices & Services → **Add Integration** → *Haier SmartAir2*:
+**Settings → Devices & services → Add integration → Haier SmartAir2:**
 
-- **E-mail / Password** — your SmartAir2 account
-- **Region** — gateway region (only **Europe** is confirmed; US/Asia are best-guess)
-- **Local devices** *(optional)* — `MAC:IP` pairs, comma-separated, for units you
-  want controlled over the LAN. Example: `04FA835AE2BD:192.168.1.50`
+- **E-mail / Password** — the SmartAir2 account
+- **Region** — gateway region. Only **Europe** is confirmed. US and Asia are best guesses.
+- **Local devices** *(optional)* — `MAC:IP` pairs, comma-separated, without colons in the MAC. Example: `2C37C50B544A:192.168.10.183`
 
-Devices not listed under *Local devices* (or whose local port refuses a plaintext
-session) fall back to cloud control automatically.
+A device that is not listed, or whose local port refuses a plaintext session, stays on cloud control.
 
-You can change region and the local mapping later via **Configure** on the
-integration — no need to remove and re-add it. Note: switching a device between
-cloud and local may change its `entity_id` (a `_local` suffix can appear), so
-re-check any dashboard cards that reference it.
+Region and the local map can be changed later with **Configure**. Moving a device between cloud and local can change its `entity_id`.
 
-## How it works (short version)
+The SmartAir2 phone app holds the dongle's only local session. Close the app while Home Assistant is using local control.
 
-The cloud path reproduces the uSDK gateway handshake: REST login → `master-gw`
-request → MQTT 3.1 CONNECT with AES-signed credentials → device registration →
-EPP frames tunnelled over MQTT. The local path wraps the same smartair2 frames in
-the 80-byte LAN envelope over TCP `56800`. No app, no root, no vendor SDK binary.
+## Limitations
 
-## Limitations & notes
-
-- Only **SmartAir2** accounts (`uhome.haieriot.net`, overseas platform). Not hOn,
-  not the China cloud.
-- The cloud access token is short-lived and refreshed automatically; a device that
-  keeps its cloud link intermittently (some older dongles) is more reliable locally.
-- If a locally-controlled unit flickers to *unavailable*, check that the SmartAir2
-  phone app isn't holding the unit's single local connection at the same time.
+- SmartAir2 accounts on `uhome.haieriot.net` only. Not hOn, and not the China cloud.
+- Self-clean does not start while the unit is in heat, auto, or sleep.
+- On the MK-QTWIFI-04(B) firmware used here, compressor current and the expansion valve are not reported, and power can stay at 0 W.
+- Left/right airflow on the AS35TADHRA-TH is manual. There is no command for it.
+- The timer is not a simple status bit and is not exposed.
 
 ## Changelog
 
-- **0.2.0** — V3 extras calibrated on the MK-QTWIFI-04(B): Power and Sleep presets, Health, panel light, self-clean, remote lock, electric heat, vertical vane positions, and extended sensors (outdoor and coil temperatures, defrost, compressor frequency). European Portuguese translations. This fork keeps the same integration domain, so an existing SmartAir2 config entry continues to work
-- **0.1.4** — faster Home Assistant startup: the local read/keep-alive loops and all
-  reconnects run as background tasks, a 10 s timeout on the local TCP connect (an
-  offline unit falls back to cloud instead of stalling setup), and the cloud TLS
-  context no longer loads the CA store inside the event loop
-- **0.1.3** — vertical louvre (swing) on V2 units
-- **0.1.2** — V3 fan speed and quiet mode calibrated against the remote
+- **0.2.0** — V3 controls and telemetry for the MK-QTWIFI-04(B), European Portuguese names, and the metadata the Marketplace expects. Same domain as upstream, so an existing config entry is kept.
+- **0.1.4** — upstream: local read and keep-alive loops run in the background, the local TCP connect times out after 10 seconds, and cloud TLS setup no longer blocks startup.
+- **0.1.3** — upstream: vertical louvre (swing) on V2 units.
+- **0.1.2** — upstream: V3 fan speed and quiet mode calibrated against the remote.
 
 ## Credits
 
-Built on top of the pioneering reverse-engineering work of **Piotr Stadnicki**
-([fastfend](https://github.com/fastfend)), whose `HaierACBridge` and
-`homebridge-haieracbridge-platform` first mapped the SmartAir2 cloud, and the
-[ESPHome Haier](https://esphome.io/components/climate/haier/) / `paveldn/HaierProtocol`
-work that documented the on-wire frame format.
+The integration itself comes from [bwitosze](https://github.com/bwitosze/haier-smartair2-cloud-for-homeassistant). The protocol work it builds on is from **Piotr Stadnicki** ([fastfend](https://github.com/fastfend)), whose `HaierACBridge` and `homebridge-haieracbridge-platform` mapped the SmartAir2 cloud, and from [ESPHome Haier](https://esphome.io/components/climate/haier/) / `paveldn/HaierProtocol`, which documented the frame format.
 
 ## Disclaimer
 
-This is an **unofficial** integration, not affiliated with, endorsed by, or
-supported by Haier. It talks to a private API/protocol reconstructed by reverse
-engineering. Use at your own risk. Names and trademarks belong to their owners.
+This is an **unofficial** integration. It is not affiliated with, endorsed by, or supported by Haier. It talks to a private API reconstructed by reverse engineering. Use it at your own risk. Names and trademarks belong to their owners.
 
 ## License
 

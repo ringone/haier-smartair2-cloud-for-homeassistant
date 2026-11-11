@@ -83,6 +83,25 @@
           "max_down": "Lowest"
         }
       }
+    },
+    "climate": {
+      "ac": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "quiet": "Quiet",
+              "turbo": "Turbo"
+            }
+          },
+          "preset_mode": {
+            "state": {
+              "none": "None",
+              "boost": "Power",
+              "sleep": "Sleep"
+            }
+          }
+        }
+      }
     }
   },
   "options": {
