@@ -36,7 +36,7 @@ _EXTRA: tuple[tuple, ...] = (
     ("compressor_hz", "compressor_frequency", SensorDeviceClass.FREQUENCY, UnitOfFrequency.HERTZ, True, SensorStateClass.MEASUREMENT, None),
     ("compressor_current", "compressor_current", SensorDeviceClass.CURRENT, UnitOfElectricCurrent.AMPERE, True, SensorStateClass.MEASUREMENT, None),
     ("power_w", "power", SensorDeviceClass.POWER, UnitOfPower.WATT, True, SensorStateClass.MEASUREMENT, None),
-    ("expansion_valve", "expansion_valve", None, None, True, SensorStateClass.MEASUREMENT, None),
+    ("expansion_valve", "expansion_valve", None, None, True, None, None),
     ("error_code", "error_code", None, None, True, None, None),
     ("operation_source", "operation_source", SensorDeviceClass.ENUM, None, True, None, ["other", "remote", "panel", "wifi"]),
 )

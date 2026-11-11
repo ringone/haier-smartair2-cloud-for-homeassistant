@@ -4,12 +4,13 @@ from __future__ import annotations
 
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import HaierConfigEntry
-from .const import DOMAIN
+from .const import DOMAIN, MODE_AUTO, MODE_HEAT
 from .coordinator import HaierCoordinator
 
 # state attribute, translation key, icon
@@ -62,6 +63,10 @@ class HaierSwitch(CoordinatorEntity[HaierCoordinator], SwitchEntity):
         return super().available and self.is_on is not None
 
     async def async_turn_on(self, **kwargs) -> None:
+        if self._key == "self_clean":
+            data = self.coordinator.data
+            if data is not None and (data.sleep or data.mode in (MODE_AUTO, MODE_HEAT)):
+                raise HomeAssistantError("Self-clean does not start in auto, heat, or sleep")
         await self.coordinator.async_apply(**{self._key: True})
 
     async def async_turn_off(self, **kwargs) -> None:

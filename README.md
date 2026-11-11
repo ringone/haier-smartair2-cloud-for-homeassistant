@@ -71,7 +71,7 @@ Copy `custom_components/haier_smartair2/` into `config/custom_components/` and r
 
 - **E-mail / Password** — the SmartAir2 account
 - **Region** — gateway region. Only **Europe** is confirmed. US and Asia are best guesses.
-- **Local devices** *(optional)* — `MAC:IP` pairs, comma-separated, without colons in the MAC. Example: `2C37C50B544A:192.168.10.183`
+- **Local devices** *(optional)* — `MAC:IP` pairs, comma-separated. Colons in the MAC are kept. Example: `2C:37:C5:0B:54:4A:192.168.10.183`
 
 A device that is not listed, or whose local port refuses a plaintext session, stays on cloud control.
 
@@ -89,6 +89,7 @@ The SmartAir2 phone app holds the dongle's only local session. Close the app whi
 
 ## Changelog
 
+- **0.2.1** — a MAC written with colons is accepted in the local map; turning swing off restores the last fixed vane instead of jumping to the centre; self-clean is refused in auto, heat, or sleep; the expansion valve is no longer recorded as a measurement without a unit.
 - **0.2.0** — V3 controls and telemetry for the MK-QTWIFI-04(B), European Portuguese names, and the metadata the Marketplace expects. Same domain as upstream, so an existing config entry is kept.
 - **0.1.4** — upstream: local read and keep-alive loops run in the background, the local TCP connect times out after 10 seconds, and cloud TLS setup no longer blocks startup.
 - **0.1.3** — upstream: vertical louvre (swing) on V2 units.

@@ -1,7 +1,7 @@
 {
   "domain": "haier_smartair2",
   "name": "Haier SmartAir2",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "codeowners": ["@ringone"],
   "config_flow": true,
   "documentation": "https://github.com/ringone/haier-smartair2-cloud-for-homeassistant",

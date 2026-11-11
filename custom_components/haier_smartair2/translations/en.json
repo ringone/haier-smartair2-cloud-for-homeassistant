@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Haier SmartAir2",
-        "description": "Log in with your SmartAir2 (Haier) account. Optionally map devices to a local IP for direct control (format: MAC:IP, comma-separated).",
+        "description": "Log in with your SmartAir2 (Haier) account. Optionally map devices to a local IP for direct control (format: MAC:IP, comma-separated). Colons in the MAC are allowed.",
         "data": {
           "username": "E-mail",
           "password": "Password",

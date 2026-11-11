@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Haier SmartAir2",
-        "description": "Inicie sessão com a conta SmartAir2 (Haier). Pode associar cada aparelho a um IP local para controlo direto (formato: MAC:IP, separados por vírgulas).",
+        "description": "Inicie sessão com a conta SmartAir2 (Haier). Pode associar cada aparelho a um IP local para controlo direto (formato: MAC:IP, separados por vírgulas). O MAC pode levar dois-pontos.",
         "data": {
           "username": "E-mail",
           "password": "Palavra-passe",

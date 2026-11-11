@@ -38,6 +38,7 @@ class HaierCoordinator(DataUpdateCoordinator[HaierState]):
         self.devid = devid.upper()
         self.dev_name = name
         self.via_cloud = via_cloud
+        self._last_fixed_swing: int | None = None
         transport.add_listener(self._on_push)
 
     def _decode_latest(self) -> HaierState | None:
@@ -61,6 +62,8 @@ class HaierCoordinator(DataUpdateCoordinator[HaierState]):
                 extra = {}
             if extra:
                 state = state.merged(**extra)
+        if state.swing_pos not in (None, 0x0C, 0x0E):
+            self._last_fixed_swing = state.swing_pos
         return state
 
     def _on_push(self) -> None:
@@ -80,6 +83,10 @@ class HaierCoordinator(DataUpdateCoordinator[HaierState]):
     async def async_apply(self, **changes) -> None:
         """Send a control command (read-modify-write) and refresh."""
         state = self.data or self._decode_latest() or HaierState()
+        # While swinging, the status nibble is the auto code, so turning swing
+        # off has to restore the last fixed vane position.
+        if changes.get("swing_v") is False and self._last_fixed_swing is not None:
+            state = state.merged(swing_pos=self._last_fixed_swing)
         frame = self.codec.encode_set(state, **changes)
         await self.transport.async_send_frame(self.devid, frame)
         await asyncio.sleep(0.6)

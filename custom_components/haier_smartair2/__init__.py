@@ -24,6 +24,7 @@ from .const import (
 )
 from .coordinator import HaierCoordinator
 from .local import HaierLocalClient
+from .local_map import parse_local_map
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -42,17 +43,7 @@ type HaierConfigEntry = ConfigEntry[HaierData]
 
 def _parse_local_map(raw: str | None) -> dict[str, str]:
     """Parse 'MAC:IP,MAC:IP' -> {normalised MAC: IP}."""
-    out: dict[str, str] = {}
-    for part in (raw or "").split(","):
-        part = part.strip()
-        if not part or ":" not in part:
-            continue
-        mac, ip = part.split(":", 1)
-        mac = "".join(c for c in mac if c.isalnum()).upper()
-        ip = ip.strip()
-        if len(mac) == 12 and ip:
-            out[mac] = ip
-    return out
+    return parse_local_map(raw)
 
 
 async def _async_update_listener(hass: HomeAssistant, entry: HaierConfigEntry) -> None:
