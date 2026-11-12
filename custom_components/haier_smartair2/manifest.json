@@ -1,13 +1,17 @@
 {
   "domain": "haier_smartair2",
   "name": "Haier SmartAir2",
-  "version": "0.2.1",
-  "codeowners": ["@ringone"],
+  "categories": [
+    "climate.heat_pumps_air_conditioning"
+  ],
+  "codeowners": [
+    "@ringone"
+  ],
   "config_flow": true,
   "documentation": "https://github.com/ringone/haier-smartair2-cloud-for-homeassistant",
-  "issue_tracker": "https://github.com/ringone/haier-smartair2-cloud-for-homeassistant/issues",
   "integration_type": "hub",
   "iot_class": "cloud_push",
-  "categories": ["climate.heat_pumps_air_conditioning"],
-  "requirements": []
+  "issue_tracker": "https://github.com/ringone/haier-smartair2-cloud-for-homeassistant/issues",
+  "requirements": [],
+  "version": "0.2.1"
 }
