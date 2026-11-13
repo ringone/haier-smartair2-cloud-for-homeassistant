@@ -203,7 +203,11 @@ class HistoryTests(unittest.IsolatedAsyncioTestCase):
         client._writer = writer
         coord = coordinator.HaierCoordinator(None, client, codec.CodecV3(), DEVICE, "Test", False)
         states = []
-        client.add_listener(lambda: states.append(asdict(coord.data) if client.is_online() else None))
+        client.add_listener(
+            lambda: states.append(
+                asdict(coord.data) if client.is_online() and coord.data is not None else None
+            )
+        )
         alarm_with_bit = codec.build_frame(4, b"\x0f\x5a", bytes(7) + b"\x01")
         reader.feed_data(b"".join(map(envelope, (ALARM, NORMAL, EXTENDED, alarm_with_bit, ALARM))))
         reader.feed_eof()

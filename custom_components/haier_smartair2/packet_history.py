@@ -152,7 +152,7 @@ class PacketHistory:
     async def async_flush(self) -> None:
         """Save pending frames during integration unload."""
         expired = self._prune(time())
-        if expired or self._save_pending:
+        if self._records or expired or self._save_pending:
             try:
                 await self._store.async_save(self._snapshot())
             except (HomeAssistantError, OSError):
