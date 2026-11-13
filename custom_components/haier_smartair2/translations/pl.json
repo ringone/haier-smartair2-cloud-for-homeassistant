@@ -2,31 +2,15 @@
   "config": {
     "step": {
       "user": {
-        "title": "Haier SmartAir2",
-        "description": "Zaloguj się kontem SmartAir2 (Haier). Opcjonalnie przypisz urządzenia do lokalnego IP dla sterowania bezpośredniego (format: MAC:IP, po przecinku).",
+        "title": "Lokalne urządzenia Haier SmartAir2",
+        "description": "Skonfiguruj co najmniej jedno urządzenie lokalne, podając pary MAC:IPv4 oddzielone przecinkami. Adresy MAC mogą zawierać dwukropki. Użyj stałych adresów IPv4 lub rezerwacji DHCP. Konto ani połączenie z Internetem nie są używane. Uwaga dotycząca zgodności: w tym forku udokumentowano tylko zestaw AS35TADHRA-TH + MK-QTWIFI-04(B). Inne klimatyzatory, moduły Wi-Fi i wersje oprogramowania nie zostały zweryfikowane. Automatyczny wybór V2/V3 jest heurystyką, a nie pewną identyfikacją.",
         "data": {
-          "username": "E-mail",
-          "password": "Hasło",
-          "region": "Region",
-          "local_ips": "Urządzenia lokalne (MAC:IP, opcjonalnie)"
+          "local_ips": "Urządzenia lokalne (MAC:IPv4)"
         }
       }
     },
     "error": {
-      "invalid_auth": "Błędny e-mail lub hasło",
-      "cannot_connect": "Nie można połączyć z chmurą Haier"
-    },
-    "abort": {
-      "already_configured": "To konto jest już skonfigurowane"
-    }
-  },
-  "selector": {
-    "region": {
-      "options": {
-        "eu": "Europa",
-        "us": "USA",
-        "sg": "Azja (Singapur)"
-      }
+      "invalid_local_map": "Podaj co najmniej jedną parę poprawnego szesnastkowego adresu MAC i adresu IPv4. Oddziel urządzenia przecinkami; adresy MAC i IP nie mogą się powtarzać."
     }
   },
   "entity": {
@@ -65,13 +49,15 @@
   "options": {
     "step": {
       "init": {
-        "title": "Haier SmartAir2 — opcje",
-        "description": "Zmień region lub przypisanie urządzeń do lokalnego IP (format: MAC:IP, po przecinku). Puste = sterowanie przez chmurę.",
+        "title": "Lokalne urządzenia Haier SmartAir2",
+        "description": "Skonfiguruj co najmniej jedno urządzenie lokalne, podając pary MAC:IPv4 oddzielone przecinkami. Adresy MAC mogą zawierać dwukropki. Użyj stałych adresów IPv4 lub rezerwacji DHCP. Konto ani połączenie z Internetem nie są używane. Uwaga dotycząca zgodności: w tym forku udokumentowano tylko zestaw AS35TADHRA-TH + MK-QTWIFI-04(B). Inne klimatyzatory, moduły Wi-Fi i wersje oprogramowania nie zostały zweryfikowane. Automatyczny wybór V2/V3 jest heurystyką, a nie pewną identyfikacją.",
         "data": {
-          "region": "Region",
-          "local_ips": "Urządzenia lokalne (MAC:IP)"
+          "local_ips": "Urządzenia lokalne (MAC:IPv4)"
         }
       }
+    },
+    "error": {
+      "invalid_local_map": "Podaj co najmniej jedną parę poprawnego szesnastkowego adresu MAC i adresu IPv4. Oddziel urządzenia przecinkami; adresy MAC i IP nie mogą się powtarzać."
     }
   }
 }

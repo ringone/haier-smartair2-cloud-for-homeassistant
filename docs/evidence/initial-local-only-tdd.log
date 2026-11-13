@@ -1,0 +1,426 @@
+test_map_validation (__main__.MapTests.test_map_validation) ...
+  test_map_validation (__main__.MapTests.test_map_validation) (raw=None) ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw=' ') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='garbage') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='GG1122334455:10.0.0.2') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:haier.example') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:256.1.1.1') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='00:11:2233:44:55:10.0.0.2') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:10.0.0.2,') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:10.0.0.2,00:11:22:33:44:55:10.0.0.3') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:10.0.0.2,AABBCCDDEEFF:10.0.0.2') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:0.0.0.0') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:224.0.0.1') ... FAIL
+  test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:255.255.255.255') ... FAIL
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw=' ')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='garbage')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='GG1122334455:10.0.0.2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:haier.example')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:256.1.1.1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='00:11:2233:44:55:10.0.0.2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:10.0.0.2,')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:10.0.0.2,00:11:22:33:44:55:10.0.0.3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:10.0.0.2,AABBCCDDEEFF:10.0.0.2')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:0.0.0.0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:224.0.0.1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_map_validation (__main__.MapTests.test_map_validation) (raw='001122334455:255.255.255.255')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 24, in test_map_validation
+    with self.subTest(raw=raw), self.assertRaises(ValueError):
+                                ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+FAILED (failures=14)
+test_map_validation (__main__.MapTests.test_map_validation) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+OK
+test_map_validation (__main__.MapTests.test_map_validation) ... ok
+test_import_and_configuration_never_load_cloud (__main__.OfflineTests.test_import_and_configuration_never_load_cloud) ... FAIL
+
+======================================================================
+FAIL: test_import_and_configuration_never_load_cloud (__main__.OfflineTests.test_import_and_configuration_never_load_cloud)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/runners.py", line 128, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/base_events.py", line 720, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "<workspace>/tests/local_only_worker.py", line 87, in test_import_and_configuration_never_load_cloud
+    integration = importlib.import_module("custom_components.haier_smartair2")
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 763, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "<workspace>/custom_components/haier_smartair2/__init__.py", line 13, in <module>
+    from .cloud import CloudAuthError, HaierCloudClient
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/unittest/mock.py", line 1176, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/unittest/mock.py", line 1180, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/unittest/mock.py", line 1247, in _execute_mock_call
+    result = effect(*args, **kwargs)
+  File "<workspace>/tests/local_only_worker.py", line 84, in guarded
+    raise AssertionError(f"Forbidden cloud import: {name}")
+AssertionError: Forbidden cloud import: cloud
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.007s
+
+FAILED (failures=1)
+test_map_validation (__main__.MapTests.test_map_validation) ... ok
+test_import_and_configuration_never_load_cloud (__main__.OfflineTests.test_import_and_configuration_never_load_cloud) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.016s
+
+OK
+test_map_validation (__main__.MapTests.test_map_validation) ... ok
+test_migration_preserves_identity_merges_maps_and_removes_credentials (__main__.MigrationTests.test_migration_preserves_identity_merges_maps_and_removes_credentials) ... ERROR
+test_import_and_configuration_never_load_cloud (__main__.OfflineTests.test_import_and_configuration_never_load_cloud) ... ok
+
+======================================================================
+ERROR: test_migration_preserves_identity_merges_maps_and_removes_credentials (__main__.MigrationTests.test_migration_preserves_identity_merges_maps_and_removes_credentials)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/runners.py", line 128, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/base_events.py", line 720, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "<workspace>/tests/local_only_worker.py", line 119, in test_migration_preserves_identity_merges_maps_and_removes_credentials
+    self.assertTrue(await integration.async_migrate_entry(hass, entry))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'custom_components.haier_smartair2' has no attribute 'async_migrate_entry'. Did you mean: 'async_remove_entry'?
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.015s
+
+FAILED (errors=1)
+test_map_validation (__main__.MapTests.test_map_validation) ... ok
+test_migration_preserves_identity_merges_maps_and_removes_credentials (__main__.MigrationTests.test_migration_preserves_identity_merges_maps_and_removes_credentials) ... ok
+test_import_and_configuration_never_load_cloud (__main__.OfflineTests.test_import_and_configuration_never_load_cloud) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.015s
+
+OK
+test_map_validation (__main__.MapTests.test_map_validation) ... ok
+test_migration_preserves_identity_merges_maps_and_removes_credentials (__main__.MigrationTests.test_migration_preserves_identity_merges_maps_and_removes_credentials) ... ok
+test_import_and_configuration_never_load_cloud (__main__.OfflineTests.test_import_and_configuration_never_load_cloud) ... ok
+test_setup_uses_local_map_and_preserves_registry_name_and_identity (__main__.RuntimeTests.test_setup_uses_local_map_and_preserves_registry_name_and_identity) ... ERROR
+
+======================================================================
+ERROR: test_setup_uses_local_map_and_preserves_registry_name_and_identity (__main__.RuntimeTests.test_setup_uses_local_map_and_preserves_registry_name_and_identity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/runners.py", line 128, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/base_events.py", line 720, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "<workspace>/tests/local_only_worker.py", line 158, in test_setup_uses_local_map_and_preserves_registry_name_and_identity
+    self.assertTrue(await self.integration.async_setup_entry(self.hass, self.entry))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<workspace>/custom_components/haier_smartair2/__init__.py", line 72, in async_setup_entry
+    region = conf.get(CONF_REGION, DEFAULT_REGION)
+                      ^^^^^^^^^^^
+NameError: name 'CONF_REGION' is not defined
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.017s
+
+FAILED (errors=1)
+test_map_validation (__main__.MapTests.test_map_validation) ... ok
+test_migration_preserves_identity_merges_maps_and_removes_credentials (__main__.MigrationTests.test_migration_preserves_identity_merges_maps_and_removes_credentials) ... ok
+test_import_and_configuration_never_load_cloud (__main__.OfflineTests.test_import_and_configuration_never_load_cloud) ... ok
+test_setup_uses_local_map_and_preserves_registry_name_and_identity (__main__.RuntimeTests.test_setup_uses_local_map_and_preserves_registry_name_and_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.424s
+
+OK
+test_map_validation (__main__.MapTests.test_map_validation) ... ok
+test_migration_preserves_identity_merges_maps_and_removes_credentials (__main__.MigrationTests.test_migration_preserves_identity_merges_maps_and_removes_credentials) ... ok
+test_import_and_configuration_never_load_cloud (__main__.OfflineTests.test_import_and_configuration_never_load_cloud) ... ok
+test_forward_failure_unloads_partial_platforms_and_cleans_runtime (__main__.RuntimeTests.test_forward_failure_unloads_partial_platforms_and_cleans_runtime) ... FAIL
+test_setup_uses_local_map_and_preserves_registry_name_and_identity (__main__.RuntimeTests.test_setup_uses_local_map_and_preserves_registry_name_and_identity) ... ok
+
+======================================================================
+FAIL: test_forward_failure_unloads_partial_platforms_and_cleans_runtime (__main__.RuntimeTests.test_forward_failure_unloads_partial_platforms_and_cleans_runtime)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/runners.py", line 128, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/base_events.py", line 720, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "<workspace>/tests/local_only_worker.py", line 164, in test_forward_failure_unloads_partial_platforms_and_cleans_runtime
+    self.hass.config_entries.async_unload_platforms.assert_awaited_once()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/unittest/mock.py", line 2376, in assert_awaited_once
+    raise AssertionError(msg)
+AssertionError: Expected mock to have been awaited once. Awaited 0 times.
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.829s
+
+FAILED (failures=1)
+test_map_validation (__main__.MapTests.test_map_validation) ... ok
+test_migration_preserves_identity_merges_maps_and_removes_credentials (__main__.MigrationTests.test_migration_preserves_identity_merges_maps_and_removes_credentials) ... ok
+test_import_and_configuration_never_load_cloud (__main__.OfflineTests.test_import_and_configuration_never_load_cloud) ... ok
+test_forward_failure_unloads_partial_platforms_and_cleans_runtime (__main__.RuntimeTests.test_forward_failure_unloads_partial_platforms_and_cleans_runtime) ... ok
+test_setup_uses_local_map_and_preserves_registry_name_and_identity (__main__.RuntimeTests.test_setup_uses_local_map_and_preserves_registry_name_and_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.831s
+
+OK
+test_cloud_implementation_and_constants_are_removed (__main__.PackagingTests.test_cloud_implementation_and_constants_are_removed) ... FAIL
+
+======================================================================
+FAIL: test_cloud_implementation_and_constants_are_removed (__main__.PackagingTests.test_cloud_implementation_and_constants_are_removed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 237, in test_cloud_implementation_and_constants_are_removed
+    self.assertFalse((ROOT / "custom_components/haier_smartair2/cloud.py").exists())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
+test_cloud_implementation_and_constants_are_removed (__main__.PackagingTests.test_cloud_implementation_and_constants_are_removed) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.008s
+
+OK
+test_all_localized_forms_are_local_only (__main__.PackagingTests.test_all_localized_forms_are_local_only) ... FAIL
+
+======================================================================
+FAIL: test_all_localized_forms_are_local_only (__main__.PackagingTests.test_all_localized_forms_are_local_only)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/local_only_worker.py", line 249, in test_all_localized_forms_are_local_only
+    self.assertEqual(set(text[section]["step"][step]["data"]), {"local_ips"})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the first set but not the second:
+'username'
+'password'
+'region'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)
+test_setup_prefers_entry_scoped_device_registry_lookup (__main__.RuntimeTests.test_setup_prefers_entry_scoped_device_registry_lookup) ... ERROR
+
+======================================================================
+ERROR: test_setup_prefers_entry_scoped_device_registry_lookup (__main__.RuntimeTests.test_setup_prefers_entry_scoped_device_registry_lookup)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/custom_components/haier_smartair2/__init__.py", line 107, in async_setup_entry
+    hass, local, codec, devid, _device_name(hass, devid), via_cloud=False
+                               ~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "<workspace>/custom_components/haier_smartair2/__init__.py", line 65, in _device_name
+    device = dr.async_get(hass).async_get_device(identifiers={(DOMAIN, devid)})
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/unittest/mock.py", line 1176, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/unittest/mock.py", line 1180, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/unittest/mock.py", line 1241, in _execute_mock_call
+    raise effect
+AssertionError: Deprecated lookup must not be used
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/runners.py", line 128, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/base_events.py", line 720, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "<workspace>/tests/local_only_worker.py", line 225, in test_setup_prefers_entry_scoped_device_registry_lookup
+    self.assertTrue(await self.integration.async_setup_entry(self.hass, self.entry))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<workspace>/custom_components/haier_smartair2/__init__.py", line 125, in async_setup_entry
+    raise ConfigEntryNotReady(
+        f"Haier local setup failed; check the configured MAC:IPv4 map and LAN access: {detail}"
+    ) from err
+NotReady: Haier local setup failed; check the configured MAC:IPv4 map and LAN access: Deprecated lookup must not be used
+
+----------------------------------------------------------------------
+Ran 1 test in 0.016s
+
+FAILED (errors=1)
+test_setup_prefers_entry_scoped_device_registry_lookup (__main__.RuntimeTests.test_setup_prefers_entry_scoped_device_registry_lookup) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.417s
+
+OK
+test_all_localized_forms_are_local_only (__main__.PackagingTests.test_all_localized_forms_are_local_only) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK
+test_coordinator_is_bound_to_config_entry_for_framework_first_refresh (__main__.RuntimeTests.test_coordinator_is_bound_to_config_entry_for_framework_first_refresh) ... FAIL
+
+======================================================================
+FAIL: test_coordinator_is_bound_to_config_entry_for_framework_first_refresh (__main__.RuntimeTests.test_coordinator_is_bound_to_config_entry_for_framework_first_refresh)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/runners.py", line 128, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/base_events.py", line 720, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "<workspace>/tests/local_only_worker.py", line 224, in test_coordinator_is_bound_to_config_entry_for_framework_first_refresh
+    self.assertTrue(all(c.config_entry is self.entry for c in self.entry.runtime_data.coordinators))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.416s
+
+FAILED (failures=1)
+test_coordinator_is_bound_to_config_entry_for_framework_first_refresh (__main__.RuntimeTests.test_coordinator_is_bound_to_config_entry_for_framework_first_refresh) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.419s
+
+OK

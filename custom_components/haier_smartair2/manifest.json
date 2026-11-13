@@ -10,8 +10,8 @@
   "config_flow": true,
   "documentation": "https://github.com/ringone/haier-smartair2-cloud-for-homeassistant",
   "integration_type": "hub",
-  "iot_class": "cloud_push",
+  "iot_class": "local_push",
   "issue_tracker": "https://github.com/ringone/haier-smartair2-cloud-for-homeassistant/issues",
   "requirements": [],
-  "version": "0.2.3"
+  "version": "0.3.0"
 }

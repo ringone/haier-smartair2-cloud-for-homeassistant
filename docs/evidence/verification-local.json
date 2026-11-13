@@ -1,0 +1,146 @@
+{
+  "kind": "fresh local verification; historical tests have separate semantics",
+  "executed_at_utc": "2026-11-13T23:13:58.854058+00:00",
+  "base_commit": "5b77363a05225311fb85ef89eb16136b26440acd",
+  "branch": "feat/local-only",
+  "source_snapshot_definition": "SHA-256 of sorted Git-index path -> SHA-256 map, excluding verification/review receipt files",
+  "source_snapshot_sha256": "1b467140e4deaf3e40dd899d68204446492321a62ffa0a5a43669d42e2cb32c1",
+  "source_files": {
+    ".gitattributes": "cd2eb98f4a1c6b1b8e34dcc01e312efc0f1ce1c70aabc67ce5c8ee8563e88ea5",
+    ".github/workflows/hassfest.yaml": "2c502857065da0a1fb7f7c089e0aa7845cb0abef4d8ac1429ae8d9acbad57b91",
+    ".github/workflows/telemetry-tests.yaml": "66946452d50a476668f4ef207070e97e68f217c6a385976c8075f22940188fd4",
+    ".github/workflows/validate.yaml": "a8bc2e8984c7cff93c0c2b3f2e94ae6c27d39209c486b0c62b554cd90e1a776e",
+    ".gitignore": "862263fa1f46c20f0d1e4dac5ffcc75abd55c08211b2c3864c5f8764b9d87793",
+    "LICENSE": "78451ca02be537ff814f352b70d38b79155ad994c37826e9490dfb606b855fe1",
+    "README.md": "363e3b69b3a2d34c09a5f1906b067b37ef4c02cd92eeb6e964803503f8330c69",
+    "custom_components/haier_smartair2/__init__.py": "6b7d1979e6022a740d0a1bcc031bc730de5a1e72a30f67ca7f24910d9d5417b3",
+    "custom_components/haier_smartair2/binary_sensor.py": "da153a44e21e1e16d373692ee235d89c432473faea281780aaf4d79ea1d60e83",
+    "custom_components/haier_smartair2/brand/icon.png": "4b144386749fa47b79076f2e021b128fd7959d2475c2e4d4d3fa3eafa524b4b8",
+    "custom_components/haier_smartair2/brand/icon@2x.png": "60642a2dc4130cd053ff220b093f4035ca1ace41233ec302126066331bdf4b16",
+    "custom_components/haier_smartair2/climate.py": "b1a3f2e46a37b256ffe816559ac088565b4abe9737fd14340fc9a2122aaddf15",
+    "custom_components/haier_smartair2/codec.py": "aa72637b22bf7ee02e7432f3b604a90c402ca004f5609154211e2c161f2554c7",
+    "custom_components/haier_smartair2/config_flow.py": "3cc4b574355b9b9fbf93761410bf7014bd41c000ff5f08538418133ad5e7a92c",
+    "custom_components/haier_smartair2/const.py": "32b1f6f529fa7d681aa132cd706c75dced039fb15c30c34d3a633bd6f7d5114b",
+    "custom_components/haier_smartair2/coordinator.py": "5f7c110715492905e78f3cf4f020a4597d69f8a8e687cb1a8a7a56d4ad715e98",
+    "custom_components/haier_smartair2/diagnostics.py": "9a8554ee480e0b05826a1503f5dd37612436650e70aebcf6b9728a026d7a5450",
+    "custom_components/haier_smartair2/local.py": "1f734ea4e47eb06ff57e14b8b7df3be4c1fe98dd84cb56e6bf24de1eb1075981",
+    "custom_components/haier_smartair2/local_map.py": "8bef6b64d829a8923d4330cf5b16a20057f0f4b911424a4403fe46f5e42eb465",
+    "custom_components/haier_smartair2/local_setup.py": "61134ea690f8304e3673ba50ba27a831ff6eb099b966d05fa6f55402b9531e32",
+    "custom_components/haier_smartair2/manifest.json": "ee43995034752e1182d5680d39fe123afefe3fbe069bffca9dae499bcb894eca",
+    "custom_components/haier_smartair2/packet_history.py": "445f7911e3a9d0d63ac7a657d24f1b3efdb4350b554f7a14945b47a8fc508c29",
+    "custom_components/haier_smartair2/select.py": "9487f1cb0b7a249b7c7d9f015b6270b85dab031b5fb68a92fe68aece17e66d38",
+    "custom_components/haier_smartair2/sensor.py": "befed56a172afaa8e0a39baf6ccf62485abbf6640a94306b094459cf77886323",
+    "custom_components/haier_smartair2/switch.py": "f4ac8ae6ac4f423f1b89a8ec4aa40df88ad1cf23a0b38253b6773e4aca06d11d",
+    "custom_components/haier_smartair2/translations/en.json": "47e8a154f0107c52fff51ffa807492c1883c0b89cfaa128024f2a4551ea037cd",
+    "custom_components/haier_smartair2/translations/pl.json": "aa948d4806f2db24bb30cda05c3820d26f7fa1c800f5c9a99eda231d24aace89",
+    "custom_components/haier_smartair2/translations/pt.json": "9e12e3087e8daaa2c192bb1bf2b86b4d5e0b97441d209293da0747d4b180b0a3",
+    "docs/adr/0001-local-only.md": "170c9b8954365626f2906938f82cdd136a61169cf63cf1affe37df77a69a0f02",
+    "docs/auditoria-inicial.md": "a8ef49b76ffbb6602880ca35dca452ea0a0014b154a1a9b459cd728c970815dc",
+    "docs/compatibility.md": "4bbf6a29e1567c6b1bd6d026fc0a3d0d2a915e25426159e6d9a423964559b92c",
+    "docs/evidence/initial-audit-probes.json": "9c175d55eae31ea1923a78be50fc6c10eab76df8d964c974863d5f839b42d35f",
+    "docs/evidence/initial-local-only-tdd.log": "a3caa3b41ba6fb65dac6871199ab89bbab659f62538c50174492bbebc9a1b05f",
+    "docs/evidence/provenance.json": "771c40cefc1ab9c323ed1021f0797433396a5c01b58cdacfcc2bb4a7295a66e3",
+    "docs/matriz-requisitos.csv": "ca4b5c4824b70fe3387da3f3f7259ea0a6e06092e6e8a4298e30d5390b9b3ccf",
+    "docs/protocol-as35.md": "dcf60db7df2273bc6a48f5701bf96a3ffb8b37756855a167a5befcb6b0e8280a",
+    "docs/requisitos.md": "181876cd5858cf2fb348741836c44ae4396de1058dc9042cae3cecef43374496",
+    "docs/sdlc.md": "c1d02063f09ee74fa080296fb05535b01151f80e7fcb04fa9d895ba159c09f20",
+    "hacs.json": "c52aa7f45779f9ab207303017861a7999fce79f4fce2018a7415ae2289508c83",
+    "tests/check_requirements.py": "a9091c22cb47b68ee51205db0c6039592cd5a7cd50d83d1f2da61e98d17e789e",
+    "tests/ha_localonly_smoke.py": "6439f482e144ba14c72b82cadadc9178aebbe2b8ee381f3acd11a0aca56ad111",
+    "tests/local_only_worker.py": "2e1e00b8de970e513fc49df5a676079e73c15804d939c93a39bb05cb8ac67c91",
+    "tests/test_baseline_audit.py": "4ec3405bfea112242e8ce7cfcbf78ccfd9368c88dd5323b10b889dc1810059bf",
+    "tests/test_local_only.py": "a47495aabb673a4aa0f33979f4a615a9d2fe27151cab9f15f1547e287a0e1816",
+    "tests/test_local_telemetry.py": "aa3892128a73795452826ae3fc8aa605f3c0ee7c20d992b6d1cf6b9d2c427b58",
+    "tests/test_requirements_traceability.py": "fb07638e61e4a8f3f0c6dc25a983f9048937ad272977adbd4dcee65a824019d1"
+  },
+  "counts": {
+    "legacy_product_unit_tests": 7,
+    "local_only_regression_tests": 13,
+    "current_product_unit_tests": 20,
+    "historical_audit_tests": 8,
+    "traceability_tool_tests": 18,
+    "distinct_unit_tests": 46,
+    "discovery_top_level_cases_includes_worker_wrapper": 34,
+    "requirements": 38,
+    "evidence_mappings": 24
+  },
+  "framework_smoke": {
+    "home_assistant": "2026.11.0",
+    "migration_preserves_entry_id": true,
+    "credentials_removed": true,
+    "config_fields": [
+      "local_ips"
+    ],
+    "local_setup": true,
+    "device_name": "Existing bedroom",
+    "entity_count": 29,
+    "climate_unique_id": "haier_smartair2_001122334455",
+    "poll_and_command_frames": 7,
+    "network_connections": [
+      [
+        "127.0.0.1",
+        42125
+      ]
+    ],
+    "cloud_imports_or_connections": 0,
+    "unload": true
+  },
+  "unchanged_protocol_and_history_files": {
+    "local.py": true,
+    "codec.py": true,
+    "packet_history.py": true,
+    "diagnostics.py": true
+  },
+  "archived_evidence_hashes_verified": true,
+  "known_limitations": [
+    "No physical-device testing",
+    "V2/V3 length heuristic is not universal identification",
+    "Local command races and combined hvac_mode behavior remain pending",
+    "Framework smoke mocks platform forwarding/unload and is not full HA bootstrap",
+    "Historical green tests reproduce old bugs; they do not demonstrate current fixes"
+  ],
+  "checks": [
+    {
+      "command": "python -m compileall -q custom_components tests",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "python tests/local_only_worker.py -v",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_map_validation (__main__.MapTests.test_map_validation) ... ok\ntest_migration_keeps_whole_field_options_precedence (__main__.MigrationTests.test_migration_keeps_whole_field_options_precedence) ... ok\ntest_migration_preserves_identity_uses_effective_map_and_removes_credentials (__main__.MigrationTests.test_migration_preserves_identity_uses_effective_map_and_removes_credentials) ... ok\ntest_import_and_configuration_never_load_cloud (__main__.OfflineTests.test_import_and_configuration_never_load_cloud) ... ok\ntest_all_localized_forms_are_local_only (__main__.PackagingTests.test_all_localized_forms_are_local_only) ... ok\ntest_cloud_implementation_and_constants_are_removed (__main__.PackagingTests.test_cloud_implementation_and_constants_are_removed) ... ok\ntest_coordinator_is_bound_to_config_entry_for_framework_first_refresh (__main__.RuntimeTests.test_coordinator_is_bound_to_config_entry_for_framework_first_refresh) ... ok\ntest_forward_failure_unloads_partial_platforms_and_cleans_runtime (__main__.RuntimeTests.test_forward_failure_unloads_partial_platforms_and_cleans_runtime) ... ok\ntest_missing_map_fails_actionably_before_opening_any_client (__main__.RuntimeTests.test_missing_map_fails_actionably_before_opening_any_client) ... ok\ntest_setup_failures_stop_all_clients_and_flush_history (__main__.RuntimeTests.test_setup_failures_stop_all_clients_and_flush_history) ... ok\ntest_setup_prefers_entry_scoped_device_registry_lookup (__main__.RuntimeTests.test_setup_prefers_entry_scoped_device_registry_lookup) ... ok\ntest_setup_uses_local_map_and_preserves_registry_name_and_identity (__main__.RuntimeTests.test_setup_uses_local_map_and_preserves_registry_name_and_identity) ... ok\ntest_setup_waits_for_a_late_first_status (__main__.RuntimeTests.test_setup_waits_for_a_late_first_status) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 2.496s\n\nOK\n"
+    },
+    {
+      "command": "python -m unittest discover -s tests -v",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_bug_combined_hvac_off_temperature_command_powers_on (test_baseline_audit.BaselineCloudAuditTests.test_bug_combined_hvac_off_temperature_command_powers_on) ... ok\ntest_bug_concurrent_commands_overwrite_previous_full_snapshot (test_baseline_audit.BaselineCloudAuditTests.test_bug_concurrent_commands_overwrite_previous_full_snapshot) ... ok\ntest_bug_device_api_error_json_is_silently_empty_list (test_baseline_audit.BaselineCloudAuditTests.test_bug_device_api_error_json_is_silently_empty_list) ... ok\ntest_bug_disconnect_keeps_cached_status_and_coordinator_ignores_offline (test_baseline_audit.BaselineCloudAuditTests.test_bug_disconnect_keeps_cached_status_and_coordinator_ignores_offline) ... ok\ntest_bug_gateway_eof_retries_forever_until_explicit_sentinel (test_baseline_audit.BaselineCloudAuditTests.test_bug_gateway_eof_retries_forever_until_explicit_sentinel) ... ok\ntest_bug_login_http_tls_verification_disabled (test_baseline_audit.BaselineCloudAuditTests.test_bug_login_http_tls_verification_disabled) ... ok\ntest_bug_setup_cloud_not_stopped_when_local_first_refresh_fails (test_baseline_audit.BaselineCloudAuditTests.test_bug_setup_cloud_not_stopped_when_local_first_refresh_fails) ... ok\ntest_bug_tls_peer_and_hostname_checks_disabled (test_baseline_audit.BaselineCloudAuditTests.test_bug_tls_peer_and_hostname_checks_disabled) ... ok\ntest_local_only_behaviors (test_local_only.LocalOnlyTests.test_local_only_behaviors) ... ok\ntest_alarm_bitmap_and_shape (test_local_telemetry.DecodeTests.test_alarm_bitmap_and_shape) ... ok\ntest_other_two_bit_values (test_local_telemetry.DecodeTests.test_other_two_bit_values) ... ok\ntest_real_temperatures_and_actuators (test_local_telemetry.DecodeTests.test_real_temperatures_and_actuators) ... ok\ntest_binary_sensors_unknown_and_alarm_clear (test_local_telemetry.HistoryTests.test_binary_sensors_unknown_and_alarm_clear) ... ok\ntest_bounded_history (test_local_telemetry.HistoryTests.test_bounded_history) ... ok\ntest_capture_reload_sampling_redaction_and_retention (test_local_telemetry.HistoryTests.test_capture_reload_sampling_redaction_and_retention) ... ok\ntest_local_loop_updates_and_discards_old_alarms (test_local_telemetry.HistoryTests.test_local_loop_updates_and_discards_old_alarms) ... ok\ntest_duplicate_csv_ids (test_requirements_traceability.TraceabilityTests.test_duplicate_csv_ids) ... ok\ntest_duplicate_evidence_declaration (test_requirements_traceability.TraceabilityTests.test_duplicate_evidence_declaration) ... ok\ntest_duplicate_markdown_ids (test_requirements_traceability.TraceabilityTests.test_duplicate_markdown_ids) ... ok\ntest_empty_markdown_code_list (test_requirements_traceability.TraceabilityTests.test_empty_markdown_code_list) ... ok\ntest_explicit_no_evidence_is_valid_not_compliance (test_requirements_traceability.TraceabilityTests.test_explicit_no_evidence_is_valid_not_compliance) ... ok\ntest_malformed_heading_id_is_not_silently_ignored (test_requirements_traceability.TraceabilityTests.test_malformed_heading_id_is_not_silently_ignored) ... ok\ntest_mismatched_code_and_evidence_lists (test_requirements_traceability.TraceabilityTests.test_mismatched_code_and_evidence_lists) ... ok\ntest_mismatched_status (test_requirements_traceability.TraceabilityTests.test_mismatched_status) ... ok\ntest_missing_ast_test_symbol (test_requirements_traceability.TraceabilityTests.test_missing_ast_test_symbol) ... ok\ntest_missing_csv_entry (test_requirements_traceability.TraceabilityTests.test_missing_csv_entry) ... ok\ntest_missing_required_fields (test_requirements_traceability.TraceabilityTests.test_missing_required_fields) ... ok\ntest_missing_requirement_statement_in_both_documents (test_requirements_traceability.TraceabilityTests.test_missing_requirement_statement_in_both_documents) ... ok\ntest_missing_verification_status_in_both_documents (test_requirements_traceability.TraceabilityTests.test_missing_verification_status_in_both_documents) ... ok\ntest_path_outside_repository (test_requirements_traceability.TraceabilityTests.test_path_outside_repository) ... ok\ntest_symlink_outside_repository (test_requirements_traceability.TraceabilityTests.test_symlink_outside_repository) ... ok\ntest_unknown_evidence_reference (test_requirements_traceability.TraceabilityTests.test_unknown_evidence_reference) ... ok\ntest_unknown_source_path (test_requirements_traceability.TraceabilityTests.test_unknown_source_path) ... ok\ntest_valid_fixture_resolves_symbols_without_imports (test_requirements_traceability.TraceabilityTests.test_valid_fixture_resolves_symbols_without_imports) ... ok\n\n----------------------------------------------------------------------\nRan 34 tests in 4.130s\n\nOK\n"
+    },
+    {
+      "command": "python tests/check_requirements.py",
+      "exit_code": 0,
+      "stdout": "Traceability OK: 38 requirements, 24 evidence mappings; structural consistency, not compliance or proof that tests pass.\n",
+      "stderr": ""
+    },
+    {
+      "command": "<ha-validation-python> tests/ha_localonly_smoke.py",
+      "exit_code": 0,
+      "stdout": "{\n  \"home_assistant\": \"2026.11.0\",\n  \"migration_preserves_entry_id\": true,\n  \"credentials_removed\": true,\n  \"config_fields\": [\n    \"local_ips\"\n  ],\n  \"local_setup\": true,\n  \"device_name\": \"Existing bedroom\",\n  \"entity_count\": 29,\n  \"climate_unique_id\": \"haier_smartair2_001122334455\",\n  \"poll_and_command_frames\": 7,\n  \"network_connections\": [\n    [\n      \"127.0.0.1\",\n      42125\n    ]\n  ],\n  \"cloud_imports_or_connections\": 0,\n  \"unload\": true\n}\n",
+      "stderr": "custom_components.haier_smartair2.climate::HaierClimate provides the deprecated _attr_temperature_unit, this will stop working in Home Assistant 2027.11, use _attr_native_temperature_unit instead, please report it to the custom integration author\ncustom_components.haier_smartair2.climate::HaierClimate provides the deprecated current_temperature, this will stop working in Home Assistant 2027.11, use native_current_temperature instead, please report it to the custom integration author\ncustom_components.haier_smartair2.climate::HaierClimate provides the deprecated target_temperature, this will stop working in Home Assistant 2027.11, use native_target_temperature instead, please report it to the custom integration author\n"
+    },
+    {
+      "command": "<ruff> check --select F custom_components tests",
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": "git diff --cached --check",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}
