@@ -62,6 +62,8 @@ class HaierCoordinator(DataUpdateCoordinator[HaierState]):
                 extra = {}
             if extra:
                 state = state.merged(**extra)
+        if not self.via_cloud:
+            state = state.merged(alarm_bits=self.transport.latest_alarm_bits())
         if state.swing_pos not in (None, 0x0C, 0x0E):
             self._last_fixed_swing = state.swing_pos
         return state

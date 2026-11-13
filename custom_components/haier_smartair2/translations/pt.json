@@ -55,11 +55,13 @@
       }
     },
     "binary_sensor": {
-      "compressor": { "name": "Compressor" },
-      "indoor_fan": { "name": "Ventoinha interior" },
-      "outdoor_fan": { "name": "Ventoinha exterior" },
-      "defrost": { "name": "Descongelação" },
+      "compressor": { "name": "Compressor em funcionamento" },
+      "indoor_fan": { "name": "Ventoinha interior em funcionamento" },
+      "outdoor_fan": { "name": "Ventoinha exterior em funcionamento" },
+      "defrost": { "name": "Descongelação ativa" },
       "four_way_valve": { "name": "Válvula de 4 vias" },
+      "indoor_electric_heater": { "name": "Resistência elétrica interior em funcionamento" },
+      "active_alarms": { "name": "Alarmes ativos" },
       "filter": { "name": "Filtro a substituir" }
     },
     "switch": {

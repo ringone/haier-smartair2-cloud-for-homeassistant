@@ -79,16 +79,25 @@ Region and the local map can be changed later with **Configure**. Moving a devic
 
 The SmartAir2 phone app holds the dongle's only local session. Close the app while Home Assistant is using local control.
 
+## Local diagnostics
+
+On compatible V3 units, the integration shows **Compressor running**, **Indoor fan running**, **Defrost active**, and **Active alarms**. Outdoor fan, four-way valve and the actual indoor heater state are disabled by default because many units provide no usable reading. An unavailable actuator code appears as unknown while the device is connected. The alarm sensor includes the active bit numbers and remains unknown until the module sends an alarm report.
+
+Use **Download diagnostics** from the device or integration menu to export recent local frames. The integration keeps a rolling history on the Home Assistant host across reconnects and restarts. It records changes, alarm reports and periodic samples of unchanged packets, keeping up to seven days or 20,000 records per config entry. Known telemetry frames are exported in full with timestamps and anonymous device numbers. Unrecognised or invalid frames are retained locally and appear in the export with metadata only.
+
+See the [AS35 protocol notes](docs/protocol-as35.md) for the byte map, conversions, evidence and capture format.
+
 ## Limitations
 
 - SmartAir2 accounts on `uhome.haieriot.net` only. Not hOn, and not the China cloud.
 - Self-clean does not start while the unit is in heat, auto, or sleep.
-- On the MK-QTWIFI-04(B) firmware used here, compressor current and the expansion valve are not reported, and power can stay at 0 W.
+- On the MK-QTWIFI-04(B) firmware used here, the two recorded captures reported 0 W and an unavailable compressor-current value. The expansion valve field reported 88 raw units in both. Its response to changes in valve position remains unverified.
 - Left/right airflow on the AS35TADHRA-TH is manual. There is no command for it.
 - The timer is not a simple status bit and is not exposed.
 
 ## Changelog
 
+- **0.2.3** — expose local V3 actuator states and active alarm bits. Keep a bounded local packet history and make known frames downloadable through Home Assistant diagnostics. Document observed and candidate fields in the AS35 protocol notes.
 - **0.2.2** — local sessions reconnect after a disconnect or status timeout. The integration clears stale readings and validates frame length, checksum, and optional CRC while preserving the full telemetry payload.
 - **0.2.1** — a MAC written with colons is accepted in the local map; turning swing off restores the last fixed vane instead of jumping to the centre; self-clean is refused in auto, heat, or sleep; the expansion valve is no longer recorded as a measurement without a unit.
 - **0.2.0** — V3 controls and telemetry for the MK-QTWIFI-04(B), European Portuguese names, and the metadata the Marketplace expects. Same domain as upstream, so an existing config entry is kept.

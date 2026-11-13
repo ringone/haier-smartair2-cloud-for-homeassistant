@@ -26,6 +26,7 @@ from .const import (
 from .coordinator import HaierCoordinator
 from .local import HaierLocalClient
 from .local_map import parse_local_map
+from .packet_history import PacketHistory, history_store
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -34,6 +35,7 @@ _LOGGER = logging.getLogger(__name__)
 class HaierData:
     """Runtime data for a config entry."""
 
+    packet_history: PacketHistory
     cloud: HaierCloudClient | None = None
     local_clients: list[HaierLocalClient] = field(default_factory=list)
     coordinators: list[HaierCoordinator] = field(default_factory=list)
@@ -80,7 +82,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: HaierConfigEntry) -> boo
     if not devices:
         _LOGGER.warning("Haier: no devices returned by the account")
 
-    data = HaierData(cloud=cloud)
+    history = PacketHistory(history_store(hass, entry.entry_id))
+    await history.async_load()
+    data = HaierData(packet_history=history, cloud=cloud)
     any_cloud = False
 
     for dev in devices:
@@ -90,7 +94,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: HaierConfigEntry) -> boo
         name = dev.get("name") or devid
         codec = codec_for_type(dev.get("type"))
         if devid in local_map:
-            local = HaierLocalClient(hass, local_map[devid], devid)
+            local = HaierLocalClient(hass, local_map[devid], devid, history)
             try:
                 await local.async_start()
                 await local.async_poll(devid)
@@ -122,6 +126,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: HaierConfigEntry) -> boo
     except (Exception, asyncio.CancelledError):
         for local in data.local_clients:
             await local.async_stop()
+        await history.async_flush()
         raise
 
     entry.runtime_data = data
@@ -139,4 +144,10 @@ async def async_unload_entry(hass: HomeAssistant, entry: HaierConfigEntry) -> bo
             await data.cloud.async_stop()
         for local in data.local_clients:
             await local.async_stop()
+        await data.packet_history.async_flush()
     return unload_ok
+
+
+async def async_remove_entry(hass: HomeAssistant, entry: HaierConfigEntry) -> None:
+    """Delete local packet history when the entry is removed."""
+    await history_store(hass, entry.entry_id).async_remove()

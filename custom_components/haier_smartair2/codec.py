@@ -65,6 +65,8 @@ class HaierState:
     compressor_on: bool | None = None
     indoor_fan_on: bool | None = None
     four_way_valve: bool | None = None
+    indoor_electric_heat_on: bool | None = None
+    alarm_bits: tuple[int, ...] | None = None
     raw_block: bytes = b""
 
     def merged(self, **changes: object) -> "HaierState":
@@ -134,6 +136,15 @@ def extract_block(frame: bytes) -> tuple[int, bytes]:
     if end < 12 or end >= len(frame):
         raise ValueError("invalid smartair2 frame length")
     return frame[9], frame[12:end]
+
+
+def decode_alarm_bits(frame: bytes) -> tuple[int, ...]:
+    """Decode the eight-byte 04/0F5A alarm report seen on the AS35."""
+    frame_type, data = extract_block(frame)
+    if frame_type != 0x04 or frame[10:12] != b"\x0f\x5a" or len(data) != 8:
+        raise ValueError("not an eight-byte Haier alarm report")
+    bitmap = int.from_bytes(data, "big")
+    return tuple(bit for bit in range(64) if bitmap & (1 << bit))
 
 
 POLL_FRAME = build_frame(0x01, b"\x4d\x01", b"")
@@ -252,6 +263,11 @@ def _set_bit(block: bytearray, index: int, mask: int, enabled: bool) -> None:
         block[index] &= ~mask & 0xFF
 
 
+def _actuator_state(bits: int, shift: int) -> bool | None:
+    value = (bits >> shift) & 0x03
+    return bool(value) if value < 2 else None
+
+
 class CodecV3(Codec):
     """Byte-layout dongle (MK-QTWIFI-04). Command 6001, extended data in 7d01."""
 
@@ -299,6 +315,7 @@ class CodecV3(Codec):
             return {}
         bd = d[_V3_BIG_OFFSET : _V3_BIG_OFFSET + 14]
         current = int.from_bytes(bd[8:10], "big")
+        actuators = int.from_bytes(bd[10:12], "big")
         valve = int.from_bytes(bd[12:14], "big")
         return {
             "power_w": float(int.from_bytes(bd[0:2], "big")),
@@ -310,6 +327,12 @@ class CodecV3(Codec):
             "compressor_hz": float(bd[7]) if bd[7] <= 127 else None,
             "compressor_current": None if current >= 0x1FF else current / 10.0,
             "expansion_valve": None if valve > 4095 else float(valve),
+            "compressor_on": _actuator_state(actuators, 0),
+            "indoor_fan_on": _actuator_state(actuators, 2),
+            "four_way_valve": _actuator_state(actuators, 4),
+            "indoor_electric_heat_on": _actuator_state(actuators, 6),
+            "outdoor_fan": _actuator_state(actuators, 8),
+            "defrost_on": _actuator_state(actuators, 10),
         }
 
     def encode_set(self, state: HaierState, **changes) -> bytes:

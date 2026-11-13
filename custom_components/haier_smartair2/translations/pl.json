@@ -30,6 +30,32 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "compressor": {
+        "name": "Praca sprężarki"
+      },
+      "indoor_fan": {
+        "name": "Praca wentylatora wewnętrznego"
+      },
+      "outdoor_fan": {
+        "name": "Praca wentylatora zewnętrznego"
+      },
+      "defrost": {
+        "name": "Odszranianie"
+      },
+      "four_way_valve": {
+        "name": "Zawór czterodrogowy"
+      },
+      "indoor_electric_heater": {
+        "name": "Praca wewnętrznej grzałki elektrycznej"
+      },
+      "active_alarms": {
+        "name": "Aktywne alarmy"
+      },
+      "filter": {
+        "name": "Wymiana filtra"
+      }
+    },
     "sensor": {
       "room_temperature": {
         "name": "Temperatura pokojowa"

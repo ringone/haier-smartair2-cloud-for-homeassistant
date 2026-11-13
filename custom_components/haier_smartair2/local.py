@@ -13,8 +13,9 @@ from time import monotonic
 
 from homeassistant.core import HomeAssistant
 
-from .codec import BIG_POLL_FRAME, POLL_FRAME, parse_local_frame
+from .codec import BIG_POLL_FRAME, POLL_FRAME, decode_alarm_bits, parse_local_frame
 from .const import LOCAL_PORT
+from .packet_history import PacketHistory
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -46,10 +47,14 @@ def _envelope(payload: bytes, mac: str, seq: int) -> bytes:
 class HaierLocalClient:
     """Persistent TCP connection to one local device."""
 
-    def __init__(self, hass: HomeAssistant, ip: str, mac: str) -> None:
+    def __init__(
+        self, hass: HomeAssistant, ip: str, mac: str, history: PacketHistory
+    ) -> None:
         self._hass = hass
         self._ip = ip
         self._mac = _normalise_mac(mac)
+        self._history = history
+        self._alarm_bits: tuple[int, ...] | None = None
         self._writer: asyncio.StreamWriter | None = None
         self._read_task: asyncio.Task | None = None
         self._keepalive_task: asyncio.Task | None = None
@@ -75,6 +80,10 @@ class HaierLocalClient:
 
     def latest_big_frame(self, _devid: str | None = None) -> bytes | None:
         return self._big_frame if monotonic() - self._big_frame_at < FRAME_TIMEOUT else None
+
+    def latest_alarm_bits(self) -> tuple[int, ...] | None:
+        """Return the last alarm report from the current connection."""
+        return self._alarm_bits
 
     def is_online(self, _devid: str | None = None) -> bool:
         return self._writer is not None and not self._writer.is_closing()
@@ -131,6 +140,7 @@ class HaierLocalClient:
             return
         self._writer = None
         self._frame = self._big_frame = None
+        self._alarm_bits = None
         self._frame_at = self._big_frame_at = 0.0
         writer.close()
         if self._read_task is not None and self._read_task is not asyncio.current_task():
@@ -157,11 +167,21 @@ class HaierLocalClient:
                 try:
                     frame = parse_local_frame(payload)
                 except ValueError as err:
+                    if payload.startswith(b"\xff\xff"):
+                        self._history.record(self._mac, payload, None, str(err))
                     _LOGGER.debug("Ignoring Haier local frame from %s: %s", self._ip, err)
+                    continue
+                self._history.record(self._mac, payload, frame)
+                sub = frame[10:12]
+                if frame[9] == 0x04 and sub == b"\x0f\x5a":
+                    try:
+                        self._alarm_bits = decode_alarm_bits(frame)
+                    except ValueError:
+                        continue
+                    self._notify()
                     continue
                 if frame[9] not in (0x02, 0x06):
                     continue
-                sub = frame[10:12]
                 if sub == _BIG_SUB:
                     self._big_frame = frame
                     self._big_frame_at = monotonic()

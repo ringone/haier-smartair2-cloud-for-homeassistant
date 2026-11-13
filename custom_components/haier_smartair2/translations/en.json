@@ -55,11 +55,13 @@
       }
     },
     "binary_sensor": {
-      "compressor": { "name": "Compressor" },
-      "indoor_fan": { "name": "Indoor fan" },
-      "outdoor_fan": { "name": "Outdoor fan" },
-      "defrost": { "name": "Defrost" },
+      "compressor": { "name": "Compressor running" },
+      "indoor_fan": { "name": "Indoor fan running" },
+      "outdoor_fan": { "name": "Outdoor fan running" },
+      "defrost": { "name": "Defrost active" },
       "four_way_valve": { "name": "Four-way valve" },
+      "indoor_electric_heater": { "name": "Indoor electric heater running" },
+      "active_alarms": { "name": "Active alarms" },
       "filter": { "name": "Filter needs replacement" }
     },
     "switch": {
