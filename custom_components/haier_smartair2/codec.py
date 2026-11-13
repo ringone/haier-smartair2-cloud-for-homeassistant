@@ -83,16 +83,57 @@ def build_frame(ftype: int, subcmd: bytes, data: bytes) -> bytes:
     return b"\xff\xff" + body + bytes([_checksum(body)])
 
 
+def _crc16_arc(data: bytes) -> int:
+    crc = 0
+    for value in data:
+        crc ^= value
+        for _ in range(8):
+            crc = (crc >> 1) ^ (0xA001 if crc & 1 else 0)
+    return crc
+
+
+def _validate_frame(frame: bytes, stuffing: int = 0) -> None:
+    if len(frame) < 13 or frame[:2] != b"\xff\xff" or frame[2] < 10:
+        raise ValueError("not a smartair2 frame with a subcommand")
+
+    checksum_offset = 2 + frame[2]
+    has_crc = bool(frame[3] & 0x40)
+    if len(frame) != checksum_offset + (3 if has_crc else 1):
+        raise ValueError("invalid smartair2 frame length")
+    body = frame[2:checksum_offset]
+    if frame[checksum_offset] != ((_checksum(body) + stuffing) & 0xFF):
+        raise ValueError("invalid smartair2 checksum")
+    if has_crc and _crc16_arc(body) != int.from_bytes(frame[checksum_offset + 1 :], "big"):
+        raise ValueError("invalid smartair2 CRC")
+
+
+def parse_local_frame(frame: bytes) -> bytes:
+    """Validate the LAN payload and return the frame with any stuffing removed."""
+    try:
+        _validate_frame(frame)
+    except ValueError:
+        if frame[:2] != b"\xff\xff" or b"\xff\x55" not in frame[2:]:
+            raise
+        # The LAN envelope can also carry an EPP frame with FF/55 byte stuffing.
+        wire_body = frame[2:]
+        logical_body = wire_body.replace(b"\xff\x55", b"\xff")
+        if logical_body.replace(b"\xff", b"\xff\x55") != wire_body:
+            raise
+        end = logical_body[0]
+        stuffing = logical_body[:end].count(0xFF) * 0x55
+        frame = frame[:2] + logical_body
+        _validate_frame(frame, stuffing)
+    return frame
+
+
 def extract_block(frame: bytes) -> tuple[int, bytes]:
-    """Return (frame_type, data-block) from a smartair2 frame, stripping sub+checksum(+crc)."""
-    if len(frame) < 12 or frame[0] != 0xFF or frame[1] != 0xFF:
+    """Return the type and data of a logical frame, excluding the subcommand."""
+    if len(frame) < 13 or frame[:2] != b"\xff\xff":
         raise ValueError("not a smartair2 frame")
-    length = frame[2]
-    flags = frame[3]
-    ftype = frame[9]
-    crc = 2 if flags & 0x40 else 0
-    end = 2 + length - crc
-    return ftype, frame[12:end]
+    end = 2 + frame[2]
+    if end < 12 or end >= len(frame):
+        raise ValueError("invalid smartair2 frame length")
+    return frame[9], frame[12:end]
 
 
 POLL_FRAME = build_frame(0x01, b"\x4d\x01", b"")
@@ -253,11 +294,7 @@ class CodecV3(Codec):
         )
 
     def decode_big(self, frame: bytes) -> dict:
-        # The 14-byte block sits at the end of the length-counted body. extract_block()
-        # drops two trailing bytes when flags bit 6 is set, which cuts this block off.
-        if len(frame) < 12 or frame[0] != 0xFF or frame[1] != 0xFF:
-            return {}
-        d = frame[12 : 2 + frame[2]]
+        _, d = extract_block(frame)
         if len(d) < _V3_BIG_OFFSET + 14:
             return {}
         bd = d[_V3_BIG_OFFSET : _V3_BIG_OFFSET + 14]

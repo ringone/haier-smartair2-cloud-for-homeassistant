@@ -9,10 +9,11 @@ from __future__ import annotations
 import asyncio
 import logging
 from collections.abc import Callable
+from time import monotonic
 
 from homeassistant.core import HomeAssistant
 
-from .codec import BIG_POLL_FRAME, POLL_FRAME
+from .codec import BIG_POLL_FRAME, POLL_FRAME, parse_local_frame
 from .const import LOCAL_PORT
 
 _LOGGER = logging.getLogger(__name__)
@@ -20,6 +21,8 @@ _LOGGER = logging.getLogger(__name__)
 MARKER_TX = 0x2714
 MARKER_RX = 0x2715
 CONNECT_TIMEOUT = 10
+POLL_INTERVAL = 12
+FRAME_TIMEOUT = 40
 _STATUS_SUB = b"\x6d\x01"
 _BIG_SUB = b"\x7d\x01"
 
@@ -47,13 +50,13 @@ class HaierLocalClient:
         self._hass = hass
         self._ip = ip
         self._mac = _normalise_mac(mac)
-        self._reader: asyncio.StreamReader | None = None
         self._writer: asyncio.StreamWriter | None = None
         self._read_task: asyncio.Task | None = None
         self._keepalive_task: asyncio.Task | None = None
         self._seq = 0
         self._frame: bytes | None = None
         self._big_frame: bytes | None = None
+        self._frame_at = self._big_frame_at = 0.0
         self._listeners: list[Callable[[], None]] = []
         self._stopped = False
         self._lock = asyncio.Lock()
@@ -68,10 +71,10 @@ class HaierLocalClient:
         return remove
 
     def latest_frame(self, _devid: str | None = None) -> bytes | None:
-        return self._frame
+        return self._frame if monotonic() - self._frame_at < FRAME_TIMEOUT else None
 
     def latest_big_frame(self, _devid: str | None = None) -> bytes | None:
-        return self._big_frame
+        return self._big_frame if monotonic() - self._big_frame_at < FRAME_TIMEOUT else None
 
     def is_online(self, _devid: str | None = None) -> bool:
         return self._writer is not None and not self._writer.is_closing()
@@ -90,95 +93,120 @@ class HaierLocalClient:
 
     async def async_start(self) -> None:
         await self._connect()
+        if self._keepalive_task is None:
+            self._keepalive_task = self._hass.async_create_background_task(
+                self._keepalive_loop(), f"haier_local_keepalive_{self._ip}"
+            )
 
-    async def _connect(self) -> None:
+    async def _connect(self) -> asyncio.StreamWriter:
         async with self._lock:
-            if self.is_online():
-                return
-            self._reader, self._writer = await asyncio.wait_for(
+            if self._stopped:
+                raise ConnectionError("Haier local client is stopped")
+            if self._writer is not None and not self._writer.is_closing():
+                return self._writer
+            if self._writer is not None:
+                self._disconnect(self._writer)
+            reader, writer = await asyncio.wait_for(
                 asyncio.open_connection(self._ip, LOCAL_PORT), CONNECT_TIMEOUT
             )
+            if self._stopped:
+                writer.close()
+                raise ConnectionError("Haier local client is stopped")
+            self._writer = writer
             self._read_task = self._hass.async_create_background_task(
-                self._read_loop(), f"haier_local_read_{self._ip}"
+                self._read_loop(reader, writer), f"haier_local_read_{self._ip}"
             )
-            if self._keepalive_task is None or self._keepalive_task.done():
-                self._keepalive_task = self._hass.async_create_background_task(
-                    self._keepalive_loop(), f"haier_local_keepalive_{self._ip}"
-                )
+            return writer
 
     async def _keepalive_loop(self) -> None:
-        try:
-            while not self._stopped:
-                await asyncio.sleep(12)
-                try:
-                    await self.async_poll("")
-                except Exception:  # noqa: BLE001
-                    if self._writer:
-                        self._writer.close()
-                    break
-        except asyncio.CancelledError:
-            raise
+        while not self._stopped:
+            await asyncio.sleep(POLL_INTERVAL)
+            try:
+                await self.async_poll()
+            except (OSError, TimeoutError) as err:
+                _LOGGER.debug("Haier local poll for %s failed: %s", self._ip, err)
 
-    async def _read_loop(self) -> None:
-        assert self._reader is not None
+    def _disconnect(self, writer: asyncio.StreamWriter) -> None:
+        if self._writer is not writer:
+            return
+        self._writer = None
+        self._frame = self._big_frame = None
+        self._frame_at = self._big_frame_at = 0.0
+        writer.close()
+        if self._read_task is not None and self._read_task is not asyncio.current_task():
+            self._read_task.cancel()
+        if not self._stopped:
+            self._notify()
+
+    async def _read_loop(
+        self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter
+    ) -> None:
+        status_deadline = monotonic() + FRAME_TIMEOUT
         try:
-            while not self._stopped:
-                header = await self._reader.readexactly(80)
-                plen = header[79]
-                payload = await self._reader.readexactly(plen) if plen else b""
+            while self._writer is writer:
+                remaining = status_deadline - monotonic()
+                if remaining <= 0:
+                    raise TimeoutError("No valid Haier local status frame")
+                async with asyncio.timeout(remaining):
+                    header = await reader.readexactly(80)
+                    payload = await reader.readexactly(header[79])
+                if self._writer is not writer:
+                    return
                 if int.from_bytes(header[2:4], "big") != MARKER_RX:
                     continue
-                if len(payload) < 12 or payload[9] not in (0x02, 0x06):
+                try:
+                    frame = parse_local_frame(payload)
+                except ValueError as err:
+                    _LOGGER.debug("Ignoring Haier local frame from %s: %s", self._ip, err)
                     continue
-                sub = payload[10:12]
+                if frame[9] not in (0x02, 0x06):
+                    continue
+                sub = frame[10:12]
                 if sub == _BIG_SUB:
-                    self._big_frame = payload
+                    self._big_frame = frame
+                    self._big_frame_at = monotonic()
                 elif sub == _STATUS_SUB:
-                    self._frame = payload
+                    self._frame = frame
+                    self._frame_at = monotonic()
+                    status_deadline = self._frame_at + FRAME_TIMEOUT
                 else:
                     continue
                 self._notify()
-        except (asyncio.IncompleteReadError, ConnectionError, OSError) as err:
+        except (asyncio.IncompleteReadError, OSError, TimeoutError) as err:
             if not self._stopped:
-                _LOGGER.info("Haier local %s lost: %s", self._ip, err)
-        except asyncio.CancelledError:
-            raise
+                _LOGGER.debug("Haier local connection to %s lost: %s", self._ip, err)
         finally:
-            if not self._stopped:
-                self._hass.loop.call_later(3, self._schedule_reconnect)
+            self._disconnect(writer)
 
-    def _schedule_reconnect(self) -> None:
-        self._hass.async_create_background_task(self._reconnect(), f"haier_local_reconnect_{self._ip}")
-
-    async def _reconnect(self) -> None:
-        if self._stopped or self.is_online():
-            return
+    async def _write(self, writer: asyncio.StreamWriter, payload: bytes) -> None:
+        if self._writer is not writer:
+            raise ConnectionError("Haier local connection closed")
+        if writer.is_closing():
+            self._disconnect(writer)
+            raise ConnectionError("Haier local connection closed")
         try:
-            await self._connect()
-            await self.async_poll("")
-        except Exception:  # noqa: BLE001
-            self._hass.loop.call_later(5, self._schedule_reconnect)
-
-    async def _write(self, payload: bytes) -> None:
-        if not self.is_online():
-            await self._connect()
-        assert self._writer is not None
-        self._writer.write(_envelope(payload, self._mac, self._next_seq))
-        await self._writer.drain()
+            writer.write(_envelope(payload, self._mac, self._next_seq))
+            await writer.drain()
+        except OSError:
+            self._disconnect(writer)
+            raise
 
     async def async_poll(self, _devid: str | None = None) -> None:
-        await self._write(POLL_FRAME)
+        writer = await self._connect()
+        await self._write(writer, POLL_FRAME)
         await asyncio.sleep(0.25)
-        await self._write(BIG_POLL_FRAME)
+        await self._write(writer, BIG_POLL_FRAME)
 
     async def async_send_frame(self, _devid: str, frame: bytes) -> None:
-        await self._write(frame)
+        if self._writer is None:
+            raise ConnectionError("Haier local connection closed")
+        await self._write(self._writer, frame)
 
     async def async_stop(self) -> None:
         self._stopped = True
-        if self._read_task:
-            self._read_task.cancel()
-        if self._keepalive_task:
-            self._keepalive_task.cancel()
-        if self._writer:
-            self._writer.close()
+        tasks = [task for task in (self._read_task, self._keepalive_task) if task]
+        for task in tasks:
+            task.cancel()
+        if self._writer is not None:
+            self._disconnect(self._writer)
+        await asyncio.gather(*tasks, return_exceptions=True)
