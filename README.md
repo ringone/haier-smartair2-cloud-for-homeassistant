@@ -51,7 +51,7 @@ On this V3 layout, mode and fan speed share one byte, and quiet is a separate fl
 1. Connect GitHub in the Marketplace, if it is not connected yet.
 2. Go to **Settings → Marketplace → Add from link**.
 3. Enter `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant`.
-4. Install **Haier SmartAir2** release **0.2.0**, then restart Home Assistant.
+4. Install the latest **Haier SmartAir2** release, then restart Home Assistant.
 
 If this domain is already installed from the upstream repository, remove that repository in the Marketplace first. Do not delete the entry under **Settings → Devices & services**. Deleting that entry removes the account and the local device map.
 
@@ -89,6 +89,7 @@ The SmartAir2 phone app holds the dongle's only local session. Close the app whi
 
 ## Changelog
 
+- **0.2.2** — local sessions reconnect after a disconnect or status timeout. The integration clears stale readings and validates frame length, checksum, and optional CRC while preserving the full telemetry payload.
 - **0.2.1** — a MAC written with colons is accepted in the local map; turning swing off restores the last fixed vane instead of jumping to the centre; self-clean is refused in auto, heat, or sleep; the expansion valve is no longer recorded as a measurement without a unit.
 - **0.2.0** — V3 controls and telemetry for the MK-QTWIFI-04(B), European Portuguese names, and the metadata the Marketplace expects. Same domain as upstream, so an existing config entry is kept.
 - **0.1.4** — upstream: local read and keep-alive loops run in the background, the local TCP connect times out after 10 seconds, and cloud TLS setup no longer blocks startup.
