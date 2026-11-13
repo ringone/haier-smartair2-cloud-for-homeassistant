@@ -4,6 +4,8 @@ The two LAN captures came from an AS35TADHRA-TH with an MK-QTWIFI-04(B) module. 
 
 ## Frame format
 
+**Scope warning:** these observations concern only the AS35TADHRA-TH + MK-QTWIFI-04(B) captures. Compatibility with other AC units, Wi-Fi modules or firmware is unknown. See [compatibility evidence and limits](compatibility.md); V2/V3 labels and frame lengths are not universal hardware profiles.
+
 The 80-byte LAN envelope precedes an EPP frame. The two captures contained type `06` reports and type `02` replies with subcommand `6D 01`, type `02 / 7D 01` extended replies and type `04 / 0F 5A` alarm reports. The captured EPP frames used a checksum and CRC-16/ARC. In the extended frames, wire bytes `FF 55` carry one logical byte `FF`. All offsets below are zero-based within the logical data starting after the two-byte subcommand. Add 12 for the offset in the logical EPP frame.
 
 The two extended replies and one alarm report are reproduced below. The sample contains EPP bytes and omits the LAN envelope.
