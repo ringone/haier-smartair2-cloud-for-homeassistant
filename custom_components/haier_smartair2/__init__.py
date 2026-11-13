@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from dataclasses import dataclass, field
 
@@ -94,6 +95,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: HaierConfigEntry) -> boo
                 await local.async_start()
                 await local.async_poll(devid)
             except Exception as err:  # noqa: BLE001
+                await local.async_stop()
                 _LOGGER.warning("Haier local %s (%s) failed, falling back to cloud: %s",
                                 name, local_map[devid], err)
                 cloud.register_device(devid)
@@ -108,15 +110,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: HaierConfigEntry) -> boo
             coord = HaierCoordinator(hass, cloud, codec, devid, name, via_cloud=True)
         data.coordinators.append(coord)
 
-    if any_cloud:
-        try:
-            await cloud.async_start()
-        except Exception as err:  # noqa: BLE001
-            raise ConfigEntryNotReady(f"Haier cloud connect failed: {err}") from err
+    try:
+        if any_cloud:
+            try:
+                await cloud.async_start()
+            except Exception as err:  # noqa: BLE001
+                raise ConfigEntryNotReady(f"Haier cloud connect failed: {err}") from err
 
-    # first refresh (best-effort; entities go unavailable if a device is silent)
-    for coord in data.coordinators:
-        await coord.async_config_entry_first_refresh()
+        for coord in data.coordinators:
+            await coord.async_config_entry_first_refresh()
+    except (Exception, asyncio.CancelledError):
+        for local in data.local_clients:
+            await local.async_stop()
+        raise
 
     entry.runtime_data = data
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))

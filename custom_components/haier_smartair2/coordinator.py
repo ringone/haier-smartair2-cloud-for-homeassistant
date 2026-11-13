@@ -7,7 +7,7 @@ import logging
 from datetime import timedelta
 
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .codec import Codec, HaierState
 from .const import SCAN_INTERVAL_SECONDS
@@ -70,19 +70,33 @@ class HaierCoordinator(DataUpdateCoordinator[HaierState]):
         state = self._decode_latest()
         if state is not None:
             self.async_set_updated_data(state)
+        elif not self.via_cloud and not self.transport.is_online(self.devid):
+            self.async_set_update_error(UpdateFailed("Haier local connection closed"))
 
     async def _async_update_data(self) -> HaierState:
-        await self.transport.async_poll(self.devid)
+        try:
+            await self.transport.async_poll(self.devid)
+        except (OSError, TimeoutError) as err:
+            if self.via_cloud:
+                raise
+            raise UpdateFailed("Haier local poll failed") from err
         for _ in range(10):
             await asyncio.sleep(0.2)
             state = self._decode_latest()
             if state is not None:
                 return state
+        if not self.via_cloud:
+            raise UpdateFailed("No recent Haier local status frame")
         return self.data or HaierState()
 
     async def async_apply(self, **changes) -> None:
         """Send a control command (read-modify-write) and refresh."""
-        state = self.data or self._decode_latest() or HaierState()
+        if self.via_cloud:
+            state = self.data or self._decode_latest() or HaierState()
+        else:
+            state = self._decode_latest()
+            if state is None:
+                raise UpdateFailed("No recent Haier local status frame")
         # While swinging, the status nibble is the auto code, so turning swing
         # off has to restore the last fixed vane position.
         if changes.get("swing_v") is False and self._last_fixed_swing is not None:
