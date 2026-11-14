@@ -29,22 +29,31 @@ The existing local wire commands, polling, frame validation, reconnects, telemet
 
 ## Installation
 
-### Marketplace (Home Assistant 2026.11 or newer)
+**Candidate status:** 0.3.0 is an **unpublished** branch candidate; the stable release is 0.2.3. Marketplace catalog submission and a 0.3.0 release are pending. Adding the repository does not publish or automatically install this candidate. Do not assume the latest stable download contains these changes.
 
-1. In **Settings → Marketplace → Add from link**, add `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant`.
-2. Install Haier SmartAir2 and restart Home Assistant.
+**Supported baseline:** Home Assistant **2026.11.0 or newer**, Python >=3.14.2. The verification matrix exercises 2026.11.0 and 2026.11.1; future releases still need verification. This minimum is intentionally raised for the native climate-temperature API; the old 2024.11 support claim no longer applies to this candidate.
+
+<!-- ha-marketplace:exclude-start -->
+### Marketplace (Home Assistant 2026.11 or newer; release pending)
+
+1. Once a reviewed release is available, use **Settings → Marketplace → Add from link** with `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant`.
+2. Install Haier SmartAir2, then add it under **Settings → Devices & services**. A first install using its config flow normally does not require a restart.
+3. For updates, removal, or replacement of already loaded integration code, restart Home Assistant before relying on the new code.
 
 GitHub/Internet access may be needed to download updates. That is separate from the integration runtime, which uses no Haier cloud connection.
 
-### HACS
+### HACS (Home Assistant before 2026.11; older releases only)
 
 1. HACS → three-dot menu → **Custom repositories**.
 2. Add `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant`, category **Integration**.
-3. Install Haier SmartAir2 and restart Home Assistant.
+3. Install an appropriate published release and follow HACS restart instructions. HACS use before 2026.11 does not make this candidate compatible with older Home Assistant versions.
+
+Home Assistant 2026.11 migrates existing HACS installations to its built-in Marketplace. That automatic migration is different from changing the repository that owns an installed domain, such as switching from upstream to this fork. Same-domain repository ownership **handover is blocked pending manual validation**: do not install both repositories, uninstall as a workaround, or delete the config entry. Make a full backup, preserve the existing config entry and packet history, and keep rollback files before any change. See [Marketplace verification and pending gates](docs/marketplace.md).
+<!-- ha-marketplace:exclude-end -->
 
 ### Manual
 
-Back up the existing directory, then replace `config/custom_components/haier_smartair2/` with this version. Replace the whole directory rather than copying over it, so the removed `cloud.py` is not left behind. Restart Home Assistant. Keep the existing integration entry under **Settings → Devices & services**.
+Back up the complete Home Assistant configuration, including private `.storage` data, and the existing integration directory. Replace `config/custom_components/haier_smartair2/` with this version. Replace the whole directory rather than copying over it, so the removed `cloud.py` is not left behind. Restart Home Assistant. Keep the existing integration entry under **Settings → Devices & services**. Rollback may require restoring both the old code and its configuration backup, not just copying back Python files.
 
 ## Configuration
 
@@ -97,6 +106,7 @@ The [SDLC record](docs/sdlc.md), [architecture decision](docs/adr/0001-local-onl
 python -m compileall -q custom_components
 python -m unittest discover -s tests -v
 python tests/check_requirements.py
+python tests/check_marketplace.py
 ```
 
 The historical audit needs Git commit `5b77363a05225311fb85ef89eb16136b26440acd`; use a full clone or fetch the baseline. The CI unit-test checkout uses `fetch-depth: 0` rather than silently skipping those tests.
@@ -105,13 +115,15 @@ With Home Assistant 2026.11.0 installed in a separate environment, also run:
 
 ```sh
 python tests/ha_localonly_smoke.py
+python tests/ha_climate_compat.py
+python tests/ha_marketplace_smoke.py
 ```
 
 The lightweight tests use Home Assistant doubles. Framework-level checks must run in a separate process with Home Assistant installed, so doubles cannot hide import or setup errors.
 
 ## Changelog
 
-- **0.3.0** — local-only configuration, startup and migration; remove cloud authentication, discovery, MQTT and fallback; preserve LAN protocol, MAC entity IDs and packet history.
+- **0.3.0 (unpublished)** — local-only configuration, startup and migration; remove cloud authentication, discovery, MQTT and fallback; preserve LAN protocol, MAC entity IDs and packet history. Require Home Assistant 2026.11.0, use the native climate-temperature API and add Marketplace distribution checks.
 - **0.2.3** — V3 actuator states, alarm bits and bounded local packet history with diagnostic export.
 - **0.2.2** — local reconnects and frame integrity validation.
 - **0.2.1** — colon-separated MAC support, restore fixed vane position and self-clean guards.
