@@ -1,7 +1,7 @@
 # Requisitos — Haier SmartAir2 Local
 
-**Especificação:** v0.1, proposta para revisão e aprovação.
-**Implementação de referência:** proposta 0.3.0 sem release publicada; base Git `5b77363a05225311fb85ef89eb16136b26440acd` mais as alterações da branch `feat/local-only`. Não confundir a árvore modificada com o conteúdo original desse commit.
+**Especificação:** v0.2; incremento Marketplace/2026.11 autorizado para implementação, restantes propostas sujeitas a revisão.
+**Implementação de referência:** proposta 0.3.0 sem release publicada; base Git `5b77363a05225311fb85ef89eb16136b26440acd` mais as alterações da branch `feat/local-only` e o incremento `chore/marketplace-ha-2026.11`, derivado de `2b4412d8e9ccc905e034cec677b3bcbdff9f5c26`. Não confundir a árvore modificada com o conteúdo original desses commits.
 **Objetivo:** transformar as decisões do fork em comportamentos verificáveis, com rastreabilidade e lacunas explícitas. Este documento não altera o funcionamento do software nem aprova automaticamente funcionalidades novas.
 
 ## 1. Âmbito e decisões de origem
@@ -9,6 +9,7 @@
 - **DEC-01 — Exclusivamente local:** decisão explícita do utilizador; eliminar dependência da Haier cloud, incluindo configuração e arranque.
 - **DEC-02 — Preservação local:** manter transporte/protocolo existentes, entidades, identidade MAC e histórico; migração sem eliminar a entrada.
 - **DEC-03 — Compatibilidade desconhecida:** tornar explícito que não sabemos a validade noutros aparelhos, módulos Wi-Fi ou firmware. A combinação documentada é AS35TADHRA-TH + MK-QTWIFI-04(B), baseada em capturas e calibração anteriores, não num teste físico desta versão nesta sessão.
+- **DEC-04 — Marketplace/2026.11:** implementação autorizada pelo utilizador numa branch derivada da local-only; adotar API native, mínimo 2026.11.0 e verificação de distribuição, sem merge/release nem novo suporte físico.
 - **Implementação:** requisito extraído do código atual, não uma nova promessa de compatibilidade.
 - **Critério derivado / Proposta:** recomendação de qualidade ou evolução que requer aprovação antes de aumentar o escopo.
 
@@ -20,11 +21,11 @@ Inclui configuração/opções, migração, TCP local, seleção de codec, ciclo
 - **Parcial:** há uma lacuna conhecida de cumprimento/declaração.
 - **Pendente:** não foi implementado; não se deve anunciar como disponível.
 - **P0:** obrigatório antes de considerar conforme uma release que inclua o requisito aprovado; **P1:** importante; **P2:** melhoria planeada. A prioridade de uma proposta não a torna aprovada.
-- **E01–E24:** evidência automatizada concretamente identificada no apêndice. Uma evidência associada pode cobrir apenas parte do critério; consultar sempre a lacuna descrita.
+- **E01–E36:** evidência automatizada concretamente identificada no apêndice. Uma evidência associada pode cobrir apenas parte do critério; consultar sempre a lacuna descrita.
 - **Inspeção:** leitura de código/documentação ou comparação de artefactos, não um ensaio operacional.
 - **Físico pendente:** sem ar condicionado real nesta sessão. Testes com capturas/simulador não estabelecem compatibilidade noutro hardware.
 
-**Inventário:** 38 requisitos: 30 com implementação correspondente, 3 parciais e 5 pendentes. Estes totais **não são uma taxa de conformidade nem de cobertura**.
+**Inventário:** 41 requisitos: 34 implementado, 3 parcial, 4 pendente. Estes totais **não são uma taxa de conformidade nem de cobertura**.
 
 ## 2. Requisitos funcionais
 
@@ -255,10 +256,10 @@ Inclui configuração/opções, migração, TCP local, seleção de codec, ciclo
   - Expor off, auto, cool, heat, dry e fan_only, conforme o codec implementado.
   - Declarar alvo 16–30 °C com passo de 1 °C e encaminhar pedidos válidos para os comandos existentes.
   - Não confundir existência de métodos/entidades com confirmação física de cada modo; pedidos combinados estão tratados em RP-003.
-- **Código/documentação:** `custom_components/haier_smartair2/climate.py`, `custom_components/haier_smartair2/const.py`, `custom_components/haier_smartair2/codec.py`.
-- **Evidência existente:** E21.
+- **Código/documentação:** `custom_components/haier_smartair2/climate.py`, `custom_components/haier_smartair2/const.py`, `custom_components/haier_smartair2/codec.py`, `tests/ha_climate_compat.py`.
+- **Evidência existente:** E21, E25, E26, E27.
 - **Verificação:** Implementação inspecionada; automação parcial; físico pendente.
-- **Lacuna/limitação:** O smoke instancia climate e transmite um comando pelo coordenador, não exercita todos os serviços climate. Falta cobertura de encode/decode de cada modo e validação física.
+- **Lacuna/limitação:** O harness climate regista uma entidade real e verifica leituras/serviços de temperatura em Celsius/Fahrenheit com coordenador-fixture; não exercita todos os modos HVAC nem efeitos físicos. RP-003 continua pendente.
 
 ### RF-018 — Ventilação e presets por codec
 - **Prioridade:** P1.
@@ -389,17 +390,17 @@ Inclui configuração/opções, migração, TCP local, seleção de codec, ciclo
 
 ### RNF-001 — Compatibilidade Home Assistant declarada com evidência
 - **Prioridade:** P1.
-- **Origem:** Critério de qualidade derivado.
-- **Estado da implementação:** Parcial.
+- **Origem:** DEC-04 + critério de qualidade.
+- **Estado da implementação:** Implementado.
 - **Requisito:** A gama de versões Home Assistant anunciada deverá corresponder às versões efetivamente ensaiadas, ou ser explicitamente indicada como não verificada.
 - **Critérios de aceitação:**
-  - Executar o smoke de framework em Home Assistant 2026.11.0 com Python compatível.
-  - Antes de afirmar suporte ao mínimo 2024.11.0 atualmente presente em hacs.json, testar esse mínimo ou rever a declaração.
-  - Registar avisos de APIs descontinuadas sem os apresentar como falhas físicas do aparelho.
-- **Código/documentação:** `hacs.json`, `README.md`, `tests/ha_localonly_smoke.py`.
-- **Evidência existente:** E21.
-- **Verificação:** Parcial.
-- **Lacuna/limitação:** Só 2026.11.0 foi ensaiado nesta sessão. O mínimo HACS 2024.11.0 não foi validado. Avisos climate existentes ficam no RP-004.
+  - Declarar 2026.11.0 como mínimo em hacs.json e executar o smoke LAN e os testes climate com Python compatível.
+  - Exercitar também o patch estável 2026.11 fixado na matriz CI, mantendo evidência por versão.
+  - Não emitir avisos das propriedades climate antigas; o mínimo e a matriz não equivalem a compatibilidade física.
+- **Código/documentação:** `hacs.json`, `README.md`, `tests/ha_localonly_smoke.py`, `tests/ha_climate_compat.py`, `.github/workflows/telemetry-tests.yaml`.
+- **Evidência existente:** E21, E25, E26, E27.
+- **Verificação:** Automatizada em Home Assistant 2026.11.0 e 2026.11.1; CI do SHA exato a confirmar na entrega.
+- **Lacuna/limitação:** O suporte anterior a 2026.11.0 foi retirado da declaração, não validado retroativamente. Não se promete suporte a versões futuras sem ensaio nem validação física.
 
 ### RNF-002 — Ciclo assíncrono sem tarefas infinitas de arranque
 - **Prioridade:** P0.
@@ -485,7 +486,51 @@ Inclui configuração/opções, migração, TCP local, seleção de codec, ciclo
 - **Lacuna/limitação:** O store privado e plaintext estão documentados; a recomendação explícita de não expor a porta e uma avaliação de ameaças completa ainda não foram formalizadas. Requisito derivado, sujeito a aprovação.
 
 
-## 4. Lacunas e propostas — não implementadas
+### RNF-008 — Gates estáticos de distribuição Marketplace
+- **Prioridade:** P1.
+- **Origem:** DEC-04 + regras oficiais de publicação.
+- **Estado da implementação:** Implementado.
+- **Requisito:** Verificar a estrutura/metadados do candidato por análise estática sem importar ou executar o produto, distinguindo política do projeto de requisitos gerais do Marketplace.
+- **Critérios de aceitação:**
+  - Verificar hacs.json, mínimo 2026.11.0, uma integração, domínio estável, manifest/versão, HTTPS, codeowners, flow, categoria conhecida e imagens 256/512.
+  - Verificar textos de configuração en/pt/pl e fallback inglês sem obrigar tradução completa das entidades em todas as línguas.
+  - Usar os marcadores oficiais ha-marketplace no README e distinguir primeira instalação, atualização e release ainda não publicada.
+  - Rejeitar fixtures negativas e executar também o checker sobre a árvore real no CI; não tratar o checker como certificação de segurança ou de catálogo.
+- **Código/documentação:** `tests/check_marketplace.py`, `tests/test_marketplace_metadata.py`, `hacs.json`, `README.md`, `docs/marketplace.md`, `.github/workflows/telemetry-tests.yaml`.
+- **Evidência existente:** E28, E29, E30, E31.
+- **Verificação:** Automatizada em fixtures negativas e na árvore do candidato.
+- **Lacuna/limitação:** AST/JSON/cabeçalhos PNG não provam toda a tradução dinâmica, rendering, aceitação no catálogo ou compatibilidade física. A categoria e os marcadores são opções de política do projeto, não bloqueios universais da plataforma.
+
+### RNF-009 — Transações Marketplace preservam dados externos
+- **Prioridade:** P0.
+- **Origem:** DEC-04 + regras de instalação Marketplace.
+- **Estado da implementação:** Implementado.
+- **Requisito:** Exercitar os mecanismos reais de instalação/atualização/rollback do Marketplace com entrega local explícita do candidato, sem apagar identidade ou dados fora da pasta da integração.
+- **Critérios de aceitação:**
+  - Instalar e atualizar os ficheiros atuais pelo IntegrationRepository real, retirando ficheiros obsoletos e preservando ConfigEntry/Store e histórico-fixture externos.
+  - Restaurar byte a byte a instalação anterior quando o manifest escrito está ausente, sem versão, com versão inválida ou domínio discordante; limpar uma primeira instalação falhada.
+  - Recusar outro repositório dono do mesmo domínio e alterações de domínio antes de substituir ficheiros; não contornar a proteção apagando entradas.
+  - Bloquear DNS/ligações e recusar pedidos fora da fixture de distribuição; verificar hashes do core instalado inalterados.
+- **Código/documentação:** `tests/ha_marketplace_smoke.py`, `docs/marketplace.md`, `custom_components/haier_smartair2/packet_history.py`.
+- **Evidência existente:** E32, E33, E34, E35, E36.
+- **Verificação:** Automatizada no Marketplace real 2026.11.0 e 2026.11.1, com entrega substituída por fixtures locais.
+- **Lacuna/limitação:** Sem frontend, GitHub/catálogo remoto, recorder ativo ou setup do AC. O SQLite é uma fixture de identidade, não prova de histórico real do recorder. A transferência de gestão upstream→fork continua por ensaiar; a recusa de colisão não a implementa.
+
+### RNF-010 — Publicação coerente e controlada
+- **Prioridade:** P1.
+- **Origem:** DEC-04 + regras oficiais de releases/catálogo.
+- **Estado da implementação:** Parcial.
+- **Requisito:** Distinguir versão preparada, release distribuída e inclusão no catálogo, exigindo autorização e evidência antes de publicar.
+- **Critérios de aceitação:**
+  - Identificar 0.3.0 como candidato não publicado e 0.2.3 como release estável observada; o link normal não seleciona automaticamente a branch candidata.
+  - Antes de publicar, confirmar tag/manifest coincidentes, mínimo suportado, notas de migração/backup e CI verde para o conteúdo exato.
+  - Submeter o catálogo apenas após release e aprovação separada, sem afirmar que HACS/hassfest fazem essa inclusão automaticamente.
+- **Código/documentação:** `README.md`, `docs/marketplace.md`, `docs/adr/0002-marketplace-202611.md`, `tests/check_marketplace.py`.
+- **Evidência existente:** E28, E29.
+- **Verificação:** Gates e documentação preparados; publicação e catálogo pendentes.
+- **Lacuna/limitação:** Não existe release pública 0.3.0 criada por este incremento. Tag/release, submissão ao catálogo, UI real, hardware e merge não foram autorizados nem são substituídos por CI local.
+
+## 4. Propostas e evolução — estado individual explícito
 
 ### RP-001 — Perfil explícito por dispositivo
 - **Prioridade:** P1.
@@ -531,17 +576,17 @@ Inclui configuração/opções, migração, TCP local, seleção de codec, ciclo
 
 ### RP-004 — Atualização das APIs climate descontinuadas
 - **Prioridade:** P2.
-- **Origem:** Avisos do smoke Home Assistant.
-- **Estado da implementação:** Pendente.
-- **Requisito:** Planear a migração das propriedades climate descontinuadas antes das versões de remoção anunciadas pelo framework.
+- **Origem:** DEC-04 + avisos do smoke Home Assistant.
+- **Estado da implementação:** Implementado.
+- **Requisito:** Migrar as propriedades climate descontinuadas para a API native sem alterar a unidade do dispositivo ou a identidade.
 - **Critérios de aceitação:**
-  - Substituir propriedades antigas pelas variantes native adequadas sem mudar unidades ou identidade.
-  - Executar a matriz de versões suportadas e verificar leituras e serviços.
-  - Não suprimir avisos no teste para fingir conformidade.
-- **Código/documentação:** `custom_components/haier_smartair2/climate.py`, `tests/ha_localonly_smoke.py`.
-- **Evidência existente:** E21.
-- **Verificação:** Aviso observado; correção pendente.
-- **Lacuna/limitação:** O smoke atual emite avisos para remoção em Home Assistant 2027.11; estes avisos já existiam e não foram corrigidos.
+  - Usar native_current_temperature, native_target_temperature e _attr_native_temperature_unit sem adaptar pelos membros legados.
+  - Preservar leituras nativas em Celsius e conversão de estados/comandos pelo framework em Celsius/Fahrenheit.
+  - Rejeitar pedidos de temperatura fora dos limites antes do comando; não suprimir os avisos para fingir conformidade.
+- **Código/documentação:** `custom_components/haier_smartair2/climate.py`, `tests/ha_climate_compat.py`, `tests/ha_localonly_smoke.py`.
+- **Evidência existente:** E25, E26, E27.
+- **Verificação:** Automatizada em framework real; registo de entidade, estado e service bus.
+- **Lacuna/limitação:** O coordenador/dispositivo do teste climate é uma fixture; não confirma efeitos físicos nem corrige RP-002/RP-003. O mínimo suportado é agora 2026.11.0.
 
 ### RP-005 — Evitar o mesmo dispositivo em entradas diferentes
 - **Prioridade:** P2.
@@ -561,7 +606,7 @@ Inclui configuração/opções, migração, TCP local, seleção de codec, ciclo
 
 ### 5.1 Verificação automática já executada
 
-Na validação local-only inicial foram executados 20 casos unitários distintos: sete testes originais e treze do worker isolado. Nesse snapshot, `unittest discover` apresentava oito casos de topo porque um deles executa o worker como subprocesso; não somar novamente esse wrapper para inflacionar o total. A suite foi entretanto ampliada com a auditoria histórica e o verificador de rastreabilidade; os totais e comandos atuais constam de `docs/evidence/verification-local.json` e do CI do commit do PR. Os testes históricos têm finalidade forense e são contabilizados separadamente dos testes do produto atual.
+Na validação local-only inicial foram executados 20 casos unitários distintos: sete testes originais e treze do worker isolado. Nesse snapshot, `unittest discover` apresentava oito casos de topo porque um deles executa o worker como subprocesso; não somar novamente esse wrapper para inflacionar o total. A suite foi entretanto ampliada com a auditoria histórica e o verificador de rastreabilidade; os totais do snapshot local-only constam de `docs/evidence/verification-local.json`. O incremento Marketplace tem relatório separado em `docs/evidence/verification-marketplace.json` e CI do seu próprio commit. Os testes históricos têm finalidade forense e são contabilizados separadamente dos testes do produto atual.
 O smoke E21 com Home Assistant 2026.11.0 instanciou 29 entidades, confirmou identidade climate e efetuou polling/comando/unload com um servidor TCP em loopback, sem imports/ligações cloud observados nos caminhos protegidos. **Não é um arranque integral de uma instalação real:** forwarding/unload de plataformas são substituídos no harness e as entidades são recolhidas em memória. Não demonstra registo completo de entidades, UI, dashboards, automações ou hardware físico.
 Compilação, Ruff (seleção F) e diff --check passaram. Estes resultados são evidência da árvore ensaiada; alterações posteriores exigem nova execução.
 
@@ -569,7 +614,10 @@ Compilação, Ruff (seleção F) e diff --check passaram. Estes resultados são 
 python -m compileall -q custom_components
 python tests/local_only_worker.py -v
 python -m unittest discover -s tests -v
-python tests/ha_localonly_smoke.py  # processo separado com Home Assistant 2026.11.0 instalado
+python tests/ha_localonly_smoke.py  # processo separado com Home Assistant >= 2026.11
+python tests/ha_climate_compat.py -v
+python tests/check_marketplace.py
+python tests/ha_marketplace_smoke.py
 ruff check --select F custom_components tests
 git diff HEAD --check
 ```
@@ -581,7 +629,7 @@ git diff HEAD --check
 - Lifecycle: stop individual a falhar, unload=False, recuperação real por Options e reload completo (RF-004/RF-005/RF-016).
 - Controlos: cada método climate, flags, guardas, aletas e restauro; regressões permanentes das falhas RP-002 e RP-003.
 - Persistência: reinício entre processos, eliminação de uma entrada sem afetar outra e rollback real (RF-023/RF-026/RNF-006).
-- Compatibilidade: mínimo Home Assistant anunciado, APIs native e eventual perfil explícito (RNF-001/RP-001/RP-004).
+- Compatibilidade: manter a matriz do mínimo/patch atual em cada revisão; perfil explícito continua pendente (RNF-001/RP-001). A migração native é agora verificada por RP-004.
 
 ### 5.3 Validação física — obrigatória para declarar hardware verificado
 
@@ -610,8 +658,8 @@ Estado de todos os casos abaixo: **não executado nesta sessão**. Responsável 
 - O arranque atual é por entrada: um aparelho configurado que falhe pode impedir o setup dessa entrada; isolamento independente de aparelhos no bootstrap não é um comportamento garantido.
 - O transporte local é plaintext; não foi feita uma auditoria do firmware do módulo nem um ensaio de segurança da rede.
 - O store privado contém identificadores e frames brutos; a anonimização do export não anonimiza backups locais.
-- Mantêm-se o defeito de comandos concorrentes, o tratamento incorreto de hvac_mode combinado e os avisos climate, até implementação e testes das propostas correspondentes.
-- O mínimo 2024.11.0 declarado em hacs.json não foi ensaiado; Home Assistant 2026.11.0 foi o framework utilizado no smoke.
+- Mantêm-se os defeitos de comandos concorrentes e hvac_mode combinado. Os avisos de API climate foram resolvidos no incremento DEC-04; isso não corrige esses controlos.
+- O mínimo anunciado foi elevado de 2024.11.0 não verificado para 2026.11.0; os resultados por versão constam da evidência Marketplace e do CI.
 - Prazos, responsáveis, metas de desempenho/carga e política de suporte a novos modelos: **por definir**, sem valores inventados.
 
 ## 7. Catálogo de evidências e rastreabilidade
@@ -652,6 +700,30 @@ E22/E23 são auditoria do código antigo: passar significa reproduzir o defeito,
 - `README.md`, `docs/compatibility.md` e `docs/protocol-as35.md`: âmbito e limites de evidência.
 - `custom_components/haier_smartair2/`: implementação atual inspecionada, não prova física de funcionamento.
 - `tests/local_only_worker.py`, `tests/test_local_telemetry.py` e `tests/ha_localonly_smoke.py`: testes efetivos identificados acima.
-- Achados da revisão anterior: RP-002/RP-003 foram reproduzidos em sondas; não integram ainda regressões permanentes. Relatos upstream e PRs não são testes desta versão local.
+- Achados da revisão anterior: RP-002/RP-003 foram reproduzidos em sondas e auditorias históricas; não integram ainda regressões do comportamento desejado no produto atual. Relatos upstream e PRs não são testes desta versão local.
 
-**Alterações neste trabalho:** apenas especificação e rastreabilidade; nenhuma correção funcional é aprovada ou implementada por escrever estes requisitos.
+**Âmbito do incremento documental inicial:** apenas especificação e rastreabilidade; escrever esses requisitos não aprovou automaticamente correções funcionais. O incremento posterior DEC-04 foi expressamente autorizado e implementa a API climate e a verificação Marketplace/2026.11 descritas nesta revisão, mantendo as restantes propostas pendentes.
+
+- **E25:** `tests/ha_climate_compat.py::Climate202611Tests.test_00_import_uses_native_temperature_api_without_warnings`.
+
+- **E26:** `tests/ha_climate_compat.py::ClimateRuntimeTests.test_fahrenheit_service_converts_to_native_celsius`.
+
+- **E27:** `tests/ha_climate_compat.py::ClimateRuntimeTests.test_fahrenheit_state_is_converted_once`.
+
+- **E28:** `tests/check_marketplace.py::validate`.
+
+- **E29:** `tests/test_marketplace_metadata.py::MarketplaceMetadataTests.test_official_readme_marker_names`.
+
+- **E30:** `tests/test_marketplace_metadata.py::MarketplaceMetadataTests.test_translations_and_brand_contract`.
+
+- **E31:** `tests/test_marketplace_metadata.py::MarketplaceMetadataTests.test_domain_slug_is_validated_not_just_equal_to_folder`.
+
+- **E32:** `tests/ha_marketplace_smoke.py::MarketplaceTransactionTests.test_install_update_preserves_identity_and_external_history`.
+
+- **E33:** `tests/ha_marketplace_smoke.py::MarketplaceTransactionTests.test_invalid_written_manifest_rolls_back_byte_for_byte`.
+
+- **E34:** `tests/ha_marketplace_smoke.py::MarketplaceTransactionTests.test_same_domain_owner_refused_before_content_or_backup_changes`.
+
+- **E35:** `tests/ha_marketplace_smoke.py::MarketplaceTransactionTests.test_changed_domain_refused_before_file_replacement`.
+
+- **E36:** `tests/ha_marketplace_smoke.py::OfflineGuardTests.test_dns_and_connections_are_denied_without_network`.

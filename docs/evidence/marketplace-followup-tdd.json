@@ -1,0 +1,180 @@
+[
+  {
+    "phase": "RED-official-markers",
+    "exit_code": 1,
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_marketplace_metadata.py",
+      "-k",
+      "official_readme_marker",
+      "-v"
+    ],
+    "stderr": "test_official_readme_marker_names (test_marketplace_metadata.MarketplaceMetadataTests.test_official_readme_marker_names) ... FAIL\n\n======================================================================\nFAIL: test_official_readme_marker_names (test_marketplace_metadata.MarketplaceMetadataTests.test_official_readme_marker_names)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<workspace>/tests/test_marketplace_metadata.py\", line 106, in test_official_readme_marker_names\n    self.assertEqual(self.check(), [])\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [\"README: project installation/release con[193 chars]air'] != []\n\nFirst list contains 3 additional elements.\nFirst extra element 0:\n\"README: project installation/release contract missing '<!-- marketplace:exclude-start -->'\"\n\n+ []\n- [\"README: project installation/release contract missing '<!-- \"\n-  \"marketplace:exclude-start -->'\",\n-  \"README: project installation/release contract missing '<!-- \"\n-  \"marketplace:exclude-end -->'\",\n-  'README: exclusion markers must be one ordered pair']\n\n----------------------------------------------------------------------\nRan 1 test in 0.018s\n\nFAILED (failures=1)\n"
+  },
+  {
+    "phase": "GREEN-official-markers",
+    "exit_code": 0,
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_marketplace_metadata.py",
+      "-k",
+      "official_readme_marker",
+      "-v"
+    ],
+    "stderr": "test_official_readme_marker_names (test_marketplace_metadata.MarketplaceMetadataTests.test_official_readme_marker_names) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.027s\n\nOK\n"
+  },
+  {
+    "phase": "RED-partial-locale",
+    "exit_code": 1,
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_marketplace_metadata.py",
+      "-k",
+      "partial_entity_locale",
+      "-v"
+    ],
+    "stderr": "test_partial_entity_locale_uses_complete_english_fallback (test_marketplace_metadata.MarketplaceMetadataTests.test_partial_entity_locale_uses_complete_english_fallback) ... FAIL\n\n======================================================================\nFAIL: test_partial_entity_locale_uses_complete_english_fallback (test_marketplace_metadata.MarketplaceMetadataTests.test_partial_entity_locale_uses_complete_english_fallback)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<workspace>/tests/test_marketplace_metadata.py\", line 113, in test_partial_entity_locale_uses_complete_english_fallback\n    self.assertEqual(self.check(), [])\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: ['translations: pt/pl key parity with complete en required'] != []\n\nFirst list contains 1 additional elements.\nFirst extra element 0:\n'translations: pt/pl key parity with complete en required'\n\n- ['translations: pt/pl key parity with complete en required']\n+ []\n\n----------------------------------------------------------------------\nRan 1 test in 0.019s\n\nFAILED (failures=1)\n"
+  },
+  {
+    "phase": "GREEN-partial-locale",
+    "exit_code": 0,
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_marketplace_metadata.py",
+      "-k",
+      "partial_entity_locale",
+      "-v"
+    ],
+    "stderr": "test_partial_entity_locale_uses_complete_english_fallback (test_marketplace_metadata.MarketplaceMetadataTests.test_partial_entity_locale_uses_complete_english_fallback) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.019s\n\nOK\n"
+  },
+  {
+    "phase": "RED-progress-external",
+    "exit_code": 1,
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_marketplace_metadata.py",
+      "-k",
+      "progress_done_and_external",
+      "-v"
+    ],
+    "stderr": "test_progress_done_and_external_flow_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_progress_done_and_external_flow_contract) ... FAIL\n\n======================================================================\nFAIL: test_progress_done_and_external_flow_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_progress_done_and_external_flow_contract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<workspace>/tests/test_marketplace_metadata.py\", line 119, in test_progress_done_and_external_flow_contract\n    self.assertEqual(self.check(), [])\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: ['flow: explicit nonempty step_id required'] != []\n\nFirst list contains 1 additional elements.\nFirst extra element 0:\n'flow: explicit nonempty step_id required'\n\n- ['flow: explicit nonempty step_id required']\n+ []\n\n----------------------------------------------------------------------\nRan 1 test in 0.019s\n\nFAILED (failures=1)\n"
+  },
+  {
+    "phase": "GREEN-progress-external-and-suite",
+    "exit_code": 0,
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_marketplace_metadata.py",
+      "-v"
+    ],
+    "stderr": "test_explicit_step_id_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_explicit_step_id_contract) ... ok\ntest_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ... ok\ntest_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... ok\ntest_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash) ... ok\ntest_native_climate_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_native_climate_contract) ... ok\ntest_official_readme_marker_names (test_marketplace_metadata.MarketplaceMetadataTests.test_official_readme_marker_names) ... ok\ntest_partial_entity_locale_uses_complete_english_fallback (test_marketplace_metadata.MarketplaceMetadataTests.test_partial_entity_locale_uses_complete_english_fallback) ... ok\ntest_progress_done_and_external_flow_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_progress_done_and_external_flow_contract) ... ok\ntest_readme_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_readme_contract) ... ok\ntest_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok\ntest_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) ... ok\n\n----------------------------------------------------------------------\nRan 11 tests in 0.302s\n\nOK\n"
+  },
+  {
+    "phase": "RED-current-candidate-not-baseline",
+    "exit_code": 1,
+    "command": [
+      "<ha-min-env>/bin/python",
+      "-B",
+      "tests/ha_marketplace_smoke.py",
+      "MarketplaceTransactionTests.test_install_update_preserves_identity_and_external_history"
+    ],
+    "stderr": "test_install_update_preserves_identity_and_external_history (__main__.MarketplaceTransactionTests.test_install_update_preserves_identity_and_external_history) ... We found a custom integration haier_smartair2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant\nFAIL\n\n======================================================================\nFAIL: test_install_update_preserves_identity_and_external_history (__main__.MarketplaceTransactionTests.test_install_update_preserves_identity_and_external_history)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/runners.py\", line 128, in run\n    return self._loop.run_until_complete(task)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/asyncio/base_events.py\", line 720, in run_until_complete\n    return future.result()\n           ~~~~~~~~~~~~~^^\n  File \"<workspace>/tests/ha_marketplace_smoke.py\", line 223, in test_install_update_preserves_identity_and_external_history\n    self.assertEqual((self.target / \"climate.py\").read_bytes(),\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                     (ROOT / \"custom_components\" / DOMAIN / \"climate.py\").read_bytes())\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: b'\"\"\"[1783 chars]attr_temperature_unit = UnitOfTemperature.CELS[5109 chars]e)\\n' != b'\"\"\"[1783 chars]attr_native_temperature_unit = UnitOfTemperatu[5130 chars]e)\\n'\n\n----------------------------------------------------------------------\nRan 1 test in 0.091s\n\nFAILED (failures=1)\n",
+    "stdout": "\nHA 2026.11.0; readonly candidate 2b4412d; git-archive sha256=ab850628e1f8098f428d6f092655843f5d9944cc25dd04d20527934572ca0590\nreadonly core sha256 5fb3d79e5f2411f0c6172066e70af7bcb45169bc75233788586a09389dac1b72 <ha-min-env>/lib/python3.14/site-packages/homeassistant/components/marketplace/repositories/base.py\nreadonly core sha256 b18f554b8b7c78b327eb2485aeac5fe7d882a59e21db8b3a179892cb7e241ddc <ha-min-env>/lib/python3.14/site-packages/homeassistant/components/marketplace/repositories/integration.py\n"
+  },
+  {
+    "phase": "GREEN-current-candidate",
+    "exit_code": 0,
+    "command": [
+      "<ha-min-env>/bin/python",
+      "-B",
+      "-W",
+      "error::ResourceWarning",
+      "tests/ha_marketplace_smoke.py"
+    ],
+    "stderr": "test_only_explicit_local_delivery_keys_are_served (__main__.FixtureBoundaryTests.test_only_explicit_local_delivery_keys_are_served) ... ok\ntest_changed_domain_refused_before_file_replacement (__main__.MarketplaceTransactionTests.test_changed_domain_refused_before_file_replacement) ... We found a custom integration haier_smartair2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant\nok\ntest_install_update_preserves_identity_and_external_history (__main__.MarketplaceTransactionTests.test_install_update_preserves_identity_and_external_history) ... We found a custom integration haier_smartair2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant\nWe found a custom integration haier_smartair2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant\nok\ntest_invalid_first_install_leaves_no_partial_directory (__main__.MarketplaceTransactionTests.test_invalid_first_install_leaves_no_partial_directory) ... ok\ntest_invalid_written_manifest_rolls_back_byte_for_byte (__main__.MarketplaceTransactionTests.test_invalid_written_manifest_rolls_back_byte_for_byte) ... We found a custom integration haier_smartair2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant\nok\ntest_same_domain_owner_refused_before_content_or_backup_changes (__main__.MarketplaceTransactionTests.test_same_domain_owner_refused_before_content_or_backup_changes) ... We found a custom integration haier_smartair2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant\nok\ntest_dns_and_connections_are_denied_without_network (__main__.OfflineGuardTests.test_dns_and_connections_are_denied_without_network) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.634s\n\nOK\n",
+    "stdout": "\nHA 2026.11.0; readonly working-tree candidate; source-map sha256=1ff68355dc07cd3eccbb2aa4ef22982121a6a7f67ce0cc4ead00666040633e3e\nreadonly core sha256 5fb3d79e5f2411f0c6172066e70af7bcb45169bc75233788586a09389dac1b72 <ha-min-env>/lib/python3.14/site-packages/homeassistant/components/marketplace/repositories/base.py\nreadonly core sha256 b18f554b8b7c78b327eb2485aeac5fe7d882a59e21db8b3a179892cb7e241ddc <ha-min-env>/lib/python3.14/site-packages/homeassistant/components/marketplace/repositories/integration.py\n"
+  },
+  {
+    "phase": "GREEN-current-candidate",
+    "exit_code": 0,
+    "command": [
+      "<ha-patch-env>/bin/python",
+      "-B",
+      "-W",
+      "error::ResourceWarning",
+      "tests/ha_marketplace_smoke.py"
+    ],
+    "stderr": "test_only_explicit_local_delivery_keys_are_served (__main__.FixtureBoundaryTests.test_only_explicit_local_delivery_keys_are_served) ... ok\ntest_changed_domain_refused_before_file_replacement (__main__.MarketplaceTransactionTests.test_changed_domain_refused_before_file_replacement) ... We found a custom integration haier_smartair2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant\nok\ntest_install_update_preserves_identity_and_external_history (__main__.MarketplaceTransactionTests.test_install_update_preserves_identity_and_external_history) ... We found a custom integration haier_smartair2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant\nWe found a custom integration haier_smartair2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant\nok\ntest_invalid_first_install_leaves_no_partial_directory (__main__.MarketplaceTransactionTests.test_invalid_first_install_leaves_no_partial_directory) ... ok\ntest_invalid_written_manifest_rolls_back_byte_for_byte (__main__.MarketplaceTransactionTests.test_invalid_written_manifest_rolls_back_byte_for_byte) ... We found a custom integration haier_smartair2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant\nok\ntest_same_domain_owner_refused_before_content_or_backup_changes (__main__.MarketplaceTransactionTests.test_same_domain_owner_refused_before_content_or_backup_changes) ... We found a custom integration haier_smartair2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant\nok\ntest_dns_and_connections_are_denied_without_network (__main__.OfflineGuardTests.test_dns_and_connections_are_denied_without_network) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.638s\n\nOK\n",
+    "stdout": "\nHA 2026.11.1; readonly working-tree candidate; source-map sha256=1ff68355dc07cd3eccbb2aa4ef22982121a6a7f67ce0cc4ead00666040633e3e\nreadonly core sha256 41c930a3d111dce96cbf3301e51837051a94cf42c1a3c9f0b70d6efb64de97ba <ha-patch-env>/lib/python3.14/site-packages/homeassistant/components/marketplace/repositories/base.py\nreadonly core sha256 b18f554b8b7c78b327eb2485aeac5fe7d882a59e21db8b3a179892cb7e241ddc <ha-patch-env>/lib/python3.14/site-packages/homeassistant/components/marketplace/repositories/integration.py\n"
+  },
+  {
+    "phase": "RED-domain-slug",
+    "exit_code": 1,
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_marketplace_metadata.py",
+      "-k",
+      "domain_slug",
+      "-v"
+    ],
+    "stderr": "test_domain_slug_is_validated_not_just_equal_to_folder (test_marketplace_metadata.MarketplaceMetadataTests.test_domain_slug_is_validated_not_just_equal_to_folder) ... FAIL\n\n======================================================================\nFAIL: test_domain_slug_is_validated_not_just_equal_to_folder (test_marketplace_metadata.MarketplaceMetadataTests.test_domain_slug_is_validated_not_just_equal_to_folder)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<workspace>/tests/test_marketplace_metadata.py\", line 76, in test_domain_slug_is_validated_not_just_equal_to_folder\n    self.assertTrue(any(\"domain\" in e for e in self.check()))\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 1 test in 0.019s\n\nFAILED (failures=1)\n"
+  },
+  {
+    "phase": "GREEN-domain-slug-and-suite",
+    "exit_code": 0,
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_marketplace_metadata.py",
+      "-v"
+    ],
+    "stderr": "test_domain_slug_is_validated_not_just_equal_to_folder (test_marketplace_metadata.MarketplaceMetadataTests.test_domain_slug_is_validated_not_just_equal_to_folder) ... ok\ntest_explicit_step_id_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_explicit_step_id_contract) ... ok\ntest_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ... ok\ntest_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... ok\ntest_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash) ... ok\ntest_native_climate_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_native_climate_contract) ... ok\ntest_official_readme_marker_names (test_marketplace_metadata.MarketplaceMetadataTests.test_official_readme_marker_names) ... ok\ntest_partial_entity_locale_uses_complete_english_fallback (test_marketplace_metadata.MarketplaceMetadataTests.test_partial_entity_locale_uses_complete_english_fallback) ... ok\ntest_progress_done_and_external_flow_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_progress_done_and_external_flow_contract) ... ok\ntest_readme_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_readme_contract) ... ok\ntest_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok\ntest_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.324s\n\nOK\n"
+  }
+]

@@ -1,6 +1,6 @@
 """Framework-level offline smoke check; run separately from stub unit tests.
 
-Requires Home Assistant 2026.11.0. Uses a loopback AC simulator, never hardware.
+Requires Home Assistant >= 2026.11. Uses a loopback AC simulator, never hardware.
 Run: python tests/ha_localonly_smoke.py
 """
 from __future__ import annotations
@@ -19,6 +19,7 @@ from unittest.mock import AsyncMock, patch
 from homeassistant import loader
 from homeassistant.config_entries import ConfigEntries, ConfigEntry, ConfigEntryState
 from homeassistant.core import HomeAssistant
+from homeassistant.const import __version__ as HA_VERSION
 from homeassistant.helpers import device_registry as dr, frame
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -133,7 +134,7 @@ async def main():
             await coord.async_apply(health=True)
             assert await integration.async_unload_entry(hass, entry)
         await hass.async_stop(force=True)
-        result = {"home_assistant": "2026.11.0", "migration_preserves_entry_id": True, "credentials_removed": True, "config_fields": sorted(fields), "local_setup": True, "device_name": coord.dev_name, "entity_count": len(entities), "climate_unique_id": climate.unique_id, "poll_and_command_frames": len(polls), "network_connections": [list(address) for address in network_attempts], "cloud_imports_or_connections": 0, "unload": True}
+        result = {"home_assistant": HA_VERSION, "migration_preserves_entry_id": True, "credentials_removed": True, "config_fields": sorted(fields), "local_setup": True, "device_name": coord.dev_name, "entity_count": len(entities), "climate_unique_id": climate.unique_id, "poll_and_command_frames": len(polls), "network_connections": [list(address) for address in network_attempts], "cloud_imports_or_connections": 0, "unload": True}
     server.close()
     await server.wait_closed()
     for writer in peers:

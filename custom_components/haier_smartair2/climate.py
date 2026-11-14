@@ -64,7 +64,7 @@ class HaierClimate(CoordinatorEntity[HaierCoordinator], ClimateEntity):
     _attr_has_entity_name = True
     _attr_name = None
     _attr_translation_key = "ac"
-    _attr_temperature_unit = UnitOfTemperature.CELSIUS
+    _attr_native_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_target_temperature_step = TEMP_STEP
     _attr_min_temp = MIN_TEMP
     _attr_max_temp = MAX_TEMP
@@ -113,11 +113,11 @@ class HaierClimate(CoordinatorEntity[HaierCoordinator], ClimateEntity):
         return super().available and self.coordinator.data is not None
 
     @property
-    def current_temperature(self) -> float | None:
+    def native_current_temperature(self) -> float | None:
         return getattr(self.coordinator.data, "current_temp", None)
 
     @property
-    def target_temperature(self) -> float | None:
+    def native_target_temperature(self) -> float | None:
         return getattr(self.coordinator.data, "target_temp", None)
 
     @property

@@ -4,7 +4,7 @@
 
 Este registo aplica o ciclo de desenvolvimento à mudança de integração híbrida para **exclusivamente local**, sem transformar um PR em rascunho numa release aprovada. A base analisada é `5b77363a05225311fb85ef89eb16136b26440acd`; as alterações são preparadas na branch `feat/local-only`. A `main` não deve ser alterada por este processo antes de revisão e aprovação de merge.
 
-O objetivo local-only e a obrigação de explicitar a compatibilidade desconhecida foram decididos pelo utilizador. As propostas de perfil explícito, correção dos comandos concorrentes, serviço climate combinado e evolução de APIs continuam propostas/pendências: incluí-las na especificação não é implementá-las nem aprovar silenciosamente novo escopo.
+O objetivo local-only e a obrigação de explicitar a compatibilidade desconhecida foram decididos pelo utilizador. As propostas de perfil explícito, correção dos comandos concorrentes e serviço climate combinado continuam pendências: incluí-las na especificação não é implementá-las nem aprovar silenciosamente novo escopo. A evolução da API climate foi posteriormente autorizada no incremento Marketplace/2026.11 descrito abaixo.
 
 ## Fase 1 — Análise do problema e baseline
 
@@ -91,3 +91,21 @@ Para manutenção: relacionar problemas novos com requisitos/achados; recolher c
 - Simulador/frames conhecidos ≠ validação física ou compatibilidade universal.
 - Remover a cloud ≠ corrigir uma biblioteca cloud ainda disponível para utilização.
 - Avisar da heurística ≠ implementar identificação robusta/perfis por dispositivo.
+
+## Incremento aprovado — Marketplace e Home Assistant 2026.11
+
+**Base imutável:** `feat/local-only`, commit `2b4412d8e9ccc905e034cec677b3bcbdff9f5c26`. **Branch de trabalho:** `chore/marketplace-ha-2026.11`; não alterar `main` nem a branch base. A análise antecedente distinguiu regras de instalação, catálogo e APIs; o utilizador autorizou implementar as lacunas, não publicar uma release.
+
+**Análise/requisitos:** rever regras oficiais de publicação e os anúncios das APIs; introduzir DEC-04 e rastreabilidade para os checks Marketplace. Manter os testes forenses e evidência inicial sem substituir os resultados antigos por execuções novas.
+
+**Desenho:** [ADR-002](adr/0002-marketplace-202611.md). Mínimo declarado 2026.11.0; matriz com 2026.11.0 e patch estável 2026.11.1 fixado após consulta ao PyPI. A versão preparada continua 0.3.0 sem release pública. Retornos booleanos permanecem válidos para custom integrations e não são alterados por confusão com requisitos do core.
+
+**Desenvolvimento/TDD:** a regressão de import climate falhou pelos três avisos de propriedades descontinuadas; a alteração mínima para `native_*` passou sem suprimir logs. Acrescentar provas reais de estados e serviços Celsius/Fahrenheit, valores desconhecidos, limites e identidade. O coordenador/dispositivo dessas provas é uma fixture; não houve comandos a um AC físico.
+
+**Verificação:** além das suites existentes, executar o checker Marketplace e testes de fixtures negativas, registo/máquina de estados/service bus climate reais e o harness de transações Marketplace, em processos separados dos testes que substituem módulos Home Assistant. As fixtures de distribuição não representam releases ou respostas reais do GitHub. Ler o alcance e gates em [marketplace.md](marketplace.md).
+
+**Evidência do incremento:** `docs/evidence/marketplace-climate-tdd.json`, `docs/evidence/marketplace-static-tdd.log` e `docs/evidence/verification-marketplace.json`. O último deve ser gerado da árvore final ensaiada; os ficheiros `verification-local.json` e `review-final.json` continuam a documentar o incremento anterior, não o estado atual.
+
+**Revisão/entrega:** revisão independente antes de commit, envio apenas da branch de trabalho e PR em rascunho com base `feat/local-only`, para que o diff do incremento não repita as alterações local-only. Confirmar leitura remota de SHA/base/head, CI do novo conteúdo e preservação das branches base. Não mergear, criar tag/release, submeter catálogo nem instalar na instância do utilizador sem autorização separada.
+
+**Validação e manutenção:** continuar com ensaio físico e aceitação pendentes; os mecanismos locais de instalação não provam UI/GitHub remoto, migração automática do gestor original para o fork nem conformidade de todos os requisitos. RP-002/RP-003 permanecem visíveis. Acompanhar deprecações e voltar a testar os patches suportados em cada revisão.
