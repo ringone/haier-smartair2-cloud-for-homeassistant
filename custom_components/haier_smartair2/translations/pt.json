@@ -25,16 +25,16 @@
         "name": "Humidade"
       },
       "indoor_coil_temperature": {
-        "name": "Temperatura da bateria interior"
+        "name": "Temperatura do permutador interior"
       },
       "outdoor_coil_temperature": {
-        "name": "Temperatura da bateria exterior"
+        "name": "Temperatura do permutador exterior"
       },
       "outdoor_in_temperature": {
-        "name": "Temperatura de admissão exterior"
+        "name": "Temperatura de entrada da unidade exterior"
       },
       "outdoor_out_temperature": {
-        "name": "Temperatura de descarga exterior"
+        "name": "Temperatura de saída da unidade exterior"
       },
       "defrost_temperature": {
         "name": "Temperatura de descongelação"
@@ -43,13 +43,13 @@
         "name": "Frequência do compressor"
       },
       "compressor_current": {
-        "name": "Corrente do compressor"
+        "name": "Corrente elétrica do compressor"
       },
       "power": {
-        "name": "Potência"
+        "name": "Potência elétrica"
       },
       "expansion_valve": {
-        "name": "Válvula de expansão"
+        "name": "Válvula de expansão (valor bruto)"
       },
       "error_code": {
         "name": "Código de erro"
@@ -58,8 +58,8 @@
         "name": "Origem do comando",
         "state": {
           "other": "Outro",
-          "remote": "Comando",
-          "panel": "Painel",
+          "remote": "Comando à distância",
+          "panel": "Painel do aparelho",
           "wifi": "Wi-Fi"
         }
       }
@@ -69,16 +69,16 @@
         "name": "Compressor em funcionamento"
       },
       "indoor_fan": {
-        "name": "Ventoinha interior em funcionamento"
+        "name": "Ventilador interior em funcionamento"
       },
       "outdoor_fan": {
-        "name": "Ventoinha exterior em funcionamento"
+        "name": "Ventilador exterior em funcionamento"
       },
       "defrost": {
         "name": "Descongelação ativa"
       },
       "four_way_valve": {
-        "name": "Válvula de 4 vias"
+        "name": "Válvula de quatro vias"
       },
       "indoor_electric_heater": {
         "name": "Resistência elétrica interior em funcionamento"
@@ -92,16 +92,16 @@
     },
     "switch": {
       "health": {
-        "name": "Saúde"
+        "name": "Função Health"
       },
       "display": {
-        "name": "Luz do painel"
+        "name": "Iluminação do painel"
       },
       "self_clean": {
-        "name": "Limpeza automática"
+        "name": "Autolimpeza"
       },
       "lock_remote": {
-        "name": "Travar o comando"
+        "name": "Bloqueio do comando à distância"
       },
       "electric_heat": {
         "name": "Aquecimento elétrico"
@@ -109,12 +109,12 @@
     },
     "select": {
       "vertical_swing": {
-        "name": "Direção vertical",
+        "name": "Direção vertical do fluxo de ar",
         "state": {
-          "auto": "Oscilar",
-          "health_up": "Fluxo saudável para cima",
+          "auto": "Oscilação automática",
+          "health_up": "Posição Health para cima",
           "max_up": "Posição mais alta",
-          "health_down": "Fluxo saudável para baixo",
+          "health_down": "Posição Health para baixo",
           "up": "Para cima",
           "center": "Ao centro",
           "down": "Para baixo",
@@ -127,15 +127,15 @@
         "state_attributes": {
           "fan_mode": {
             "state": {
-              "quiet": "Silêncio",
+              "quiet": "Silencioso",
               "turbo": "Turbo"
             }
           },
           "preset_mode": {
             "state": {
-              "none": "Nenhum",
-              "boost": "Potência",
-              "sleep": "Sono"
+              "none": "Sem predefinição",
+              "boost": "Turbo",
+              "sleep": "Modo noturno"
             }
           }
         }

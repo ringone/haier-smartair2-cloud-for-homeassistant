@@ -1,6 +1,17 @@
 # Changelog
 
-## 0.3.0 — unpublished candidate
+## Unreleased development
+
+- Review European Portuguese entity labels and options, using clearer terms such as indoor/outdoor heat exchanger, remote-control lock, self-clean and night mode.
+- Keep Health as a function name without inventing purification or health claims; retain uncertainty about probes and raw values.
+- Clarify RF-008: improving default labels is allowed, while existing identifiers and user-chosen names must be preserved.
+- Add text regressions and real Home Assistant naming/registry checks to both pinned framework versions.
+
+The published version remains [0.3.0](https://github.com/ringone/haier-smartair2-cloud-for-homeassistant/releases/tag/0.3.0), released on 2026-11-17. These translation changes are not part of that tag and do not publish a new release.
+
+## Historical 0.3.0 candidate preparation
+
+The following preparation notes are retained from the pre-publication development snapshot; their unpublished status describes that earlier phase, not the current GitHub release.
 
 The local-only and Marketplace/2026.11 changes are prepared for review. There is no published 0.3.0 release or catalogue submission.
 

@@ -5,7 +5,8 @@
 - [Installation, migration and rollback](installation.md): prerequisites, Marketplace/manual procedures, recovery of existing entries and repository-ownership limits.
 - [Compatibility and evidence](compatibility.md): documented AC/module combination, firmware uncertainty, V2/V3 heuristic and unsupported modules.
 - [AS35 protocol notes](protocol-as35.md): captures, controls, telemetry conversions and fields with unknown physical meaning.
-- [Version history](../CHANGELOG.md): prepared changes and earlier versions. The 0.3.0 candidate is not a published release.
+- [European Portuguese entity names](entity-names-pt.md): reviewed labels/options, their limits, and preservation of existing identifiers and user names. These development changes are not yet in a published release.
+- [Version history](../CHANGELOG.md): published 0.3.0, unreleased development changes and clearly labelled historical candidate notes.
 
 ## Requirements, decisions and verification
 
@@ -44,6 +45,7 @@ In an isolated environment with actual Home Assistant installed, run each framew
 ```sh
 python -B -W error::ResourceWarning tests/ha_localonly_smoke.py
 python -B -W error::ResourceWarning tests/ha_climate_compat.py
+python -B -W error::ResourceWarning tests/ha_entity_names_compat.py
 python -B -W error::ResourceWarning tests/ha_marketplace_smoke.py
 python -m pip check
 ```
