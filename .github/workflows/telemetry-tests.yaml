@@ -39,4 +39,5 @@ jobs:
       - run: python -m pip install "homeassistant==${{ matrix.homeassistant }}"
       - run: python tests/ha_localonly_smoke.py
       - run: python tests/ha_climate_compat.py
+      - run: python tests/ha_entity_names_compat.py
       - run: python tests/ha_marketplace_smoke.py

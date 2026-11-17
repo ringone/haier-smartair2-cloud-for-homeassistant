@@ -1,0 +1,153 @@
+{
+  "verified_at_utc": "2026-11-17T16:41:27.717190+00:00",
+  "base_branch": "develop",
+  "base_commit": "bd4d653254d5d4ce364c9fb7232395d7f8e9275d",
+  "source_snapshot": {
+    "algorithm": "SHA256 over sorted indexed file path + NUL + SHA256(indexed blob) + newline",
+    "sha256": "42208d7dcb60aa843880768c401db19c6464ac5ee5c4845e0a1eb67a2c1d579f",
+    "file_count": 69,
+    "excluded": [
+      "docs/evidence/verification-pt-entity-labels.json"
+    ]
+  },
+  "translation": {
+    "entity_text_values_reviewed": 45,
+    "entity_text_values_changed": 24,
+    "entity_translation_keys_unchanged": true,
+    "configuration_and_options_unchanged": true
+  },
+  "tdd": {
+    "command": "python -m unittest discover -s tests -p test_pt_entity_translations.py -v",
+    "red_exit_code": 1,
+    "red_failed_subcases": 24,
+    "red_log_sha256": "42a960ce8b72634cab4a6970396d71492022fd1fd087d562dc0bd8a022e352f0",
+    "green_exit_code": 0,
+    "green_log_sha256": "655ec080b70f35ffd4e93b696dd86c9f7e1ec2af6f2d0d9ba93ac79fdee4b838"
+  },
+  "test_counts": {
+    "unittest_discovery_entries": 48,
+    "isolated_worker_cases": 13,
+    "distinct_unit_cases": 60,
+    "framework_cases_per_version": 19,
+    "naming_registry_cases_per_version": 4,
+    "synthetic_entity_identities": 31,
+    "requirement_ids": 41,
+    "evidence_mappings": 40
+  },
+  "checks": {
+    "unit": {
+      "exit_code": 0,
+      "log_sha256": "18bae82fe3230d3e72835355cd3c27e3482a50e9926d83ef911faf06b284344d"
+    },
+    "traceability": {
+      "exit_code": 0,
+      "log_sha256": "416be472a30ed8480a55e29d15d34013ffc319a4b0dc53d364e2faa943784ab7"
+    },
+    "marketplace": {
+      "exit_code": 0,
+      "log_sha256": "9f102d92e727623346092dfd70de6d8d255d7f134ed4c5de9d87fb154da72dd4"
+    },
+    "compile": {
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "whitespace": {
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lint": {
+      "exit_code": 0,
+      "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "framework-2026110": {
+      "exit_code": 0,
+      "cases": [
+        {
+          "script": "tests/ha_localonly_smoke.py",
+          "exit_code": 0,
+          "test_counts": []
+        },
+        {
+          "script": "tests/ha_climate_compat.py",
+          "exit_code": 0,
+          "test_counts": [
+            "8"
+          ]
+        },
+        {
+          "script": "tests/ha_entity_names_compat.py",
+          "exit_code": 0,
+          "test_counts": [
+            "4"
+          ]
+        },
+        {
+          "script": "tests/ha_marketplace_smoke.py",
+          "exit_code": 0,
+          "test_counts": [
+            "7"
+          ]
+        },
+        {
+          "script": "isolated pip check",
+          "exit_code": 0
+        }
+      ],
+      "log_sha256": "8fd6ab5c8b7eeece627b7498e347b1515e1c68cd330da138c88b576970a67c2f"
+    },
+    "framework-2026111": {
+      "exit_code": 0,
+      "cases": [
+        {
+          "script": "tests/ha_localonly_smoke.py",
+          "exit_code": 0,
+          "test_counts": []
+        },
+        {
+          "script": "tests/ha_climate_compat.py",
+          "exit_code": 0,
+          "test_counts": [
+            "8"
+          ]
+        },
+        {
+          "script": "tests/ha_entity_names_compat.py",
+          "exit_code": 0,
+          "test_counts": [
+            "4"
+          ]
+        },
+        {
+          "script": "tests/ha_marketplace_smoke.py",
+          "exit_code": 0,
+          "test_counts": [
+            "7"
+          ]
+        },
+        {
+          "script": "isolated pip check",
+          "exit_code": 0
+        }
+      ],
+      "log_sha256": "75fb5e56fafe6aa5df09ed92f7d40b9e32944c7fc260ec6c35774171fab07048"
+    }
+  },
+  "unchanged": [
+    "runtime Python",
+    "protocol/transport/commands",
+    "manifest",
+    "hacs.json",
+    "English/Polish translations",
+    "configuration/options wording",
+    "technical README",
+    "previous evidence"
+  ],
+  "boundaries": [
+    "Fake V2/V3 coordinators and synthetic pre-upgrade registry inputs",
+    "Real translation/platform/service/registry/config-entry Stores",
+    "Fresh HomeAssistant instance in same process, not process restart",
+    "Language pt at server/registration, not per-user frontend language",
+    "No frontend, recorder, live AC or new hardware compatibility validation",
+    "No merge or release authorized by this receipt"
+  ]
+}

@@ -128,11 +128,12 @@ Inclui configuração/opções, migração, TCP local, seleção de codec, ciclo
 - **Critérios de aceitação:**
   - Manter o domínio haier_smartair2 e, para climate, haier_smartair2_<MAC>.
   - Os restantes unique_id deverão manter os sufixos existentes de cada plataforma; mudar o IP não deverá criar nova identidade.
-  - Reutilizar o nome existente quando disponível, sem apagar name_by_user; usar um nome local estável quando não existir registo.
-- **Código/documentação:** `custom_components/haier_smartair2/__init__.py`, `custom_components/haier_smartair2/climate.py`, `custom_components/haier_smartair2/sensor.py`, `custom_components/haier_smartair2/binary_sensor.py`, `custom_components/haier_smartair2/switch.py`, `custom_components/haier_smartair2/select.py`.
-- **Evidência existente:** E05, E11, E20, E21.
+  - Reutilizar o nome do dispositivo existente quando disponível, sem apagar name_by_user; usar um nome local estável quando não existir registo.
+  - Permitir corrigir os nomes e traduções fornecidos pela integração, preservando unique_id, entity_id existentes, chaves internas e nomes personalizados pelo utilizador.
+- **Código/documentação:** `custom_components/haier_smartair2/__init__.py`, `custom_components/haier_smartair2/climate.py`, `custom_components/haier_smartair2/sensor.py`, `custom_components/haier_smartair2/binary_sensor.py`, `custom_components/haier_smartair2/switch.py`, `custom_components/haier_smartair2/select.py`, `custom_components/haier_smartair2/translations/pt.json`, `tests/test_pt_entity_translations.py`, `tests/ha_entity_names_compat.py`, `docs/entity-names-pt.md`.
+- **Evidência existente:** E05, E11, E20, E21, E37, E38, E39, E40.
 - **Verificação:** Parcial.
-- **Lacuna/limitação:** E21 confirma o unique_id climate e consulta ao registo, mas não testa um reinício completo com todas as entidades previamente registadas. Não exige mudar nomes nem entity_id escolhidos pelo utilizador.
+- **Lacuna/limitação:** Os testes de nomes verificam traduções pt e registos guardados e recarregados numa nova instância Home Assistant, com 31 identidades de coordenadores V2/V3 simulados. Preservam identificadores e nomes personalizados. Usam registos anteriores sintéticos, sem reinício de processo, recorder, frontend ou AC físico. Não autorizam alterar nomes nem entity_id escolhidos pelo utilizador.
 
 ### RF-009 — Seleção limitada de codec
 - **Prioridade:** P0.
@@ -727,3 +728,8 @@ E22/E23 são auditoria do código antigo: passar significa reproduzir o defeito,
 - **E35:** `tests/ha_marketplace_smoke.py::MarketplaceTransactionTests.test_changed_domain_refused_before_file_replacement`.
 
 - **E36:** `tests/ha_marketplace_smoke.py::OfflineGuardTests.test_dns_and_connections_are_denied_without_network`.
+
+- **E37:** `tests/test_pt_entity_translations.py::PortugueseEntityTranslationTests.test_reviewed_pt_pt_labels`.
+- **E38:** `tests/ha_entity_names_compat.py::EntityNamesRegistryTests.test_all_product_ids_current_portuguese_names_and_option_keys`.
+- **E39:** `tests/ha_entity_names_compat.py::EntityNamesRegistryTests.test_legacy_default_names_update_without_changing_persisted_ids`.
+- **E40:** `tests/ha_entity_names_compat.py::EntityNamesRegistryTests.test_user_entity_and_device_names_survive_registry_reload_and_registration`.
