@@ -1,0 +1,22 @@
+{
+  "kind": "retained_evidence_from_earlier_work_in_this_conversation",
+  "base_commit": "5b77363a05225311fb85ef89eb16136b26440acd",
+  "original_execution_timestamp": "not recorded in these original files; do not infer a timestamp from this archive operation",
+  "archived_at_utc": "2026-11-13T22:55:01.654765+00:00",
+  "sources": [
+    {
+      "source_name": "haier-review-probe-results.json",
+      "source_sha256": "9c175d55eae31ea1923a78be50fc6c10eab76df8d964c974863d5f839b42d35f",
+      "archive_path": "docs/evidence/initial-audit-probes.json",
+      "archive_sha256": "9c175d55eae31ea1923a78be50fc6c10eab76df8d964c974863d5f839b42d35f",
+      "sanitization": "none; synthetic examples only"
+    },
+    {
+      "source_name": "haier-localonly-tdd.log",
+      "source_sha256": "f1b52168dc63f39c0e1a4406b7eeae4dbefdc5279dfb022c6eb338f9ae7db9ce",
+      "archive_path": "docs/evidence/initial-local-only-tdd.log",
+      "archive_sha256": "a3caa3b41ba6fb65dac6871199ab89bbab659f62538c50174492bbebc9a1b05f",
+      "sanitization": "repository/runtime absolute path prefixes replaced; trailing layout whitespace normalized; assertion text/results retained"
+    }
+  ]
+}

@@ -2,48 +2,58 @@
   "config": {
     "step": {
       "user": {
-        "title": "Haier SmartAir2",
-        "description": "Inicie sessão com a conta SmartAir2 (Haier). Pode associar cada aparelho a um IP local para controlo direto (formato: MAC:IP, separados por vírgulas). O MAC pode levar dois-pontos.",
+        "title": "Dispositivos locais Haier SmartAir2",
+        "description": "Configure um ou mais dispositivos locais com pares MAC:IPv4, separados por vírgulas. Os endereços MAC podem conter dois-pontos. Use endereços IPv4 fixos ou reservas DHCP. Não é utilizada nenhuma conta nem ligação à Internet. Aviso de compatibilidade: este fork só documenta a combinação AS35TADHRA-TH + MK-QTWIFI-04(B). Não está validado para outros aparelhos, módulos Wi-Fi ou versões de firmware. A seleção automática V2/V3 é uma heurística, não uma identificação garantida.",
         "data": {
-          "username": "E-mail",
-          "password": "Palavra-passe",
-          "region": "Região",
-          "local_ips": "Aparelhos locais (MAC:IP, opcional)"
+          "local_ips": "Dispositivos locais (MAC:IPv4)"
         }
       }
     },
     "error": {
-      "invalid_auth": "E-mail ou palavra-passe inválidos",
-      "cannot_connect": "Não foi possível ligar à nuvem Haier"
-    },
-    "abort": {
-      "already_configured": "Esta conta já está configurada"
-    }
-  },
-  "selector": {
-    "region": {
-      "options": {
-        "eu": "Europa",
-        "us": "EUA",
-        "sg": "Ásia (Singapura)"
-      }
+      "invalid_local_map": "Introduza pelo menos um par com MAC hexadecimal e IPv4 válidos. Separe os dispositivos por vírgulas; não repita endereços MAC ou IP."
     }
   },
   "entity": {
     "sensor": {
-      "room_temperature": { "name": "Temperatura da divisão" },
-      "outdoor_temperature": { "name": "Temperatura exterior" },
-      "humidity": { "name": "Humidade" },
-      "indoor_coil_temperature": { "name": "Temperatura da bateria interior" },
-      "outdoor_coil_temperature": { "name": "Temperatura da bateria exterior" },
-      "outdoor_in_temperature": { "name": "Temperatura de admissão exterior" },
-      "outdoor_out_temperature": { "name": "Temperatura de descarga exterior" },
-      "defrost_temperature": { "name": "Temperatura de descongelação" },
-      "compressor_frequency": { "name": "Frequência do compressor" },
-      "compressor_current": { "name": "Corrente do compressor" },
-      "power": { "name": "Potência" },
-      "expansion_valve": { "name": "Válvula de expansão" },
-      "error_code": { "name": "Código de erro" },
+      "room_temperature": {
+        "name": "Temperatura da divisão"
+      },
+      "outdoor_temperature": {
+        "name": "Temperatura exterior"
+      },
+      "humidity": {
+        "name": "Humidade"
+      },
+      "indoor_coil_temperature": {
+        "name": "Temperatura da bateria interior"
+      },
+      "outdoor_coil_temperature": {
+        "name": "Temperatura da bateria exterior"
+      },
+      "outdoor_in_temperature": {
+        "name": "Temperatura de admissão exterior"
+      },
+      "outdoor_out_temperature": {
+        "name": "Temperatura de descarga exterior"
+      },
+      "defrost_temperature": {
+        "name": "Temperatura de descongelação"
+      },
+      "compressor_frequency": {
+        "name": "Frequência do compressor"
+      },
+      "compressor_current": {
+        "name": "Corrente do compressor"
+      },
+      "power": {
+        "name": "Potência"
+      },
+      "expansion_valve": {
+        "name": "Válvula de expansão"
+      },
+      "error_code": {
+        "name": "Código de erro"
+      },
       "operation_source": {
         "name": "Origem do comando",
         "state": {
@@ -55,21 +65,47 @@
       }
     },
     "binary_sensor": {
-      "compressor": { "name": "Compressor em funcionamento" },
-      "indoor_fan": { "name": "Ventoinha interior em funcionamento" },
-      "outdoor_fan": { "name": "Ventoinha exterior em funcionamento" },
-      "defrost": { "name": "Descongelação ativa" },
-      "four_way_valve": { "name": "Válvula de 4 vias" },
-      "indoor_electric_heater": { "name": "Resistência elétrica interior em funcionamento" },
-      "active_alarms": { "name": "Alarmes ativos" },
-      "filter": { "name": "Filtro a substituir" }
+      "compressor": {
+        "name": "Compressor em funcionamento"
+      },
+      "indoor_fan": {
+        "name": "Ventoinha interior em funcionamento"
+      },
+      "outdoor_fan": {
+        "name": "Ventoinha exterior em funcionamento"
+      },
+      "defrost": {
+        "name": "Descongelação ativa"
+      },
+      "four_way_valve": {
+        "name": "Válvula de 4 vias"
+      },
+      "indoor_electric_heater": {
+        "name": "Resistência elétrica interior em funcionamento"
+      },
+      "active_alarms": {
+        "name": "Alarmes ativos"
+      },
+      "filter": {
+        "name": "Filtro a substituir"
+      }
     },
     "switch": {
-      "health": { "name": "Saúde" },
-      "display": { "name": "Luz do painel" },
-      "self_clean": { "name": "Limpeza automática" },
-      "lock_remote": { "name": "Travar o comando" },
-      "electric_heat": { "name": "Aquecimento elétrico" }
+      "health": {
+        "name": "Saúde"
+      },
+      "display": {
+        "name": "Luz do painel"
+      },
+      "self_clean": {
+        "name": "Limpeza automática"
+      },
+      "lock_remote": {
+        "name": "Travar o comando"
+      },
+      "electric_heat": {
+        "name": "Aquecimento elétrico"
+      }
     },
     "select": {
       "vertical_swing": {
@@ -109,13 +145,15 @@
   "options": {
     "step": {
       "init": {
-        "title": "Opções do Haier SmartAir2",
-        "description": "Altere a região ou associe os aparelhos a um IP local (formato: MAC:IP, separados por vírgulas). Em branco, o controlo fica pela nuvem.",
+        "title": "Dispositivos locais Haier SmartAir2",
+        "description": "Configure um ou mais dispositivos locais com pares MAC:IPv4, separados por vírgulas. Os endereços MAC podem conter dois-pontos. Use endereços IPv4 fixos ou reservas DHCP. Não é utilizada nenhuma conta nem ligação à Internet. Aviso de compatibilidade: este fork só documenta a combinação AS35TADHRA-TH + MK-QTWIFI-04(B). Não está validado para outros aparelhos, módulos Wi-Fi ou versões de firmware. A seleção automática V2/V3 é uma heurística, não uma identificação garantida.",
         "data": {
-          "region": "Região",
-          "local_ips": "Aparelhos locais (MAC:IP)"
+          "local_ips": "Dispositivos locais (MAC:IPv4)"
         }
       }
+    },
+    "error": {
+      "invalid_local_map": "Introduza pelo menos um par com MAC hexadecimal e IPv4 válidos. Separe os dispositivos por vírgulas; não repita endereços MAC ou IP."
     }
   }
 }

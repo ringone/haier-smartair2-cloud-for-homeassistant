@@ -1,0 +1,45 @@
+{
+  "concurrent_commands": {
+    "first_command": {
+      "health": true,
+      "display": true
+    },
+    "second_command": {
+      "health": false,
+      "display": false
+    },
+    "issue": "Second full-state command clears health enabled by first command before a status reply."
+  },
+  "offline_cloud_cache": {
+    "transport_online": false,
+    "coordinator_updates_data": true,
+    "coordinator_reports_error": false,
+    "issue": "Cloud online flag is ignored when cached status exists."
+  },
+  "cloud_eof_loop": {
+    "recv_calls": 5,
+    "issue": "EOF is not handled; recv returns empty bytes and the loop cannot advance."
+  },
+  "tls_validation": {
+    "check_hostname": false,
+    "verify_mode": "0"
+  },
+  "temperature_hvac_mode": {
+    "requested": {
+      "temperature": 24,
+      "hvac_mode": "off"
+    },
+    "sent": {
+      "target_temp": 24.0,
+      "power": true
+    }
+  },
+  "device_api_error": {
+    "response": {
+      "retCode": "10001",
+      "retInfo": "token expired"
+    },
+    "returned": [],
+    "raised_error": false
+  }
+}

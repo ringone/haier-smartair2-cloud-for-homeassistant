@@ -2,48 +2,58 @@
   "config": {
     "step": {
       "user": {
-        "title": "Haier SmartAir2",
-        "description": "Log in with your SmartAir2 (Haier) account. Optionally map devices to a local IP for direct control (format: MAC:IP, comma-separated). Colons in the MAC are allowed.",
+        "title": "Haier SmartAir2 local devices",
+        "description": "Configure one or more local devices using MAC:IPv4 pairs, separated by commas. MAC addresses may include colons. Use fixed IPv4 addresses or DHCP reservations. No account or internet connection is used. Compatibility warning: only AS35TADHRA-TH + MK-QTWIFI-04(B) is documented in this fork. Other air conditioners, Wi-Fi modules and firmware are unverified. Automatic V2/V3 selection is a heuristic, not guaranteed identification.",
         "data": {
-          "username": "E-mail",
-          "password": "Password",
-          "region": "Region",
-          "local_ips": "Local devices (MAC:IP, optional)"
+          "local_ips": "Local devices (MAC:IPv4)"
         }
       }
     },
     "error": {
-      "invalid_auth": "Invalid e-mail or password",
-      "cannot_connect": "Cannot connect to the Haier cloud"
-    },
-    "abort": {
-      "already_configured": "This account is already configured"
-    }
-  },
-  "selector": {
-    "region": {
-      "options": {
-        "eu": "Europe",
-        "us": "USA",
-        "sg": "Asia (Singapore)"
-      }
+      "invalid_local_map": "Enter a nonempty map of valid hexadecimal MAC addresses and IPv4 addresses. Separate devices with commas; duplicate MACs or IPs are not allowed."
     }
   },
   "entity": {
     "sensor": {
-      "room_temperature": { "name": "Room temperature" },
-      "outdoor_temperature": { "name": "Outdoor temperature" },
-      "humidity": { "name": "Humidity" },
-      "indoor_coil_temperature": { "name": "Indoor coil temperature" },
-      "outdoor_coil_temperature": { "name": "Outdoor coil temperature" },
-      "outdoor_in_temperature": { "name": "Outdoor inlet temperature" },
-      "outdoor_out_temperature": { "name": "Outdoor outlet temperature" },
-      "defrost_temperature": { "name": "Defrost temperature" },
-      "compressor_frequency": { "name": "Compressor frequency" },
-      "compressor_current": { "name": "Compressor current" },
-      "power": { "name": "Power" },
-      "expansion_valve": { "name": "Expansion valve" },
-      "error_code": { "name": "Error code" },
+      "room_temperature": {
+        "name": "Room temperature"
+      },
+      "outdoor_temperature": {
+        "name": "Outdoor temperature"
+      },
+      "humidity": {
+        "name": "Humidity"
+      },
+      "indoor_coil_temperature": {
+        "name": "Indoor coil temperature"
+      },
+      "outdoor_coil_temperature": {
+        "name": "Outdoor coil temperature"
+      },
+      "outdoor_in_temperature": {
+        "name": "Outdoor inlet temperature"
+      },
+      "outdoor_out_temperature": {
+        "name": "Outdoor outlet temperature"
+      },
+      "defrost_temperature": {
+        "name": "Defrost temperature"
+      },
+      "compressor_frequency": {
+        "name": "Compressor frequency"
+      },
+      "compressor_current": {
+        "name": "Compressor current"
+      },
+      "power": {
+        "name": "Power"
+      },
+      "expansion_valve": {
+        "name": "Expansion valve"
+      },
+      "error_code": {
+        "name": "Error code"
+      },
       "operation_source": {
         "name": "Control source",
         "state": {
@@ -55,21 +65,47 @@
       }
     },
     "binary_sensor": {
-      "compressor": { "name": "Compressor running" },
-      "indoor_fan": { "name": "Indoor fan running" },
-      "outdoor_fan": { "name": "Outdoor fan running" },
-      "defrost": { "name": "Defrost active" },
-      "four_way_valve": { "name": "Four-way valve" },
-      "indoor_electric_heater": { "name": "Indoor electric heater running" },
-      "active_alarms": { "name": "Active alarms" },
-      "filter": { "name": "Filter needs replacement" }
+      "compressor": {
+        "name": "Compressor running"
+      },
+      "indoor_fan": {
+        "name": "Indoor fan running"
+      },
+      "outdoor_fan": {
+        "name": "Outdoor fan running"
+      },
+      "defrost": {
+        "name": "Defrost active"
+      },
+      "four_way_valve": {
+        "name": "Four-way valve"
+      },
+      "indoor_electric_heater": {
+        "name": "Indoor electric heater running"
+      },
+      "active_alarms": {
+        "name": "Active alarms"
+      },
+      "filter": {
+        "name": "Filter needs replacement"
+      }
     },
     "switch": {
-      "health": { "name": "Health" },
-      "display": { "name": "Panel light" },
-      "self_clean": { "name": "Self-clean" },
-      "lock_remote": { "name": "Lock remote" },
-      "electric_heat": { "name": "Electric heat" }
+      "health": {
+        "name": "Health"
+      },
+      "display": {
+        "name": "Panel light"
+      },
+      "self_clean": {
+        "name": "Self-clean"
+      },
+      "lock_remote": {
+        "name": "Lock remote"
+      },
+      "electric_heat": {
+        "name": "Electric heat"
+      }
     },
     "select": {
       "vertical_swing": {
@@ -109,13 +145,15 @@
   "options": {
     "step": {
       "init": {
-        "title": "Haier SmartAir2 options",
-        "description": "Change region or map devices to a local IP (format: MAC:IP, comma-separated). Blank = cloud control.",
+        "title": "Haier SmartAir2 local devices",
+        "description": "Configure one or more local devices using MAC:IPv4 pairs, separated by commas. MAC addresses may include colons. Use fixed IPv4 addresses or DHCP reservations. No account or internet connection is used. Compatibility warning: only AS35TADHRA-TH + MK-QTWIFI-04(B) is documented in this fork. Other air conditioners, Wi-Fi modules and firmware are unverified. Automatic V2/V3 selection is a heuristic, not guaranteed identification.",
         "data": {
-          "region": "Region",
-          "local_ips": "Local devices (MAC:IP)"
+          "local_ips": "Local devices (MAC:IPv4)"
         }
       }
+    },
+    "error": {
+      "invalid_local_map": "Enter a nonempty map of valid hexadecimal MAC addresses and IPv4 addresses. Separate devices with commas; duplicate MACs or IPs are not allowed."
     }
   }
 }

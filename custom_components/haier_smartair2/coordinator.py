@@ -26,10 +26,12 @@ class HaierCoordinator(DataUpdateCoordinator[HaierState]):
         devid: str,
         name: str,
         via_cloud: bool,
+        config_entry=None,
     ) -> None:
         super().__init__(
             hass,
             _LOGGER,
+            config_entry=config_entry,
             name=f"Haier {name}",
             update_interval=timedelta(seconds=SCAN_INTERVAL_SECONDS),
         )

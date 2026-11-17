@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "security_concerns": [],
+  "logic_errors": [],
+  "independently_reviewed_snapshot_sha256": "8f8ad69b986c69479323f0367d2f117f72d7a8aa767269e67c42d01d3ea1c359",
+  "final_parent_verified_snapshot_sha256": "0bd0174f5ccc5f55e90978e529f0e91f401f9a6ef305e75f502b3b675ab60f81",
+  "independent_verification": "All26 original local links/anchors, source snapshot and12 historical evidence files unchanged;46 top-level unit cases;static/traceability/staged checks passed",
+  "suggestion_addressed": "Moved a concise full configuration/.storage+code backup and matching rollback warning plus a direct guide link outside the Marketplace exclusion block. Parent checked exclusion-stripped visibility and reran the complete verification; no functional code changed.",
+  "post_review_functional_changes": false,
+  "merge_readiness": "Technically ready for a consolidated PR targeting main. Not production-release/physical/catalog approval, authorization to merge or acceptance of known risks. Exact-head remote CI and human review remain required.",
+  "known_limits": [
+    "Physical AC/module validation",
+    "Live frontend/GitHub/catalog installation and same-domain upstream-to-fork repository handover",
+    "RP-002 concurrent command overwrite and RP-003 combined hvac_mode remain pending",
+    "Human acceptance of known risks before merge; no automatic merge or release in this PR-preparation task"
+  ],
+  "verification_report": "docs/evidence/verification-main-pr.json"
+}

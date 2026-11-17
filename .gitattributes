@@ -1,0 +1,2 @@
+# Keep generated documentation CSV normalized in Git across editors/platforms.
+docs/*.csv text eol=lf

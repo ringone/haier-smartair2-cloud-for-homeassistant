@@ -1,0 +1,26 @@
+[
+  {
+    "phase": "RED",
+    "command": [
+      "<ha-python>",
+      "tests/ha_climate_compat.py",
+      "Climate202611Tests.test_00_import_uses_native_temperature_api_without_warnings",
+      "-v"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "test_00_import_uses_native_temperature_api_without_warnings (__main__.Climate202611Tests.test_00_import_uses_native_temperature_api_without_warnings)\nDo not rely on Home Assistant's temporary legacy-property adapter. ... FAIL\n\n======================================================================\nFAIL: test_00_import_uses_native_temperature_api_without_warnings (__main__.Climate202611Tests.test_00_import_uses_native_temperature_api_without_warnings)\nDo not rely on Home Assistant's temporary legacy-property adapter.\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<workspace>/tests/ha_climate_compat.py\", line 21, in test_00_import_uses_native_temperature_api_without_warnings\n    with self.assertNoLogs(MODULE, level=\"WARNING\"):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/unittest/_log.py\", line 75, in __exit__\n    self._raiseFailure(\n    ~~~~~~~~~~~~~~~~~~^\n        \"Unexpected logs found: {!r}\".format(\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n            self.watcher.output\n            ^^^^^^^^^^^^^^^^^^^\n        )\n        ^\n    )\n    ^\nAssertionError: Unexpected logs found: ['WARNING:custom_components.haier_smartair2.climate:custom_components.haier_smartair2.climate::HaierClimate provides the deprecated _attr_temperature_unit, this will stop working in Home Assistant 2027.11, use _attr_native_temperature_unit instead, please report it to the custom integration author', 'WARNING:custom_components.haier_smartair2.climate:custom_components.haier_smartair2.climate::HaierClimate provides the deprecated current_temperature, this will stop working in Home Assistant 2027.11, use native_current_temperature instead, please report it to the custom integration author', 'WARNING:custom_components.haier_smartair2.climate:custom_components.haier_smartair2.climate::HaierClimate provides the deprecated target_temperature, this will stop working in Home Assistant 2027.11, use native_target_temperature instead, please report it to the custom integration author']\n\n----------------------------------------------------------------------\nRan 1 test in 0.467s\n\nFAILED (failures=1)\n"
+  },
+  {
+    "phase": "GREEN",
+    "command": [
+      "<ha-python>",
+      "tests/ha_climate_compat.py",
+      "Climate202611Tests.test_00_import_uses_native_temperature_api_without_warnings",
+      "-v"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "test_00_import_uses_native_temperature_api_without_warnings (__main__.Climate202611Tests.test_00_import_uses_native_temperature_api_without_warnings)\nDo not rely on Home Assistant's temporary legacy-property adapter. ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.480s\n\nOK\n"
+  }
+]

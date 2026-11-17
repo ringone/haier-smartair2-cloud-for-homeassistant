@@ -1,0 +1,513 @@
+
+RED root metadata
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... FAIL
+
+======================================================================
+FAIL: test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 36, in test_root_metadata_contract
+    self.assertEqual(self.check(), [])
+                     ~~~~~~~~~~^^
+  File "<workspace>/tests/test_marketplace_metadata.py", line 23, in check
+    self.assertTrue(path.exists(), "static checker is missing")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : static checker is missing
+
+----------------------------------------------------------------------
+Ran 1 test in 0.006s
+
+FAILED (failures=1)
+
+GREEN root metadata
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.008s
+
+OK
+
+RED manifest
+test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ...
+  test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) (value='{') ... FAIL
+  test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) (value='[]') ... FAIL
+  test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) (value='null') ... FAIL
+test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ...
+  test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c1bae50>) ... FAIL
+  test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20ddd0>) ... FAIL
+  test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20dfe0>) ... FAIL
+  test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20df30>) ... FAIL
+  test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e090>) ... FAIL
+  test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e140>) ... FAIL
+  test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e1f0>) ... FAIL
+  test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e2a0>) ... FAIL
+  test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e350>) ... FAIL
+  test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e560>) ... FAIL
+test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... FAIL
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok
+
+======================================================================
+FAIL: test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) (value='{')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 64, in test_malformed_manifest_is_reported
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) (value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 64, in test_malformed_manifest_is_reported
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) (value='null')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 64, in test_malformed_manifest_is_reported
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c1bae50>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 54, in test_manifest_and_single_domain_contract
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20ddd0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 54, in test_manifest_and_single_domain_contract
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20dfe0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 54, in test_manifest_and_single_domain_contract
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20df30>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 54, in test_manifest_and_single_domain_contract
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e090>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 54, in test_manifest_and_single_domain_contract
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e140>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 54, in test_manifest_and_single_domain_contract
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e1f0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 54, in test_manifest_and_single_domain_contract
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e2a0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 54, in test_manifest_and_single_domain_contract
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e350>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 54, in test_manifest_and_single_domain_contract
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) (mutation=<function MarketplaceMetadataTests.test_manifest_and_single_domain_contract.<locals>.<lambda> at 0x7fbe0c20e560>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 54, in test_manifest_and_single_domain_contract
+    self.assertTrue(any("manifest" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 57, in test_manifest_and_single_domain_contract
+    self.assertTrue(any("integration" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.035s
+
+FAILED (failures=14)
+
+GREEN manifest
+test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ... ok
+test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... ok
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.038s
+
+OK
+
+RED translation-brand
+test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ... ok
+test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... ok
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok
+test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) ...
+  test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (language='en') ... FAIL
+  test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (language='pt') ... FAIL
+  test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (language='pl') ... FAIL
+  test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (filename='icon.png', broken=b'not PNG') ... FAIL
+  test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (filename='icon.png', broken=b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x01\x00') ... FAIL
+  test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (filename='icon@2x.png', broken=b'not PNG') ... FAIL
+  test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (filename='icon@2x.png', broken=b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x02\x00') ... FAIL
+
+======================================================================
+FAIL: test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (language='en')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 72, in test_translations_and_brand_contract
+    self.assertTrue(any("translations" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (language='pt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 72, in test_translations_and_brand_contract
+    self.assertTrue(any("translations" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (language='pl')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 72, in test_translations_and_brand_contract
+    self.assertTrue(any("translations" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (filename='icon.png', broken=b'not PNG')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 80, in test_translations_and_brand_contract
+    self.assertTrue(any("brand" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (filename='icon.png', broken=b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x01\x00')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 80, in test_translations_and_brand_contract
+    self.assertTrue(any("brand" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (filename='icon@2x.png', broken=b'not PNG')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 80, in test_translations_and_brand_contract
+    self.assertTrue(any("brand" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) (filename='icon@2x.png', broken=b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x02\x00')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 80, in test_translations_and_brand_contract
+    self.assertTrue(any("brand" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.043s
+
+FAILED (failures=7)
+
+GREEN translation-brand
+test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ... ok
+test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... ok
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... FAIL
+test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) ... ok
+
+======================================================================
+FAIL: test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 36, in test_root_metadata_contract
+    self.assertEqual(self.check(), [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['translations: pt/pl key parity with complete en required'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'translations: pt/pl key parity with complete en required'
+
+- ['translations: pt/pl key parity with complete en required']
++ []
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.054s
+
+FAILED (failures=1)
+
+GREEN translation-brand valid fixture
+test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ... ok
+test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... ok
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok
+test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.050s
+
+OK
+
+RED flow climate README
+test_explicit_steps_native_climate_and_readme_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_explicit_steps_native_climate_and_readme_contract) ... FAIL
+test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ... ok
+test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... ok
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok
+test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) ... ok
+
+======================================================================
+FAIL: test_explicit_steps_native_climate_and_readme_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_explicit_steps_native_climate_and_readme_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 91, in test_explicit_steps_native_climate_and_readme_contract
+    self.assertTrue(any("step_id" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.077s
+
+FAILED (failures=1)
+
+RED flow climate README separate
+test_explicit_step_id_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_explicit_step_id_contract) ... FAIL
+test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ... ok
+test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... ok
+test_native_climate_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_native_climate_contract) ... FAIL
+test_readme_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_readme_contract) ... FAIL
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok
+test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) ... ok
+
+======================================================================
+FAIL: test_explicit_step_id_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_explicit_step_id_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 90, in test_explicit_step_id_contract
+    self.assertTrue(any("step_id" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_native_climate_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_native_climate_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 95, in test_native_climate_contract
+    self.assertTrue(any("climate" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_readme_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_readme_contract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 100, in test_readme_contract
+    self.assertTrue(any("README" in e for e in self.check()))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.074s
+
+FAILED (failures=3)
+
+GREEN flow climate README
+test_explicit_step_id_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_explicit_step_id_contract) ... ok
+test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ... ok
+test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... ok
+test_native_climate_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_native_climate_contract) ... ok
+test_readme_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_readme_contract) ... ok
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok
+test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.182s
+
+OK
+
+RED malformed/missing input
+test_explicit_step_id_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_explicit_step_id_contract) ... ok
+test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ... ok
+test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... ok
+test_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash) ...
+  test_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash) (relative='README.md') ... ERROR
+  test_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash) (relative='hacs.json') ... ERROR
+  test_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash) (relative='custom_components/haier_smartair2/config_flow.py') ... ERROR
+test_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash) ... ERROR
+test_native_climate_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_native_climate_contract) ... ok
+test_readme_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_readme_contract) ... ok
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok
+test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) ... ok
+
+======================================================================
+ERROR: test_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash) (relative='README.md')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 108, in test_missing_files_and_malformed_metadata_do_not_crash
+    self.assertTrue(self.check())
+                    ~~~~~~~~~~^^
+  File "<workspace>/tests/test_marketplace_metadata.py", line 30, in check
+    return module.validate(self.root)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "<workspace>/tests/check_marketplace.py", line 44, in validate
+    if "0.3.0" not in (root / "README.md").read_text():
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/pathlib/__init__.py", line 787, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/pathlib/__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/hermes/.hermes/cache/scratch/tmpa88rl5gf/README.md'
+
+======================================================================
+ERROR: test_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash) (relative='hacs.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 108, in test_missing_files_and_malformed_metadata_do_not_crash
+    self.assertTrue(self.check())
+                    ~~~~~~~~~~^^
+  File "<workspace>/tests/test_marketplace_metadata.py", line 30, in check
+    return module.validate(self.root)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "<workspace>/tests/check_marketplace.py", line 44, in validate
+    if "0.3.0" not in (root / "README.md").read_text():
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/pathlib/__init__.py", line 787, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/pathlib/__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/hermes/.hermes/cache/scratch/tmpa88rl5gf/README.md'
+
+======================================================================
+ERROR: test_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash) (relative='custom_components/haier_smartair2/config_flow.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 108, in test_missing_files_and_malformed_metadata_do_not_crash
+    self.assertTrue(self.check())
+                    ~~~~~~~~~~^^
+  File "<workspace>/tests/test_marketplace_metadata.py", line 30, in check
+    return module.validate(self.root)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "<workspace>/tests/check_marketplace.py", line 44, in validate
+    if "0.3.0" not in (root / "README.md").read_text():
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/pathlib/__init__.py", line 787, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/pathlib/__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/hermes/.hermes/cache/scratch/tmpa88rl5gf/README.md'
+
+======================================================================
+ERROR: test_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<workspace>/tests/test_marketplace_metadata.py", line 112, in test_missing_files_and_malformed_metadata_do_not_crash
+    self.assertTrue(any("manifest" in e for e in self.check()))
+                                                 ~~~~~~~~~~^^
+  File "<workspace>/tests/test_marketplace_metadata.py", line 30, in check
+    return module.validate(self.root)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "<workspace>/tests/check_marketplace.py", line 33, in validate
+    if not isinstance(value, str) or urlsplit(value).scheme != "https" or not urlsplit(value).netloc:
+                                     ~~~~~~~~^^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/urllib/parse.py", line 497, in urlsplit
+    scheme, netloc, url, query, fragment = _urlsplit(url, scheme, allow_fragments)
+                                           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<python-tools>/python-3.14.9+20261021-linux-x64/lib/python3.14/urllib/parse.py", line 525, in _urlsplit
+    raise ValueError("Invalid IPv6 URL")
+ValueError: Invalid IPv6 URL
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.185s
+
+FAILED (errors=4)
+
+GREEN/FINAL ['python', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_marketplace_metadata.py', '-v']
+test_explicit_step_id_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_explicit_step_id_contract) ... ok
+test_malformed_manifest_is_reported (test_marketplace_metadata.MarketplaceMetadataTests.test_malformed_manifest_is_reported) ... ok
+test_manifest_and_single_domain_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_manifest_and_single_domain_contract) ... ok
+test_missing_files_and_malformed_metadata_do_not_crash (test_marketplace_metadata.MarketplaceMetadataTests.test_missing_files_and_malformed_metadata_do_not_crash) ... ok
+test_native_climate_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_native_climate_contract) ... ok
+test_readme_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_readme_contract) ... ok
+test_root_metadata_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_root_metadata_contract) ... ok
+test_translations_and_brand_contract (test_marketplace_metadata.MarketplaceMetadataTests.test_translations_and_brand_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.206s
+
+OK
+
+EXIT 0
+
+GREEN/FINAL ['<ha-min-env>/bin/ruff', 'check', '--select', 'F', 'tests/check_marketplace.py', 'tests/test_marketplace_metadata.py']
+All checks passed!
+
+EXIT 0
+
+GREEN/FINAL ['python', 'tests/check_marketplace.py']
+translations: pt/pl key parity with complete en required
+Marketplace static project gates: 1 error(s)
+
+EXIT 1

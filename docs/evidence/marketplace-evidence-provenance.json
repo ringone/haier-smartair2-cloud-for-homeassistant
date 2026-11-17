@@ -1,0 +1,30 @@
+{
+  "climate_tdd": {
+    "source_description": "Original locally executed test output captured before and after native API migration",
+    "source_sha256": "1303ed4fd9ebdee833a80edc5439a6faf5df922a1cc5b38f02a8d62f4045c78e",
+    "archive_path": "docs/evidence/marketplace-climate-tdd.json",
+    "archive_sha256": "6d46e89552097f367e2571ede5d2d8ff1edbd2bf24064a431863c0df8a3366a5",
+    "normalization": "Only local absolute workspace/interpreter paths replaced with placeholders; observed test messages and exit codes retained."
+  },
+  "static_tdd": {
+    "source_description": "Observed local test log / retrieved official metadata",
+    "source_sha256": "3bc1b855d7c5c68802890c21b457862d4433becbac241d99a6f89232b2c44099",
+    "archive_path": "docs/evidence/marketplace-static-tdd.log",
+    "archive_sha256": "57bc896b4de636ac459edd66315f3e3b305d1e37705734cc9eaabfe07e8e680f",
+    "normalization": "Local absolute runner paths replaced with placeholders and trailing whitespace removed; original source SHA preserved."
+  },
+  "followup_tdd": {
+    "source_description": "Observed local test log / retrieved official metadata",
+    "source_sha256": "9d533e975efaf7080dca6893eda011e83c93df8b1e1f977eef22f79a9304d5ec",
+    "archive_path": "docs/evidence/marketplace-followup-tdd.json",
+    "archive_sha256": "eca7e245ec3b68cc637a8c848ef697ab9b314693bf70fbbe56bec871056a3a4f",
+    "normalization": "Local absolute runner paths replaced with placeholders only."
+  },
+  "pypi_release_metadata": {
+    "source_description": "Observed local test log / retrieved official metadata",
+    "source_sha256": "da8c70dc25686d5be4a15d19e48253af7c7b2e3822ddd14c683a87e55062dde8",
+    "archive_path": "docs/evidence/marketplace-pypi-versions.json",
+    "archive_sha256": "da8c70dc25686d5be4a15d19e48253af7c7b2e3822ddd14c683a87e55062dde8",
+    "normalization": "Local absolute runner paths replaced with placeholders only."
+  }
+}
