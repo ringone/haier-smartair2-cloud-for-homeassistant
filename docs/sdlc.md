@@ -109,3 +109,13 @@ Para manutenção: relacionar problemas novos com requisitos/achados; recolher c
 **Revisão/entrega:** revisão independente antes de commit, envio apenas da branch de trabalho e PR em rascunho com base `feat/local-only`, para que o diff do incremento não repita as alterações local-only. Confirmar leitura remota de SHA/base/head, CI do novo conteúdo e preservação das branches base. Não mergear, criar tag/release, submeter catálogo nem instalar na instância do utilizador sem autorização separada.
 
 **Validação e manutenção:** continuar com ensaio físico e aceitação pendentes; os mecanismos locais de instalação não provam UI/GitHub remoto, migração automática do gestor original para o fork nem conformidade de todos os requisitos. RP-002/RP-003 permanecem visíveis. Acompanhar deprecações e voltar a testar os patches suportados em cada revisão.
+
+## Consolidação para revisão na main
+
+O utilizador pediu reorganização do README e um PR consolidado para `main`. A branch `feat/local-only-marketplace-main` deriva do candidato `a7d201fd9503b16aeecaa6949e47b9aab1a80f49`, reunindo local-only e Marketplace/2026.11 sem alterar novamente o código da integração.
+
+O README passa a ser a entrada de leitura: requisitos/compatibilidade, instalação, configuração, funcionalidades, verificação e documentação. Os procedimentos completos ficam em `docs/installation.md`, o índice e comandos em `docs/README.md`, e o histórico em `CHANGELOG.md`. Preservar os avisos de hardware desconhecido, as falhas RP-002/RP-003, o backup e a diferença entre candidato e release; não os esconder numa simplificação editorial.
+
+Antes de abrir o PR, verificar links/âncoras locais, o checker Marketplace sobre o README reorganizado, a matriz de rastreabilidade e todas as regressões do candidato. O recibo `docs/evidence/verification-main-pr.json` pertence a esta árvore; os recibos anteriores continuam históricos. A revisão deve distinguir ausência de conflitos/CI verde de aceitação de risco e validação física.
+
+Abrir o PR com base `main`, sem merge automático nem release. Os PRs anteriores podem ser identificados como substituídos pelo consolidado, preservando commits, branches e histórico de revisão. Para efetuar o merge, a revisão humana deve aceitar o âmbito experimental e os defeitos/lacunas que permanecem explícitos; os checks não tomam essa decisão pelo utilizador.

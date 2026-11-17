@@ -483,7 +483,7 @@ Inclui configuração/opções, migração, TCP local, seleção de codec, ciclo
 - **Código/documentação:** `README.md`, `docs/compatibility.md`, `docs/protocol-as35.md`, `custom_components/haier_smartair2/packet_history.py`.
 - **Evidência existente:** E17.
 - **Verificação:** Parcial.
-- **Lacuna/limitação:** O store privado e plaintext estão documentados; a recomendação explícita de não expor a porta e uma avaliação de ameaças completa ainda não foram formalizadas. Requisito derivado, sujeito a aprovação.
+- **Lacuna/limitação:** O README e o guia de instalação recomendam agora LAN de confiança e não expor TCP 56800 à Internet. Uma avaliação de ameaças completa e segurança do firmware continuam por validar; o aviso documental não constitui essa avaliação.
 
 
 ### RNF-008 — Gates estáticos de distribuição Marketplace

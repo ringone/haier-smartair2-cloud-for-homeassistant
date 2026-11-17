@@ -1,137 +1,69 @@
 # Haier SmartAir2 Local for Home Assistant
 
-Local-only fork of [bwitosze/haier-smartair2-cloud-for-homeassistant](https://github.com/bwitosze/haier-smartair2-cloud-for-homeassistant) for legacy Haier air conditioners with a **plaintext SmartAir2 LAN dongle**, not hOn.
+Control legacy Haier air conditioners directly over your LAN, without a Haier account, MQTT or cloud fallback. This unofficial fork uses plaintext SmartAir2 Wi-Fi modules; it does not support hOn or encrypted/cloud-only modules.
 
-**Version 0.3.0 removes the Haier cloud transport completely.** Setup, startup and control do not require a Haier account or Internet connection. Devices must be listed explicitly as `MAC:IP` pairs. There is no cloud discovery or fallback.
+**Status:** 0.3.0 is an **unpublished** candidate. The latest published release, 0.2.3, does not contain this local-only rewrite. Merging this code or adding the repository to Marketplace does not publish a new release.
 
-The integration domain remains `haier_smartair2`. Existing MAC-based entity identifiers, device registrations and local packet history are retained when migrating an existing entry. **Do not delete the existing entry to upgrade.**
+## Compatibility and requirements
 
-## Compatibility warning — hardware coverage is unknown
+The only documented hardware combination is **Haier AS35TADHRA-TH + MK-QTWIFI-04(B)**, based on earlier captures and calibration. **The 0.3.0 candidate has not been tested on a physical air conditioner.** Compatibility with other models, Wi-Fi modules and firmware is unknown.
 
-> **The only specifically documented hardware combination in this fork is Haier AS35TADHRA-TH + MK-QTWIFI-04(B), based on recorded captures and prior calibration. We do not know whether this implementation is valid for other air conditioners, Wi-Fi modules or firmware revisions. Even the local-only 0.3.0 build has not been physically tested on that documented combination.**
->
-> The current 24-byte → V2 / 32-byte → V3 selection is a **heuristic for the known captures, not a universal protocol identifier**. Different layouts can have the same length. Passing checksum/CRC or automated tests does not prove that controls are safe or correctly mapped on another device.
->
-> Other hardware is **unverified/experimental**, not declared supported. The retained V2 codec is not evidence of tested V2 LAN hardware. Encrypted/cloud-only modules remain unsupported. See [compatibility evidence and limits](docs/compatibility.md).
+- Home Assistant **2026.11.0 or newer**, with Python >=3.14.2. Automated framework checks cover 2026.11.0 and 2026.11.1; later versions need their own verification. The previous, unverified 2024.11 minimum no longer applies to this candidate.
+- A plaintext SmartAir2 module reachable from Home Assistant on **TCP 56800**, with a fixed IPv4 address or DHCP reservation. Close the SmartAir2 phone app if it occupies the module's only local session.
+- A trusted local network. Do not expose TCP 56800 directly to the Internet: removing the cloud does not add encryption or authentication to the LAN protocol.
 
-## Documented hardware and implemented functions
+The 24-byte → V2 / 32-byte → V3 selection is a heuristic for known captures, not a universal protocol identifier. A valid checksum or matching length does not establish compatibility. The retained V2 codec has no verified LAN hardware coverage. Read the [compatibility notes](docs/compatibility.md) before using another device.
 
-This fork was calibrated on a Haier **AS35TADHRA-TH** with an **MK-QTWIFI-04(B)** dongle, speaking SmartAir2 V3 over **TCP 56800**. These observations must not be generalized to other dongles.
+## Installation and upgrades
 
-- **V3 implementation:** climate controls, Power and Sleep presets, quiet fan mode, Health, panel light, self-clean, remote lock, electric heat, vertical vane positions, extended telemetry and alarm diagnostics, based on the documented AS35 layout only.
-- **V2 implementation retained, LAN hardware unverified:** the existing V2 codec and basic controls remain in the code. This is not a claim of compatibility with any additional model or Wi-Fi module.
-- **Encrypted/cloud-only dongles are not supported.** A formerly cloud-controlled device needs plaintext LAN support and a local mapping, which alone does not establish protocol compatibility.
-- Unrecognised status lengths are rejected. An incompatible layout with a recognised length is not ruled out by the current heuristic.
+**Keep your existing integration entry.** The domain remains `haier_smartair2`; migration preserves the entry, MAC-based entity IDs and packet history, while removing active cloud credentials. An entry without a local mapping cannot start until you supply one in **Configure**.
 
-Reserve each dongle's IP address in your router. Home Assistant must reach it on TCP 56800. Close the SmartAir2 phone app: it can occupy the dongle's only local session.
+Repository **handover** is separate from upgrading an entry. Marketplace refuses two installed repositories that own the same domain. If you already use the upstream repository, do not delete your entry or uninstall files as a workaround; the handover to this fork still needs manual validation. Home Assistant's automatic HACS-to-Marketplace migration does not change which repository owns the integration.
 
-The existing local wire commands, polling, frame validation, reconnects, telemetry conversions and packet history are retained. Quiet is a separate V3 flag; the calibrated firmware returns the fan to auto when quiet is selected. Self-clean does not start in heat, auto or sleep. Horizontal airflow on the AS35 is manual.
-
-## Installation
-
-**Candidate status:** 0.3.0 is an **unpublished** branch candidate; the stable release is 0.2.3. Marketplace catalog submission and a 0.3.0 release are pending. Adding the repository does not publish or automatically install this candidate. Do not assume the latest stable download contains these changes.
-
-**Supported baseline:** Home Assistant **2026.11.0 or newer**, Python >=3.14.2. The verification matrix exercises 2026.11.0 and 2026.11.1; future releases still need verification. This minimum is intentionally raised for the native climate-temperature API; the old 2024.11 support claim no longer applies to this candidate.
+Before updating, make a full **backup** of Home Assistant's configuration, including private `.storage` data, and the integration files. Rollback may require restoring both the matching configuration and code. Follow the [installation and rollback guide](docs/installation.md); this warning also applies to Marketplace updates.
 
 <!-- ha-marketplace:exclude-start -->
-### Marketplace (Home Assistant 2026.11 or newer; release pending)
+Once a reviewed release is published, add `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant` under **Settings → Marketplace → Add from link**, then install Haier SmartAir2. A first installation with a config flow normally does not require a restart. After updating or replacing code that Home Assistant has already loaded, restart Home Assistant.
 
-1. Once a reviewed release is available, use **Settings → Marketplace → Add from link** with `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant`.
-2. Install Haier SmartAir2, then add it under **Settings → Devices & services**. A first install using its config flow normally does not require a restart.
-3. For updates, removal, or replacement of already loaded integration code, restart Home Assistant before relying on the new code.
+To test this unpublished candidate manually after making that backup, replace the entire `config/custom_components/haier_smartair2/` directory with the candidate's directory, then restart Home Assistant. Do not copy over the old files: that could leave the removed `cloud.py` behind.
 
-GitHub/Internet access may be needed to download updates. That is separate from the integration runtime, which uses no Haier cloud connection.
+HACS on Home Assistant versions older than 2026.11 can install appropriate older releases, not this candidate. Use the built-in Marketplace on 2026.11 and later. Downloads and updates need GitHub access; the integration's runtime only connects to the configured LAN devices.
 
-### HACS (Home Assistant before 2026.11; older releases only)
-
-1. HACS → three-dot menu → **Custom repositories**.
-2. Add `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant`, category **Integration**.
-3. Install an appropriate published release and follow HACS restart instructions. HACS use before 2026.11 does not make this candidate compatible with older Home Assistant versions.
-
-Home Assistant 2026.11 migrates existing HACS installations to its built-in Marketplace. That automatic migration is different from changing the repository that owns an installed domain, such as switching from upstream to this fork. Same-domain repository ownership **handover is blocked pending manual validation**: do not install both repositories, uninstall as a workaround, or delete the config entry. Make a full backup, preserve the existing config entry and packet history, and keep rollback files before any change. See [Marketplace verification and pending gates](docs/marketplace.md).
+See the [installation, migration and rollback guide](docs/installation.md) for the full procedure.
 <!-- ha-marketplace:exclude-end -->
-
-### Manual
-
-Back up the complete Home Assistant configuration, including private `.storage` data, and the existing integration directory. Replace `config/custom_components/haier_smartair2/` with this version. Replace the whole directory rather than copying over it, so the removed `cloud.py` is not left behind. Restart Home Assistant. Keep the existing integration entry under **Settings → Devices & services**. Rollback may require restoring both the old code and its configuration backup, not just copying back Python files.
 
 ## Configuration
 
-Go to **Settings → Devices & services → Add integration → Haier SmartAir2**. Supply comma-separated `MAC:IPv4` pairs:
+Open **Settings → Devices & services → Add integration → Haier SmartAir2**. Enter comma-separated `MAC:IPv4` pairs:
 
 ```text
 00:11:22:33:44:55:192.168.1.50, AABBCCDDEEFF:192.168.1.51
 ```
 
-MAC addresses with or without colons are accepted. Blank or malformed mappings are rejected. IPv6 and hostname mappings are not supported by this format.
+MAC addresses may include colons. The complete map must be valid and nonempty, with no duplicate MACs or IPs. Hostnames and IPv6 are not supported. There is no account login, cloud discovery or network request during configuration.
 
-Use **Configure** to change addresses or add devices later. There are no e-mail, password, region or cloud client-ID fields. Configuration does not contact devices or the Haier API. Runtime connects only to the mapped devices. An unreachable device or unsupported status causes an explicit setup failure/retry, never a switch to cloud.
+Use **Configure** to change IPs or add devices. Options replace the previous local mapping; changing an IP does not change the device's MAC-based identity. An unreachable device or unsupported status causes a local setup failure/retry, never a cloud fallback. [Recovery and migration details](docs/installation.md#upgrade-an-existing-entry).
 
-### Upgrading an existing entry
+## Controls and diagnostics
 
-Entries migrate in place to config version 2. Options override the original local map. Cloud credentials and connection settings are removed. Domain, entry ID, MAC-based entity identifiers and packet history are retained.
+For the documented V3 layout, the implementation provides climate modes and target temperature, fan speeds including quiet, Power/boost and Sleep presets, vertical vane positions, Health, panel light, self-clean, remote lock and electric-heat requests. Self-clean is blocked in heat, auto or sleep. Horizontal airflow on the AS35 is manual; the timer is not exposed.
 
-- For devices already working locally, keep the existing entry and local map.
-- Devices previously discovered only through the Haier account are no longer discovered. Add their mappings if they support plaintext LAN.
-- An entry without a usable map cannot start. Open **Configure**, supply the map and reload. Do not delete the entry: deletion also removes its packet history.
+Telemetry includes temperatures, frequency, actuator flags and alarm diagnostics where the layout is known. Unconfirmed readings remain unknown or disabled by default. In the reference captures, 0 W is not proof of zero consumption, and the expansion-valve value remains a raw value with no verified physical scale. See the [AS35 protocol notes](docs/protocol-as35.md) for mappings and firmware behaviour.
 
-Changing an IP does not change MAC-based unique IDs. Existing device names are reused where available; new devices receive stable local names.
+**Download diagnostics** exports recent local frames with anonymous device numbers. Unknown or invalid payloads are exported as metadata rather than raw bytes. The private local history keeps up to seven days or 20,000 records per entry and contains identifiers and raw frames; treat it and configuration backups as private. Deleting the integration entry deletes that entry's packet history.
 
-## Local diagnostics
+## Verification and known issues
 
-Compatible V3 units expose compressor, indoor fan, defrost and active-alarm diagnostics. Outdoor fan, four-way valve and actual heater state remain disabled by default where useful readings are unconfirmed. Alarm state is unknown until a report arrives and resets after disconnect.
+Automated checks exercise the LAN transport with a loopback simulator, real Home Assistant climate states/services in Celsius and Fahrenheit, and Marketplace installation/update/rollback with local delivery fixtures. They do not establish physical compatibility, live GitHub/catalog behaviour or a complete UI installation. The [Marketplace verification record](docs/marketplace.md) explains those boundaries.
 
-**Download diagnostics** exports recent local frames. History is kept on the Home Assistant host for up to seven days or 20,000 records per entry. Known telemetry is exported with timestamps and anonymous device numbers. Unknown or invalid payloads stay only in the private local store and are exported as metadata.
+Two known control defects remain open: **RP-002**, where concurrent commands can overwrite an earlier change, and **RP-003**, where a combined temperature/HVAC-mode request can ignore the requested mode, including `off`. These are not fixed by removing the cloud or updating the climate API. The candidate remains experimental; passing CI is not acceptance of these risks or approval to publish a release.
 
-See [AS35 protocol notes](docs/protocol-as35.md) for byte layouts, conversions and their limits. The private history store contains device identifiers and raw frames; treat it as local diagnostic data.
+## Documentation and development
 
-## Limitations and verification
-
-- Plaintext SmartAir2 LAN only; not hOn or cloud-only/encrypted dongles.
-- Sensor and actuator support depends on the device layout.
-- Two recorded AS35 captures reported 0 W and unavailable compressor current. The valve field reported 88 raw units; its physical scale is unverified.
-- The timer is not exposed. Horizontal airflow on this AS35 is manual.
-- This release removes cloud dependencies; it does not claim to fix unrelated command races or all existing climate-service behavior.
-- Automated tests do not replace validation against your physical air conditioner. Keep a backup for rollback.
-
-## Requirements and acceptance
-
-The [draft requirements specification](docs/requisitos.md) and [traceability matrix](docs/matriz-requisitos.csv) distinguish implemented behavior, verification gaps, physical tests and proposed fixes. The specification is in Portuguese and is a proposal for review, not a statement that all requirements are satisfied or that additional hardware is supported.
-
-The [SDLC record](docs/sdlc.md), [architecture decision](docs/adr/0001-local-only.md) and [initial audit](docs/auditoria-inicial.md) preserve the reasoning, original probe evidence and repeatable historical cloud tests. Historical audit tests deliberately reproduce the old defects; green historical tests do not mean the remaining local control bugs were fixed.
-
-## Development checks
-
-```sh
-python -m compileall -q custom_components
-python -m unittest discover -s tests -v
-python tests/check_requirements.py
-python tests/check_marketplace.py
-```
-
-The historical audit needs Git commit `5b77363a05225311fb85ef89eb16136b26440acd`; use a full clone or fetch the baseline. The CI unit-test checkout uses `fetch-depth: 0` rather than silently skipping those tests.
-
-With Home Assistant 2026.11.0 installed in a separate environment, also run:
-
-```sh
-python tests/ha_localonly_smoke.py
-python tests/ha_climate_compat.py
-python tests/ha_marketplace_smoke.py
-```
-
-The lightweight tests use Home Assistant doubles. Framework-level checks must run in a separate process with Home Assistant installed, so doubles cannot hide import or setup errors.
-
-## Changelog
-
-- **0.3.0 (unpublished)** — local-only configuration, startup and migration; remove cloud authentication, discovery, MQTT and fallback; preserve LAN protocol, MAC entity IDs and packet history. Require Home Assistant 2026.11.0, use the native climate-temperature API and add Marketplace distribution checks.
-- **0.2.3** — V3 actuator states, alarm bits and bounded local packet history with diagnostic export.
-- **0.2.2** — local reconnects and frame integrity validation.
-- **0.2.1** — colon-separated MAC support, restore fixed vane position and self-clean guards.
-- **0.2.0** — V3 controls and telemetry, Portuguese translations and Marketplace metadata.
-- **0.1.4 and earlier** — upstream hybrid cloud/local integration.
+The [documentation index](docs/README.md) groups installation, compatibility, protocol, requirements, traceability, SDLC and test evidence. Start there for the development commands and the remaining acceptance gates. Version history is in the [changelog](CHANGELOG.md).
 
 ## Credits and license
 
 Original integration by [bwitosze](https://github.com/bwitosze/haier-smartair2-cloud-for-homeassistant). Protocol work builds on Piotr Stadnicki ([fastfend](https://github.com/fastfend)), [ESPHome Haier](https://esphome.io/components/climate/haier/) and `paveldn/HaierProtocol`.
 
-This is unofficial, not affiliated with or supported by Haier. Use at your own risk. [MIT license](LICENSE).
+This project is not affiliated with or supported by Haier. [MIT license](LICENSE).
