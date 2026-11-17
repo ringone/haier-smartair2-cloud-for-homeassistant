@@ -1,8 +1,8 @@
 # Installation, migration and rollback
 
-This guide describes the unpublished 0.3.0 local-only candidate. The current published release is 0.2.3 and still contains the previous hybrid implementation. Neither a pull request nor a merge publishes 0.3.0.
+This guide describes the published [0.3.0 local-only release](https://github.com/ringone/haier-smartair2-cloud-for-homeassistant/releases/tag/0.3.0), released on 2026-11-17. Version 0.2.3 was the previous hybrid cloud/local release. The `develop` branch retains the earlier technical documentation; use a published release for installation.
 
-Before installing, read the [hardware and firmware limits](compatibility.md). This candidate requires Home Assistant >=2026.11.0 and Python >=3.14.2. It has not been physically validated on an air conditioner.
+Before installing, read the [hardware and firmware limits](compatibility.md). Version 0.3.0 requires Home Assistant >=2026.11.0 and Python >=3.14.2. It has not been physically validated on an air conditioner.
 
 ## Prepare a backup and LAN access
 
@@ -14,20 +14,20 @@ Before installing, read the [hardware and firmware limits](compatibility.md). Th
 
 Do not delete an existing integration entry to upgrade. Deleting it also removes its packet history and can remove device/entity registrations.
 
-## Install from Marketplace after publication
+## Install from Marketplace
 
-Once a reviewed release is available:
+To install the published release:
 
 1. Open **Settings → Marketplace → Add from link**.
 2. Add `https://github.com/ringone/haier-smartair2-cloud-for-homeassistant` and install Haier SmartAir2.
 3. On a first installation with a config flow, Home Assistant can normally load it and open setup without a restart. If needed, open **Settings → Devices & services → Add integration**.
 4. After updating or replacing code already loaded by Home Assistant, restart it before relying on the new code. The Marketplace provides a restart repair when required.
 
-The ordinary repository link does not select a feature branch. While 0.3.0 is unpublished, do not assume a stable download contains the local-only candidate.
+The ordinary repository link uses published releases, not the contents of a development branch. Publication does not establish public catalogue membership or a completed live-UI installation test.
 
-## Test a candidate manually
+## Install manually
 
-Use only the reviewed candidate branch or an artifact identified by its commit. The directory to install is `custom_components/haier_smartair2/` from that candidate, not the entire repository.
+Download `haier-smartair2-0.3.0.zip` from the [0.3.0 release](https://github.com/ringone/haier-smartair2-cloud-for-homeassistant/releases/tag/0.3.0). The directory to install is `custom_components/haier_smartair2/` inside the ZIP, not the entire repository. The attached `SHA256SUMS` lets you check the ZIP's integrity.
 
 1. Make the full backup described above.
 2. Replace `config/custom_components/haier_smartair2/` completely. Do not merge new files into the old directory: that can leave the removed `cloud.py` behind.
@@ -56,7 +56,7 @@ The map must be nonempty and valid in full. MACs may contain colons; IPv6, hostn
 
 ## HACS migration and repository handover
 
-Home Assistant 2026.11 migrates existing HACS installations to the built-in Marketplace. HACS instructions for versions before 2026.11 apply only to older releases that support those versions, not this candidate.
+Home Assistant 2026.11 migrates existing HACS installations to the built-in Marketplace. HACS instructions for versions before 2026.11 apply only to older releases that support those versions, not 0.3.0.
 
 Changing from the upstream repository to this fork is a different operation. Both use `haier_smartair2`, and Marketplace refuses a second repository that tries to own the installed domain. The automated tests verify that refusal, not a successful ownership transfer.
 
@@ -64,7 +64,7 @@ Changing from the upstream repository to this fork is a different operation. Bot
 
 ## Roll back safely
 
-The migration removes active cloud credentials and changes the stored config-entry version. Copying old Python files over the candidate may therefore be insufficient.
+The migration removes active cloud credentials and changes the stored config-entry version. Copying old Python files over 0.3.0 may therefore be insufficient.
 
 Restore the matching code and configuration from the full backup using Home Assistant's normal backup/recovery procedure. Keep the old repository/version information, and avoid mixing files from different releases. Do not restore individual `.storage` fragments into a running instance as a substitute for a tested recovery procedure.
 

@@ -463,7 +463,7 @@ Inclui configuração/opções, migração, TCP local, seleção de codec, ciclo
 - **Estado da implementação:** Implementado.
 - **Requisito:** Entregar pacote/patch identificáveis, com instruções de atualização e reversão que não apaguem a entrada por engano.
 - **Critérios de aceitação:**
-  - O ZIP deverá incluir a integração local e avisos, excluir cloud.py e artefactos de cache, e indicar o estado não publicado.
+  - O ZIP deverá incluir a integração local e avisos, excluir cloud.py e artefactos de cache, e indicar o estado real de publicação.
   - O patch deverá aplicar sem erros sobre 5b77363a05225311fb85ef89eb16136b26440acd.
   - Instruir backup da pasta e configuração; explicar substituição integral, conservação da entrada e remoção de credenciais pela migração.
 - **Código/documentação:** `README.md`, `custom_components/haier_smartair2/manifest.json`.
@@ -494,7 +494,7 @@ Inclui configuração/opções, migração, TCP local, seleção de codec, ciclo
 - **Critérios de aceitação:**
   - Verificar hacs.json, mínimo 2026.11.0, uma integração, domínio estável, manifest/versão, HTTPS, codeowners, flow, categoria conhecida e imagens 256/512.
   - Verificar textos de configuração en/pt/pl e fallback inglês sem obrigar tradução completa das entidades em todas as línguas.
-  - Usar os marcadores oficiais ha-marketplace no README e distinguir primeira instalação, atualização e release ainda não publicada.
+  - Usar os marcadores oficiais ha-marketplace no README e distinguir primeira instalação, atualização e versão publicada, sem exigir linguagem de desenvolvimento no README para utilizadores.
   - Rejeitar fixtures negativas e executar também o checker sobre a árvore real no CI; não tratar o checker como certificação de segurança ou de catálogo.
 - **Código/documentação:** `tests/check_marketplace.py`, `tests/test_marketplace_metadata.py`, `hacs.json`, `README.md`, `docs/marketplace.md`, `.github/workflows/telemetry-tests.yaml`.
 - **Evidência existente:** E28, E29, E30, E31.
@@ -522,13 +522,13 @@ Inclui configuração/opções, migração, TCP local, seleção de codec, ciclo
 - **Estado da implementação:** Parcial.
 - **Requisito:** Distinguir versão preparada, release distribuída e inclusão no catálogo, exigindo autorização e evidência antes de publicar.
 - **Critérios de aceitação:**
-  - Identificar 0.3.0 como candidato não publicado e 0.2.3 como release estável observada; o link normal não seleciona automaticamente a branch candidata.
+  - Identificar a versão efetivamente publicada (0.3.0 em 2026-11-17) e distingui-la das branches de desenvolvimento. O link normal não seleciona automaticamente uma branch candidata.
   - Antes de publicar, confirmar tag/manifest coincidentes, mínimo suportado, notas de migração/backup e CI verde para o conteúdo exato.
   - Submeter o catálogo apenas após release e aprovação separada, sem afirmar que HACS/hassfest fazem essa inclusão automaticamente.
 - **Código/documentação:** `README.md`, `docs/marketplace.md`, `docs/adr/0002-marketplace-202611.md`, `tests/check_marketplace.py`.
 - **Evidência existente:** E28, E29.
-- **Verificação:** Gates e documentação preparados; publicação e catálogo pendentes.
-- **Lacuna/limitação:** Não existe release pública 0.3.0 criada por este incremento. Tag/release, submissão ao catálogo, UI real, hardware e merge não foram autorizados nem são substituídos por CI local.
+- **Verificação:** Gates automatizados e release 0.3.0 publicada em 2026-11-17; catálogo pendente.
+- **Lacuna/limitação:** A release pública 0.3.0 foi criada após autorização e confirmação do merge, CI e tag/manifest. Catálogo, UI real, hardware e transferência de gestão continuam por validar. Atualizações documentais posteriores não substituem nem alteram a tag publicada.
 
 ## 4. Propostas e evolução — estado individual explícito
 
