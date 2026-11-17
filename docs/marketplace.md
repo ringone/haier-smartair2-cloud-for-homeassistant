@@ -2,7 +2,7 @@
 
 ## Status and support policy
 
-0.3.0 is an unpublished candidate on `chore/marketplace-ha-2026.11`; stable remains 0.2.3. No release, merge, catalog submission or repository-manager handover is authorized by this work. The Home Assistant minimum is intentionally raised to **2026.11.0**, Python **3.14** (Home Assistant package currently requires >=3.14.2). Older HACS installation routes are not a compatibility promise for this candidate.
+[0.3.0 was published on 2026-11-17](https://github.com/ringone/haier-smartair2-cloud-for-homeassistant/releases/tag/0.3.0), after the user merged PR #4 and authorized publication. Tag and release target commit `bd4d653254d5d4ce364c9fb7232395d7f8e9275d`; it has the same source tree as the reviewed PR head. The release ZIP and checksum were downloaded and verified after upload. This supersedes the candidate status recorded during the 2026-11-14 verification increment, without rewriting its evidence or certifying hardware, public catalogue inclusion or repository-manager handover. The Home Assistant minimum remains **2026.11.0**, with Python **>=3.14.2**. Older HACS installation routes are not a compatibility promise for 0.3.0.
 
 ## Sources checked on 2026-11-14
 
@@ -24,7 +24,7 @@ python -m unittest discover -s tests -p 'test_marketplace_metadata.py' -v
 python tests/check_marketplace.py
 ```
 
-The checker uses only Python stdlib AST, JSON, struct and paths; it never imports or executes integration modules and makes no network requests. Negative temporary fixtures cover root metadata/minimum, one integration and domain/manifest coherence, malformed manifests, metadata URLs, candidate version, config flow, translations, PNG dimensions, explicit flow step IDs, native climate names, and README installation/release messaging.
+The checker uses only Python stdlib AST, JSON, struct and paths; it never imports or executes integration modules and makes no network requests. Negative temporary fixtures cover root metadata/minimum, one integration and domain/manifest coherence, malformed manifests, metadata URLs, release version, config flow, translations, PNG dimensions, explicit flow step IDs, native climate names, and README installation/release messaging. The user-facing README can omit development jargon: it must link the published 0.3.0 release and must not retain the old unpublished/0.2.3 publication claims. These offline checks do not query GitHub or prove publication by themselves.
 
 These are **project policy gates**, not a reimplementation of every Marketplace installer rule. This project checks English fallback text, localized flow text in en/pt/pl, 256/512 local PNG icon headers/dimensions, HTTPS metadata, a local-push hub with no pip requirements, explicit flow step IDs, and the native temperature API. Partial entity translations (including Polish) are retained and may fall back to English; strict pt/pl equality is not a platform requirement and is not imposed. English fallback completeness for dynamic runtime use still requires framework/hassfest and rendered-UI review. Categories are optional platform-wide (missing categories produce a warning); this project retains its known climate category. The optional README markers use the official `ha-marketplace:exclude-start` / `ha-marketplace:exclude-end` names. Brand images have been supported since Home Assistant 2026.3. Explicit step IDs become mandatory for custom integrations in 2027.5; the climate native-temperature deadline is 2027.11. Bool config-entry setup/unload returns remain explicitly supported; no None-return gate is imposed.
 
@@ -52,7 +52,7 @@ The climate harness registers a real HA entity attached to a ConfigEntry, writes
 - Verify Add from link, download/extraction, first config-flow install without restart, update/replacement restart repairs, removal, rollback and rendered translations/branding in a live Home Assistant UI.
 - Verify same-domain ownership transfer between upstream and fork repositories. This is **blocked**, not a documented safe uninstall path. Preserve the existing config entry, entity IDs and packet history; make a full backup first. Do not delete an entry to transfer repositories. This is distinct from Home Assistant's automatic HACS-to-Marketplace migration.
 - Review catalog identity, uniqueness, topics/issues, licensing, release assets, public repository/release visibility and upstream ownership concerns.
-- Tag/version/release coherence and actual published 0.3.0 artifacts; a manifest version or candidate branch is not a release. No publishing happens in this gate.
+- Recheck tag/version/release coherence, the exact SHA's live CI and downloadable assets before each future publication. This was verified for the published 0.3.0 release; a manifest version or development branch alone is not a release. No publishing happens in the offline gate.
 - Physical-device validation, non-AS35 hardware coverage and real Internet-isolated installation/runtime observations. Framework harnesses with synthetic packets cannot certify physical safety, dongle compatibility, online Marketplace behavior or catalog acceptance.
 
 First config-flow installs normally load immediately. Updates, removal and replacement of already loaded code require a restart. Download access to GitHub is separate from the integration's offline LAN runtime.

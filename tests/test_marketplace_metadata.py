@@ -103,6 +103,37 @@ class MarketplaceMetadataTests(unittest.TestCase):
         climate.write_text(climate.read_text().replace("native_current_temperature", "current_temperature"))
         self.assertTrue(any("climate" in e for e in self.check()))
 
+    def test_published_user_readme_needs_no_development_wording(self):
+        (self.root / "README.md").write_text(
+            "# Haier SmartAir2\n"
+            "Current release: [0.3.0](https://github.com/ringone/"
+            "haier-smartair2-cloud-for-homeassistant/releases/tag/0.3.0).\n"
+            "Requires Home Assistant 2026.11.0. Make a full backup before updating.\n"
+            "Read [installation](docs/installation.md) and "
+            "[compatibility](docs/compatibility.md) before use.\n"
+            "<!-- ha-marketplace:exclude-start -->\n"
+            "A first installation normally does not require a restart.\n"
+            "After updating, restart Home Assistant.\n"
+            "<!-- ha-marketplace:exclude-end -->\n"
+        )
+        self.assertEqual(self.check(), [])
+
+    def test_readme_rejects_stale_publication_claims(self):
+        readme = self.root / "README.md"
+        original = readme.read_text()
+        for claim in (
+            "0.3.0 is an **unpublished** candidate.",
+            "The latest published release, 0.2.3, is the current download.",
+        ):
+            with self.subTest(claim=claim):
+                readme.write_text(original + "\n" + claim + "\n")
+                self.assertTrue(any("README: stale publication status" in e for e in self.check()))
+
+    def test_readme_links_the_published_release(self):
+        readme = self.root / "README.md"
+        readme.write_text(readme.read_text().replace("releases/tag/0.3.0", "releases/tag/0.2.3"))
+        self.assertTrue(any("README: published release link" in e for e in self.check()))
+
     def test_readme_contract(self):
         readme = self.root / "README.md"
         readme.write_text("# Haier 0.3.0")

@@ -110,8 +110,13 @@ def validate(root: Path) -> list[str]:
     except OSError:
         readme = ""
     if "0.3.0" not in readme:
-        errors.append("manifest: version must match README candidate")
-    for token in ("<!-- ha-marketplace:exclude-start -->", "<!-- ha-marketplace:exclude-end -->", "normally does not require a restart", "restart Home Assistant", "unpublished", "0.2.3", "2026.11.0", "handover", "backup"):
+        errors.append("manifest: version must match README release")
+    release_url = "https://github.com/ringone/haier-smartair2-cloud-for-homeassistant/releases/tag/0.3.0"
+    if release_url not in readme:
+        errors.append("README: published release link must point to 0.3.0")
+    if "unpublished" in readme.casefold() or re.search(r"latest published release[,\s]+0\.2\.3\b", readme, re.IGNORECASE):
+        errors.append("README: stale publication status; 0.3.0 is already released")
+    for token in ("<!-- ha-marketplace:exclude-start -->", "<!-- ha-marketplace:exclude-end -->", "normally does not require a restart", "restart Home Assistant", "2026.11.0", "backup"):
         if token not in readme:
             errors.append(f"README: project installation/release contract missing {token!r}")
     if readme.count("<!-- ha-marketplace:exclude-start -->") != 1 or readme.count("<!-- ha-marketplace:exclude-end -->") != 1 or readme.find("<!-- ha-marketplace:exclude-start -->") > readme.find("<!-- ha-marketplace:exclude-end -->"):

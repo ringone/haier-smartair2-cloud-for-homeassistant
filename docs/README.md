@@ -1,11 +1,13 @@
 # Documentation
 
+The `main` [README](../README.md) is for installation and everyday use. The [`develop` branch](https://github.com/ringone/haier-smartair2-cloud-for-homeassistant/tree/develop) preserves the earlier technical README and source snapshot. Detailed references and tests remain in the repository; separating the README audiences does not remove verification from `main`. When bringing development changes back to `main`, retain its user-facing README.
+
 ## Install and use the integration
 
 - [Installation, migration and rollback](installation.md): prerequisites, Marketplace/manual procedures, recovery of existing entries and repository-ownership limits.
 - [Compatibility and evidence](compatibility.md): documented AC/module combination, firmware uncertainty, V2/V3 heuristic and unsupported modules.
 - [AS35 protocol notes](protocol-as35.md): captures, controls, telemetry conversions and fields with unknown physical meaning.
-- [Version history](../CHANGELOG.md): prepared changes and earlier versions. The 0.3.0 candidate is not a published release.
+- [Version history](../CHANGELOG.md): published releases and later documentation changes. Version 0.3.0 was published on 2026-11-17; publishing does not resolve the known control or hardware-validation gaps.
 
 ## Requirements, decisions and verification
 
